@@ -11,6 +11,28 @@
 
 ---
 
+## Живой сайт
+
+**https://kidw3st.github.io/lenskaya4/**
+
+Опубликован на GitHub Pages из ветки `gh-pages`, в которую выкладывается
+содержимое папки `site/`. Ветка `main` — исходники, спецификация и инструменты.
+
+### Обновить опубликованную версию
+
+```bash
+git subtree push --prefix site origin gh-pages
+```
+
+Одна команда после коммита в `main`. Сборка не нужна — в `gh-pages` уходит
+ровно то, что лежит в `site/`.
+
+Автоматической выкладки через GitHub Actions сейчас нет: у токена workflow
+в этом репозитории нет права включать Pages (`Resource not accessible by
+integration`). Если она понадобится, включите в настройках репозитория
+**Settings → Actions → General → Workflow permissions → Read and write**,
+после чего можно добавить workflow, публикующий `site/` в `gh-pages`.
+
 ## Быстрый старт
 
 ```bash
