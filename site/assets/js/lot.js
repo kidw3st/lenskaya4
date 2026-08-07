@@ -237,6 +237,173 @@
   };
 
   /* ====================================================================
+     Схема посадки дома: границы, отступы, зона застройки, пятно дома.
+     Задача блока — показать вместимость участка, а не эстетику дома.
+     ==================================================================== */
+
+  function sitePlanSvg(p, hp) {
+    const pad = 46; // поле под размерные подписи
+    const scale = 520 / Math.max(p.width_m, p.depth_m);
+    const W = p.width_m * scale;
+    const D = p.depth_m * scale;
+    const VW = W + pad * 2;
+    const VH = D + pad * 2;
+
+    const sF = p.setback_front_m * scale;
+    const sS = p.setback_side_m * scale;
+    const sR = p.setback_rear_m * scale;
+    const bx = pad + sS;
+    const by = pad + sR;
+    const bw = Math.max(0, W - sS * 2);
+    const bd = Math.max(0, D - sF - sR);
+
+    let out =
+      '<svg viewBox="0 0 ' + VW.toFixed(0) + ' ' + VH.toFixed(0) + '" class="siteplan" role="img" ' +
+      'aria-label="Схема участка №' + LK.esc(p.plot_number) + ': границы, отступы и зона допустимого размещения дома">';
+
+    // участок
+    out += '<rect x="' + pad + '" y="' + pad + '" width="' + W.toFixed(1) + '" height="' + D.toFixed(1) + '" class="sp-plot"/>';
+    // зона застройки
+    out += '<rect x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + bd.toFixed(1) + '" class="sp-build"/>';
+
+    // пятно дома по центру зоны застройки
+    if (hp) {
+      const hw = hp.footprint_w_m * scale;
+      const hd = hp.footprint_d_m * scale;
+      const fits = hp.footprint_w_m <= p.width_m - p.setback_side_m * 2 && hp.footprint_d_m <= p.depth_m - p.setback_front_m - p.setback_rear_m;
+      const hx = bx + (bw - hw) / 2;
+      const hy = by + (bd - hd) / 2;
+      out += '<rect x="' + hx.toFixed(1) + '" y="' + hy.toFixed(1) + '" width="' + hw.toFixed(1) + '" height="' + hd.toFixed(1) + '" class="sp-house' + (fits ? '' : ' sp-house--over') + '"/>';
+      out +=
+        '<text x="' + (hx + hw / 2).toFixed(1) + '" y="' + (hy + hd / 2 + 5).toFixed(1) + '" text-anchor="middle" class="sp-house-label">' +
+        LK.esc(hp.title) + '</text>';
+      out +=
+        '<text x="' + (hx + hw / 2).toFixed(1) + '" y="' + (hy + hd / 2 + 24).toFixed(1) + '" text-anchor="middle" class="sp-house-sub">' +
+        LK.dec(hp.footprint_w_m, 1) + ' × ' + LK.dec(hp.footprint_d_m, 1) + ' м</text>';
+    }
+
+    // подъезд снизу (передний отступ отсчитывается от него)
+    out += '<path d="M ' + pad + ' ' + (pad + D + 14).toFixed(1) + ' H ' + (pad + W).toFixed(1) + '" class="sp-road"/>';
+    out += '<text x="' + (pad + W / 2).toFixed(1) + '" y="' + (pad + D + 34).toFixed(1) + '" text-anchor="middle" class="sp-dim">подъезд</text>';
+
+    // размеры
+    out += '<text x="' + (pad + W / 2).toFixed(1) + '" y="' + (pad - 16) + '" text-anchor="middle" class="sp-dim">' + LK.dec(p.width_m, 1) + ' м</text>';
+    out +=
+      '<text x="' + (pad - 16) + '" y="' + (pad + D / 2).toFixed(1) + '" text-anchor="middle" class="sp-dim" ' +
+      'transform="rotate(-90 ' + (pad - 16) + ' ' + (pad + D / 2).toFixed(1) + ')">' + LK.dec(p.depth_m, 1) + ' м</text>';
+
+    // север
+    out += '<g transform="translate(' + (VW - 26) + ' 26)"><circle r="14" class="sp-compass"/><path d="M 0 -10 L 4 4 L 0 1 L -4 4 Z" class="sp-north"/></g>';
+    out += '</svg>';
+    return out;
+  }
+
+  function renderSitePlan(box, p, projects) {
+    if (!box) return;
+    let active = projects.length ? projects[0] : null;
+
+    const draw = function () {
+      box.innerHTML =
+        '<div class="siteplan-wrap">' + sitePlanSvg(p, active) + '</div>' +
+        '<ul class="legend mt-4">' +
+        '<li><i class="lg-plot"></i>Границы участка · ' + LK.dec(p.width_m, 1) + ' × ' + LK.dec(p.depth_m, 1) + ' м</li>' +
+        '<li><i class="lg-build"></i>Зона застройки · ' + LK.num(p.buildable_area_sqm) + ' м²</li>' +
+        (active ? '<li><i class="lg-house"></i>Пятно дома · ' + LK.num(Math.round(active.footprint_w_m * active.footprint_d_m)) + ' м²</li>' : '') +
+        '</ul>' +
+        (projects.length > 1
+          ? '<div class="chips mt-5" role="group" aria-label="Проект для схемы посадки">' +
+            projects
+              .map(function (hp) {
+                return (
+                  '<button type="button" class="chip" data-siteplan="' + hp.id + '" aria-pressed="' +
+                  (active && hp.id === active.id ? 'true' : 'false') + '">' + LK.esc(hp.title) + '</button>'
+                );
+              })
+              .join('') +
+            '</div>'
+          : '') +
+        '<p class="caption mt-4">Отступы приняты ' + p.setback_front_m + ' м от подъезда и ' + p.setback_side_m +
+        ' м от боковых границ, коэффициент застройки — ' + LK.dec(p.max_build_ratio * 100, 0) +
+        ' %. Значения демонстрационные: итоговые параметры определяются градостроительным планом участка, ПЗЗ и техническими условиями.</p>';
+
+      LK.$$('[data-siteplan]', box).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          active = projects.find(function (x) { return x.id === btn.getAttribute('data-siteplan'); });
+          LK.track('siteplan_project_change', { object_id: p.id, house_project_id: active.id });
+          draw();
+        });
+      });
+    };
+    draw();
+  }
+
+  /* ====================================================================
+     Слайдер «участок → пример застройки»
+     ==================================================================== */
+
+  function renderCompare(box, p, hp) {
+    if (!box || !hp) return;
+    const before = LK.img(p.plot_images[0]);
+    const after = LK.img(hp.viz_images[0]);
+    box.innerHTML =
+      '<h3 class="h3">Участок сейчас и пример застройки</h3>' +
+      '<p class="caption mt-3 max-60">Слева — фотография участка, справа — как на нём может выглядеть дом по проекту «' +
+      LK.esc(hp.title) + '». Потяните ползунок.</p>' +
+      '<div class="compare mt-5" data-compare>' +
+      '<img class="compare-before" src="' + before + '" alt="Участок №' + LK.esc(p.plot_number) + ' — фактическое состояние" loading="lazy">' +
+      '<div class="compare-after" style="--pos:50%">' +
+      '<img src="' + after + '" alt="Пример возможной застройки участка по проекту «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy">' +
+      '<span class="viz-badge">Визуализация</span>' +
+      '</div>' +
+      '<span class="compare-handle" aria-hidden="true"></span>' +
+      '<label class="visually-hidden" for="cmp-' + p.id + '">Сравнение: участок и пример застройки</label>' +
+      '<input id="cmp-' + p.id + '" class="compare-range" type="range" min="0" max="100" value="50" aria-valuetext="50 % примера застройки">' +
+      // Правую сторону подписывает бейдж «Визуализация» — второй ярлык был бы дублем
+      '<span class="compare-tag compare-tag--l">Участок сейчас</span>' +
+      '</div>' +
+      '<p class="disclaimer">Иллюстративная визуализация. Итоговый вид определяется выбранным проектом застройки.</p>';
+
+    const wrap = $('[data-compare]', box);
+    const range = $('.compare-range', wrap);
+    const after_ = $('.compare-after', wrap);
+    const handle = $('.compare-handle', wrap);
+    const set = function (v) {
+      after_.style.setProperty('--pos', v + '%');
+      handle.style.left = v + '%';
+      range.setAttribute('aria-valuetext', v + ' % примера застройки');
+    };
+    set(50);
+    range.addEventListener('input', function () { set(range.value); });
+    LK.track('compare_shown', { object_id: p.id, house_project_id: hp.id });
+  }
+
+  /* ====================================================================
+     Что входит в стоимость: земля и строительство разведены
+     ==================================================================== */
+
+  function renderEconomics(box, p) {
+    if (!box) return;
+    box.innerHTML =
+      '<h2 class="h3">Что входит в стоимость</h2>' +
+      '<ul class="incl mt-5">' +
+      '<li class="incl-yes"><b>Земельный участок</b><span>' +
+      (p.status === 'sold' ? 'Продан' : p.price ? LK.money(p.price) + ' · ' + LK.num(p.price_per_are) + ' ₽ за сотку' : 'Цена по запросу') +
+      '</span></li>' +
+      '<li class="incl-no"><b>Дом и строительство</b><span>Не входят в стоимость участка. Стоимость строительства по типовому проекту — по запросу.</span></li>' +
+      '<li class="incl-no"><b>Подключение коммуникаций</b><span>Условия и стоимость подключения уточняются по техническим условиям.</span></li>' +
+      '</ul>' +
+      '<div class="cta-stack mt-6">' +
+      '<button type="button" class="btn btn--land" data-modal="modal-consult" data-modal-ctx=\'' +
+      JSON.stringify({ object_type: 'land', object_id: p.id, object_title: 'Участок №' + p.plot_number, title: 'План участка №' + p.plot_number }) +
+      '\' data-cta="plot_plan_request">Получить план участка</button>' +
+      '<button type="button" class="btn btn--secondary-land" data-modal="modal-visit" data-modal-ctx=\'' +
+      JSON.stringify({ object_type: 'land', object_id: p.id, object_title: 'Участок №' + p.plot_number, title: 'Выезд на участок №' + p.plot_number }) +
+      '\' data-cta="plot_visit_request">Запросить выезд на участок</button>' +
+      '</div>' +
+      '<p class="disclaimer mt-4">Цены и условия не являются публичной офертой и подлежат подтверждению у менеджера.</p>';
+  }
+
+  /* ====================================================================
      Карточка УЧАСТКА
      ==================================================================== */
 
@@ -298,6 +465,24 @@
         const vizBox = $('#house-projects');
         const list = projects.filter(function (hp) { return p.house_project_ids.indexOf(hp.id) > -1; });
 
+        // Схема посадки, сравнение и экономика — до рендеров по смыслу:
+        // сначала вместимость участка, потом внешний вид дома.
+        renderSitePlan($('#plot-siteplan'), p, list);
+        renderEconomics($('#plot-economics'), p);
+        if (list.length) renderCompare($('#plot-compare'), p, list[0]);
+
+        // Строка вместимости: продаём потенциал земли, а не готовый дом
+        const capacity = $('#capacity-line');
+        if (capacity && list.length) {
+          const areas = list.map(function (hp) { return hp.area_total; });
+          const min = Math.min.apply(null, areas);
+          const max = Math.max.apply(null, areas);
+          capacity.textContent =
+            'На этом участке можно разместить дом площадью ' +
+            (min === max ? LK.num(min) + ' м²' : 'от ' + LK.num(min) + ' до ' + LK.num(max) + ' м²') +
+            '. Ниже — примеры возможной застройки; в стоимость входит только земельный участок.';
+        }
+
         if (!list.length) {
           vizBox.innerHTML =
             '<p class="caption">Материалы по типовым проектам для этого участка готовятся.</p>' +
@@ -312,12 +497,15 @@
                   '<article class="viz-card">' +
                   '<div class="media media--16-9" data-lb-item data-lb-src="' + img + '" data-lb-caption="' + LK.esc(hp.title) + '" data-lb-disc="' + LK.esc(hp.disclaimer) + '" data-viz="' + hp.id + '">' +
                   '<img src="' + img + '" alt="Типовой проект «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy" width="1600" height="900">' +
+                  // Маркировка внутри кадра: галерею часто листают, не читая подписей
+                  '<span class="viz-badge">Визуализация</span>' +
                   '</div>' +
-                  '<p class="disclaimer" style="padding:8px 16px 0">' + LK.esc(hp.disclaimer) + '</p>' +
+                  '<p class="disclaimer viz-disc">' + LK.esc(hp.disclaimer) + '</p>' +
                   '<div class="viz-body">' +
                   '<h3 class="h4">' + LK.esc(hp.title) + '</h3>' +
-                  '<div class="viz-specs"><span>' + LK.esc(hp.type_label) + '</span><span><b>' + hp.floors + '</b> эт.</span><span><b>' + LK.num(hp.area_total) + '</b> м²</span></div>' +
+                  '<div class="viz-specs"><span>' + LK.esc(hp.type_label) + '</span><span><b>' + hp.floors + '</b> эт.</span><span><b>' + LK.num(hp.area_total) + '</b> м²</span><span>пятно <b>' + LK.dec(hp.footprint_w_m, 1) + ' × ' + LK.dec(hp.footprint_d_m, 1) + '</b> м</span></div>' +
                   '<p class="caption">' + LK.esc(hp.description) + '</p>' +
+                  '<p class="viz-note">Дом не входит в стоимость участка</p>' +
                   '<button type="button" class="btn btn--secondary-land btn--sm" data-project="' + hp.id + '" style="margin-top:auto">Подробнее о проекте</button>' +
                   '</div></article>'
                 );
@@ -345,6 +533,10 @@
           '<table class="params"><caption class="visually-hidden">Параметры участка</caption><tbody>' +
           row('Номер участка', '№' + LK.esc(p.plot_number)) +
           row('Площадь', LK.ares(p.area_ares) + ' (' + LK.num(p.area_sqm) + ' м²)') +
+          row('Габариты', LK.dec(p.width_m, 1) + ' × ' + LK.dec(p.depth_m, 1) + ' м') +
+          row('Зона застройки', LK.num(p.buildable_area_sqm) + ' м² с учётом отступов') +
+          row('Максимальное пятно дома', LK.num(p.max_footprint_sqm) + ' м² при коэффициенте застройки ' + LK.dec(p.max_build_ratio * 100, 0) + ' %') +
+          row('Отступы', p.setback_front_m + ' м от подъезда, ' + p.setback_side_m + ' м от боковых, ' + p.setback_rear_m + ' м от задней границы') +
           row('Кадастровый номер', p.cadastral_number ? LK.esc(p.cadastral_number) : null) +
           row('Назначение земли', LK.esc(p.land_use_label)) +
           row('Категория земель', LK.esc(p.land_category)) +
@@ -404,7 +596,8 @@
           return (
             '<figure class="mt-4">' +
             '<div class="media media--16-9" data-lb-item data-lb-src="' + LK.img(m) + '" data-lb-caption="' + LK.esc(hp.title) + '" data-lb-disc="' + LK.esc(hp.disclaimer) + '" style="cursor:zoom-in">' +
-            '<img src="' + LK.img(m) + '" alt="Типовой проект «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy" width="1600" height="900"></div>' +
+            '<img src="' + LK.img(m) + '" alt="Типовой проект «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy" width="1600" height="900">' +
+            '<span class="viz-badge">Визуализация</span></div>' +
             '<figcaption class="disclaimer">' + LK.esc(hp.disclaimer) + '</figcaption></figure>'
           );
         })

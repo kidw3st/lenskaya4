@@ -40,6 +40,9 @@ function daysAgo(n) {
 
 const DISCLAIMER = 'Иллюстративная визуализация. Итоговый вид определяется выбранным проектом застройки.';
 
+// Габариты пятна застройки нужны, чтобы показать посадку дома на участке,
+// а не только красивый рендер: это переводит визуализацию из «картинки»
+// в проверяемый сценарий освоения земли.
 const houseProjects = [
   {
     id: 'HP-01',
@@ -48,6 +51,8 @@ const houseProjects = [
     type_label: 'Частный дом',
     floors: 2,
     area_total: 168,
+    footprint_w_m: 12.0,
+    footprint_d_m: 9.0,
     min_plot_ares: 6,
     description:
       'Компактный двухэтажный дом с вынесенной гостиной и остеклением в сторону воды. Спальная группа отделена от общественной зоны переходом.',
@@ -62,6 +67,8 @@ const houseProjects = [
     type_label: 'Частный дом',
     floors: 2,
     area_total: 214,
+    footprint_w_m: 14.5,
+    footprint_d_m: 10.5,
     min_plot_ares: 9,
     description:
       'Ступенчатый объём с эксплуатируемой кровлей нижнего яруса. Терраса второго уровня раскрыта на юго-запад.',
@@ -76,6 +83,8 @@ const houseProjects = [
     type_label: 'Таунхаус',
     floors: 3,
     area_total: 142,
+    footprint_w_m: 7.5,
+    footprint_d_m: 11.0,
     min_plot_ares: 4,
     description:
       'Блокированная застройка на узком участке. Внутренний двор-патио изолирован от проезда, вход через буферную зону.',
@@ -90,6 +99,8 @@ const houseProjects = [
     type_label: 'Малоэтажный дом',
     floors: 3,
     area_total: 96,
+    footprint_w_m: 16.0,
+    footprint_d_m: 12.0,
     min_plot_ares: 12,
     description:
       'Малоэтажный дом на несколько квартир. Показана типовая квартира 96 м² с угловым остеклением и выходом на террасу.',
@@ -280,8 +291,32 @@ for (let n = 1; n <= LAND_COUNT; n++) {
   const priceOnRequest = chance(0.08);
   const price = priceOnRequest ? null : Math.round((perAre * areaAres) / 10000) * 10000;
 
-  const fitting = houseProjects.filter((p) => p.min_plot_ares <= areaAres);
-  const projects = (fitting.length >= 3 ? fitting : houseProjects).slice(0, chance(0.5) ? 4 : 3).map((p) => p.id);
+  // Габариты участка: прямоугольник с пропорцией, близкой к реальной нарезке.
+  const widthM = round2(Math.sqrt(areaSqm / 1.45));
+  const depthM = round2(areaSqm / widthM);
+
+  // Отступы по нормам ИЖС — демонстрационные, подлежат проверке
+  // по градостроительному плану и ПЗЗ конкретного участка.
+  const setbackFront = 5;
+  const setbackSide = 3;
+  const setbackRear = 3;
+  const buildW = Math.max(0, widthM - setbackSide * 2);
+  const buildD = Math.max(0, depthM - setbackFront - setbackRear);
+  const buildableArea = Math.round(buildW * buildD);
+  const maxBuildRatio = 0.3; // коэффициент застройки
+  const maxFootprint = Math.round(Math.min(buildableArea, areaSqm * maxBuildRatio));
+
+  // Проект подходит, если его пятно помещается в зону застройки
+  const fitting = houseProjects.filter(
+    (p) =>
+      p.min_plot_ares <= areaAres &&
+      p.footprint_w_m <= buildW &&
+      p.footprint_d_m <= buildD &&
+      p.footprint_w_m * p.footprint_d_m <= maxFootprint
+  );
+  const projects = (fitting.length >= 2 ? fitting : houseProjects.slice(0, 2))
+    .slice(0, chance(0.5) ? 4 : 3)
+    .map((p) => p.id);
 
   land.push({
     id: `L-${String(n).padStart(3, '0')}`,
@@ -289,6 +324,14 @@ for (let n = 1; n <= LAND_COUNT; n++) {
     plot_number: String(n),
     area_sqm: areaSqm,
     area_ares: areaAres,
+    width_m: widthM,
+    depth_m: depthM,
+    setback_front_m: setbackFront,
+    setback_side_m: setbackSide,
+    setback_rear_m: setbackRear,
+    buildable_area_sqm: buildableArea,
+    max_footprint_sqm: maxFootprint,
+    max_build_ratio: maxBuildRatio,
     cadastral_number: chance(0.72)
       ? `59:32:${String(intBetween(1000000, 4999999)).padStart(7, '0')}:${intBetween(10, 990)}`
       : null,
