@@ -121,9 +121,20 @@
      ==================================================================== */
 
   const cache = {};
+
+  // Версия берётся из ссылки на сам скрипт (assets/js/site.js?v=N) и
+  // добавляется к запросам данных. Иначе хостинг отдаёт JSON из кэша,
+  // и цены со статусами могут отставать от свежей выкладки.
+  const ASSET_VERSION = (function () {
+    const el = document.currentScript || $('script[src*="site.js"]');
+    const m = el && /[?&]v=(\d+)/.exec(el.getAttribute('src') || '');
+    return m ? m[1] : '';
+  })();
+
   LK.load = function (name) {
     if (!cache[name]) {
-      cache[name] = fetch('data/' + name + '.json').then(function (r) {
+      const url = 'data/' + name + '.json' + (ASSET_VERSION ? '?v=' + ASSET_VERSION : '');
+      cache[name] = fetch(url).then(function (r) {
         if (!r.ok) throw new Error('Не удалось загрузить ' + name);
         return r.json();
       });
