@@ -100,20 +100,8 @@
     </div>
   </section>
 
-  <!-- Что можно здесь построить -->
-  <section class="section section--land">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Типовые проекты</p>
-        <h2>Что можно здесь построить</h2>
-        <p class="lead max-60">Ниже — типовые проекты, которые можно реализовать на этом участке. Это примеры застройки, а не продаваемые объекты.</p>
-      </div>
-      <p class="disclaimer disclaimer--boxed max-60">Изображения носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные дома и квартиры не являются построенными объектами и не продаются в составе данного предложения. Итоговый вид, планировочные решения и характеристики определяются выбранным проектом застройки и проектной документацией.</p>
-      <div class="mt-6" id="house-projects"></div>
-    </div>
-  </section>
-
-  <!-- Параметры и расположение -->
+  <!-- Параметры земли идут раньше любых визуализаций: сначала объект
+       продажи, потом его потенциал. -->
   <section class="section">
     <div class="container">
       <div class="split" style="align-items:start">
@@ -122,11 +110,25 @@
           <div class="mt-5" id="plot-params"></div>
           <p class="caption mt-4">Незаполненные параметры не отображаются. Кадастровые данные публикуются по материалам, утверждённым Заказчиком.</p>
         </div>
+        <div id="plot-economics"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Границы, отступы и пятно застройки -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Границы и застройка</p>
+        <h2>Где на участке можно поставить дом</h2>
+        <p class="lead max-60">Схема показывает границы участка, нормативные отступы и зону, в которой допускается размещение дома. Это переводит разговор из «красивой картинки» в проверяемый сценарий освоения земли.</p>
+      </div>
+      <div class="split" style="align-items:start">
+        <div id="plot-siteplan"></div>
         <div>
-          <h2 class="h3">Расположение участка</h2>
-          <figure class="mt-5">
+          <figure>
             <div class="media media--16-10"><img src="assets/img/LAND-PLOT-SCHEME.svg" alt="Схема нарезки земельных участков на территории проекта" loading="lazy" width="1600" height="1000"></div>
-            <figcaption class="media-note">Схема нарезки участков на территории проекта.</figcaption>
+            <figcaption class="media-note">Положение участка в общей нарезке территории.</figcaption>
           </figure>
           <div class="map-holder media media--16-9 mt-5" data-map-activate="plot">
             <img src="assets/img/MAP-03.svg" alt="Карта окружения проекта" loading="lazy" width="1600" height="900">
@@ -135,6 +137,22 @@
           <p class="caption mt-2">Интерактивная карта загружается по клику — так страница остаётся лёгкой.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Что можно здесь построить -->
+  <section class="section section--land">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Пример возможной застройки</p>
+        <h2>Что можно здесь построить</h2>
+        <p class="lead max-60" id="capacity-line">Ниже — типовые проекты, которые помещаются в зону застройки этого участка. Это примеры возможного использования земли, а не продаваемые объекты.</p>
+      </div>
+      <p class="disclaimer disclaimer--boxed max-60">Изображения в этом разделе носят исключительно иллюстративный характер и показывают один из вариантов использования участка. Объектом продажи является земельный участок. Визуализации, размеры, посадка строений и элементы благоустройства не являются офертой, проектной документацией или обязательством к строительству; возможность реализации зависит от параметров участка, действующих норм, технических условий и согласований.</p>
+
+      <div class="mt-7" id="plot-compare"></div>
+
+      <div class="mt-7" id="house-projects"></div>
     </div>
   </section>
 

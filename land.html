@@ -285,6 +285,8 @@
         <label class="consent"><input type="checkbox" name="consent" required data-msg="Необходимо согласие на обработку персональных данных"><span>Я согласен на <a href="consent.html" target="_blank" rel="noopener">обработку персональных данных</a> и ознакомлен с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.<span class="field-error"></span></span></label>
 
         <button type="submit" class="btn btn--land">Подобрать участок</button>
+
+        <p class="disclaimer">Объектом продажи является земельный участок. Изображения домов на сайте — примеры возможной застройки по типовым проектам, они не входят в стоимость участка и не являются офертой.</p>
       </form>
 
       <div class="form-success" role="status">
@@ -398,11 +400,13 @@ window.LK.load('house-projects').then(function (list) {
     var img = LK.img(hp.viz_images[0]);
     return '<article class="viz-card">' +
       '<div class="media media--16-9" data-lb-item data-lb-src="' + img + '" data-lb-caption="Типовой проект «' + LK.esc(hp.title) + '»" data-lb-disc="' + LK.esc(hp.disclaimer) + '">' +
-      '<img src="' + img + '" alt="Типовой проект «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy" width="1600" height="900"></div>' +
-      '<p class="disclaimer" style="padding:8px 16px 0">' + LK.esc(hp.disclaimer) + '</p>' +
+      '<img src="' + img + '" alt="Типовой проект «' + LK.esc(hp.title) + '» — иллюстративная визуализация" loading="lazy" width="1600" height="900">' +
+      '<span class="viz-badge">Визуализация</span></div>' +
+      '<p class="disclaimer viz-disc">' + LK.esc(hp.disclaimer) + '</p>' +
       '<div class="viz-body"><h3 class="h4">' + LK.esc(hp.title) + '</h3>' +
-      '<div class="viz-specs"><span>' + LK.esc(hp.type_label) + '</span><span><b>' + hp.floors + '</b> эт.</span><span><b>' + LK.num(hp.area_total) + '</b> м²</span><span>от <b>' + hp.min_plot_ares + '</b> соток</span></div>' +
-      '<p class="caption">' + LK.esc(hp.description) + '</p></div></article>';
+      '<div class="viz-specs"><span>' + LK.esc(hp.type_label) + '</span><span><b>' + hp.floors + '</b> эт.</span><span><b>' + LK.num(hp.area_total) + '</b> м²</span><span>пятно <b>' + LK.dec(hp.footprint_w_m, 1) + ' × ' + LK.dec(hp.footprint_d_m, 1) + '</b> м</span><span>от <b>' + hp.min_plot_ares + '</b> соток</span></div>' +
+      '<p class="caption">' + LK.esc(hp.description) + '</p>' +
+      '<p class="viz-note">Дом не входит в стоимость участка</p></div></article>';
   }).join('');
 
   var sel = document.getElementById('f4-project');
