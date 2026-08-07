@@ -1,0 +1,47 @@
+# Публикация сайта на GitHub Pages.
+# Отдаётся содержимое папки site/ — она и есть готовый статический сайт.
+# Сборка не нужна: ни зависимостей, ни шага компиляции.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Параллельные публикации не нужны: держим одну активную, но
+# не отменяем уже идущую, чтобы не оборвать выкладку на середине.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Получить исходники
+        uses: actions/checkout@v4
+
+      - name: Настроить Pages
+        # enablement: true включает Pages в репозитории при первом запуске,
+        # поэтому руками в настройках ничего делать не нужно.
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Упаковать содержимое site/
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Опубликовать
+        id: deployment
+        uses: actions/deploy-pages@v4

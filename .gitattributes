@@ -1,0 +1,9 @@
+# Единые переводы строк в репозитории: в рабочей копии — как принято в системе,
+# в истории — всегда LF. Иначе Windows и CI видят разные файлы.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.avif binary
+*.woff2 binary

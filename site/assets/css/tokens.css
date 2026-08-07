@@ -1,0 +1,344 @@
+/* ==========================================================================
+   ЖК «Ленская» — дизайн-токены
+
+   Два слоя:
+   1. Палитра бренда (--c-*) — константы, одинаковые в обеих темах.
+   2. Семантические токены (--bg, --text, --line…) — меняются вместе с темой.
+
+   В разметке и компонентах используются ТОЛЬКО семантические токены,
+   иначе тёмная тема ломается. Исключение — акцентные --c-olive/--c-bronze
+   там, где нужен именно фирменный цвет.
+   ========================================================================== */
+
+:root {
+  /* ---------- 1. Палитра бренда ---------- */
+  --c-olive: #6e7a55;
+  --c-bronze: #a8814f;
+  --c-error: #9e3b2e;
+  --c-success: #4c6b4f;
+
+  /* ---------- Типографика ---------- */
+  /* Продакшен: заменить на лицензированные TT Ramillas / TT Commons Pro. */
+  --font-display: "TT Ramillas", "Playfair Display", "Georgia", "Times New Roman", serif;
+  --font-ui: "TT Commons Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Consolas", "SF Mono", monospace;
+
+  --fs-h1: 2.375rem; /* 38 */
+  --lh-h1: 1.08;
+  --fs-h2: 1.8125rem; /* 29 */
+  --lh-h2: 1.15;
+  --fs-h3: 1.375rem; /* 22 */
+  --lh-h3: 1.27;
+  --fs-h4: 1.1875rem; /* 19 */
+  --lh-h4: 1.37;
+  --fs-lead: 1.125rem; /* 18 */
+  --lh-lead: 1.58;
+  --fs-body: 1rem;
+  --lh-body: 1.65;
+  --fs-caption: 0.8125rem;
+  --lh-caption: 1.45;
+  --fs-micro: 0.6875rem;
+  --lh-micro: 1.3;
+
+  /* ---------- Отступы ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --s-11: 160px;
+
+  --section-y: 72px;
+  --gutter: 16px;
+  --page-pad: 20px;
+  --container: 1300px;
+
+  /* ---------- Форма ---------- */
+  --r-xs: 3px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-pill: 999px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 180ms;
+  --dur: 280ms;
+  --dur-slow: 620ms;
+
+  --header-h: 62px;
+  --z-header: 100;
+  --z-menu: 110;
+  --z-modal: 200;
+  --z-lightbox: 300;
+  --z-intro: 400;
+}
+
+/* ==========================================================================
+   2. Семантические токены — СВЕТЛАЯ тема (по умолчанию)
+   ========================================================================== */
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #faf8f4; /* основной фон страницы */
+  --bg-alt: #f2eee6; /* чередующиеся секции */
+  --bg-sage: #eaefe4; /* секции раздела «Земельные участки» */
+  --surface: #ffffff; /* карточки, панели, модалки */
+  --surface-2: #f6f2ea; /* мягкая заливка внутри поверхностей */
+  --surface-sunken: #efeae0; /* «утопленные» области: медиа-подложка */
+
+  --text: #1a201d; /* 15.1:1 к --bg */
+  --text-2: #5a615a; /* 6.4:1 — вторичный текст */
+  --text-3: #676d65; /* 4.6:1 даже на самом светлом фоне секций — подписи и дисклеймеры */
+
+  --line: #e4ded3; /* мягкие разделители */
+  --line-2: #c6bfb1; /* границы контролов, 3:1 к --surface */
+
+  --accent: var(--c-olive);
+  --accent-text: #55603f; /* 6.1:1 к --bg */
+  --accent-hover: #5d684a;
+  --on-accent: #ffffff;
+
+  --bronze: var(--c-bronze);
+  --bronze-text: #7d5c2c; /* 5.3:1 к --bg */
+  --bronze-hover: #96703f;
+  --on-bronze: #241a0c;
+
+  --error: var(--c-error);
+  --error-bg: rgba(158, 59, 46, 0.07);
+  --success: var(--c-success);
+  --success-bg: rgba(76, 107, 79, 0.08);
+
+  /* Тёмные секции и подвал — одинаково тёмные в обеих темах,
+     поэтому акцент на них берётся из отдельного осветлённого токена. */
+  --dark-surface: #1a201d;
+  --dark-surface-2: #212925;
+  --on-dark: #f1eee7;
+  --on-dark-2: #adb3aa;
+  --on-dark-line: rgba(241, 238, 231, 0.18);
+  --bronze-on-dark: #d2a469; /* 7.6:1 к тёмной поверхности */
+
+  --shadow-sm: 0 1px 2px rgba(26, 32, 29, 0.05), 0 2px 8px rgba(26, 32, 29, 0.04);
+  --shadow-md: 0 4px 12px rgba(26, 32, 29, 0.07), 0 12px 32px rgba(26, 32, 29, 0.07);
+  --shadow-lg: 0 24px 64px rgba(26, 32, 29, 0.2);
+  --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--bronze);
+
+  --skeleton-a: #efeae0;
+  --skeleton-b: #e5dfd3;
+
+  /* Чертежи и схемы всегда на светлой подложке (это документы).
+     В тёмной теме их слегка приглушаем, чтобы не слепили. */
+  --doc-dim: none;
+
+  --hero-veil: linear-gradient(
+    180deg,
+    rgba(20, 26, 22, 0.5) 0%,
+    rgba(20, 26, 22, 0.16) 34%,
+    rgba(20, 26, 22, 0.62) 74%,
+    rgba(20, 26, 22, 0.86) 100%
+  );
+}
+
+/* ==========================================================================
+   Семантические токены — ТЁМНАЯ тема
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #101512;
+  --bg-alt: #151b17;
+  --bg-sage: #16201a;
+  --surface: #1a211d;
+  --surface-2: #212a25;
+  --surface-sunken: #161c19;
+
+  --text: #ece8e0; /* 14.2:1 к --bg */
+  --text-2: #a7aea5; /* 7.1:1 */
+  --text-3: #8b938a; /* 5.1:1 */
+
+  --line: #2a332d;
+  --line-2: #414b44; /* 3:1 к --surface */
+
+  /* Акценты осветлены: тёмный фон требует более светлого тона */
+  --accent: #8c9c6c;
+  --accent-text: #a9ba85; /* 7.4:1 к --bg */
+  --accent-hover: #9cad79;
+  --on-accent: #10150f;
+
+  --bronze: #c79a5e;
+  --bronze-text: #dbb27e; /* 8.6:1 к --bg */
+  --bronze-hover: #d4a96e;
+  --on-bronze: #17120a;
+
+  --error: #e8836f;
+  --error-bg: rgba(232, 131, 111, 0.12);
+  --success: #8fbf93;
+  --success-bg: rgba(143, 191, 147, 0.12);
+
+  --dark-surface: #0b0f0d;
+  --dark-surface-2: #131917;
+  --on-dark: #ece8e0;
+  --on-dark-2: #a7aea5;
+  --on-dark-line: rgba(236, 232, 224, 0.14);
+  --bronze-on-dark: #d2a469;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45), 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
+  --ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--bronze);
+
+  --skeleton-a: #1c231f;
+  --skeleton-b: #242d28;
+
+  --doc-dim: brightness(0.88) saturate(0.94);
+
+  --hero-veil: linear-gradient(
+    180deg,
+    rgba(8, 11, 9, 0.62) 0%,
+    rgba(8, 11, 9, 0.3) 34%,
+    rgba(8, 11, 9, 0.74) 74%,
+    rgba(8, 11, 9, 0.92) 100%
+  );
+}
+
+/* Если пользователь не выбирал тему — идём за системной настройкой. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg: #101512;
+    --bg-alt: #151b17;
+    --bg-sage: #16201a;
+    --surface: #1a211d;
+    --surface-2: #212a25;
+    --surface-sunken: #161c19;
+
+    --text: #ece8e0;
+    --text-2: #a7aea5;
+    --text-3: #8b938a;
+
+    --line: #2a332d;
+    --line-2: #414b44;
+
+    --accent: #8c9c6c;
+    --accent-text: #a9ba85;
+    --accent-hover: #9cad79;
+    --on-accent: #10150f;
+
+    --bronze: #c79a5e;
+    --bronze-text: #dbb27e;
+    --bronze-hover: #d4a96e;
+    --on-bronze: #17120a;
+
+    --error: #e8836f;
+    --error-bg: rgba(232, 131, 111, 0.12);
+    --success: #8fbf93;
+    --success-bg: rgba(143, 191, 147, 0.12);
+
+    --dark-surface: #0b0f0d;
+    --dark-surface-2: #131917;
+    --on-dark: #ece8e0;
+    --on-dark-2: #a7aea5;
+    --on-dark-line: rgba(236, 232, 224, 0.14);
+    --bronze-on-dark: #d2a469;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45), 0 12px 32px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
+
+    --skeleton-a: #1c231f;
+    --skeleton-b: #242d28;
+
+    --doc-dim: brightness(0.88) saturate(0.94);
+
+    --hero-veil: linear-gradient(
+      180deg,
+      rgba(8, 11, 9, 0.62) 0%,
+      rgba(8, 11, 9, 0.3) 34%,
+      rgba(8, 11, 9, 0.74) 74%,
+      rgba(8, 11, 9, 0.92) 100%
+    );
+  }
+}
+
+/* ==========================================================================
+   Брейкпоинты
+   ========================================================================== */
+
+@media (min-width: 480px) {
+  :root {
+    --page-pad: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-h1: 3.125rem;
+    --fs-h2: 2.25rem;
+    --fs-h3: 1.625rem;
+    --fs-h4: 1.3125rem;
+    --fs-lead: 1.1875rem;
+    --fs-body: 1.0625rem;
+    --fs-caption: 0.875rem;
+    --fs-micro: 0.75rem;
+    --page-pad: 36px;
+    --gutter: 20px;
+    --section-y: 96px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --fs-h1: 3.875rem;
+    --fs-h2: 2.75rem;
+    --fs-h3: 1.875rem;
+    --fs-h4: 1.375rem;
+    --fs-lead: 1.25rem;
+    --page-pad: 48px;
+    --gutter: 24px;
+    --header-h: 74px;
+    --section-y: 120px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fs-h1: 4.75rem;
+    --lh-h1: 1.04;
+    --fs-h2: 3.125rem;
+    --lh-h2: 1.12;
+    --fs-h3: 2rem;
+    --fs-h4: 1.5rem;
+    --fs-lead: 1.3125rem;
+    --fs-body: 1.0625rem;
+    --page-pad: 72px;
+    --section-y: 136px;
+  }
+}
+
+/* ==========================================================================
+   Тематизация разделов: цветовой код квартир и участков
+   ========================================================================== */
+
+.t-land {
+  --section-accent: var(--bronze);
+  --section-accent-text: var(--bronze-text);
+  --section-accent-hover: var(--bronze-hover);
+  --on-section-accent: var(--on-bronze);
+}
+
+.t-flats,
+:root {
+  --section-accent: var(--accent);
+  --section-accent-text: var(--accent-text);
+  --section-accent-hover: var(--accent-hover);
+  --on-section-accent: var(--on-accent);
+}
