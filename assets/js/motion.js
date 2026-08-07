@@ -1,0 +1,471 @@
+/* ==========================================================================
+   ЖК «Ленская» — движение и микровзаимодействия
+
+   Модуль необязателен: без него сайт полностью работоспособен, весь контент
+   виден. Классы анимации навешиваются только отсюда, поэтому при отключённом
+   JS ничего не «зависает» невидимым.
+
+   Всё движение отключается при prefers-reduced-motion (см. motion.css),
+   а этот модуль в таком режиме сразу показывает контент без наблюдателей.
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  var LK = window.LK || (window.LK = {});
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  LK.motion = {};
+
+  /* ====================================================================
+     1. Появление при скролле
+     ==================================================================== */
+
+  // Что анимируем: [селектор контейнера, селектор детей, класс]
+  var GROUPS = [
+    ['.section-head', ':scope > *', 'm-item'],
+    ['.cards', ':scope > *', 'm-item'],
+    ['.feature-list', ':scope > *', 'm-item'],
+    ['.stat-grid', ':scope > *', 'm-item'],
+    ['.viz-grid', ':scope > *', 'm-item'],
+    ['.viz-strip', ':scope > *', 'm-media'],
+    ['.timeline', ':scope > *', 'm-item'],
+    ['.split', ':scope > *', 'm-item'],
+    ['.masonry', ':scope > figure', 'm-media'],
+    ['.hscroll', ':scope > *', 'm-media'],
+  ];
+
+  // Одиночные блоки
+  var SINGLES = [
+    '.container > figure',
+    '.note-strip',
+    '.disclaimer--boxed',
+    '.doc-row',
+    '.chips',
+    '.results-bar',
+    '.params',
+    '.cta-stack',
+    '.panel',
+    '.plot-map',
+    '.map-holder',
+    '.btn-row',
+    '.prose',
+    '.tabs',
+    '.form',
+    '.form-success',
+  ];
+
+  var io = null;
+
+  function ensureObserver() {
+    if (io || !('IntersectionObserver' in window)) return io;
+    io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('is-in');
+          io.unobserve(en.target);
+          if (en.target.hasAttribute('data-count-target')) countUp(en.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
+    );
+    return io;
+  }
+
+  function prepare(el, cls, delay) {
+    if (el.hasAttribute('data-m')) return;
+    // Внутри шапки, меню, модалок и героя своя анимация
+    if (el.closest('.site-header, .mobile-menu, .modal, .lightbox, .hero, .intro, .cookie-bar')) return;
+    el.setAttribute('data-m', '1');
+    el.classList.add(cls);
+    if (delay) el.style.setProperty('--m-delay', delay + 'ms');
+
+    var r = el.getBoundingClientRect();
+    // Уже в кадре при загрузке — показываем сразу, без ожидания скролла
+    if (r.top < window.innerHeight * 0.96 && r.bottom > 0) {
+      requestAnimationFrame(function () {
+        el.classList.add('is-in');
+        if (el.hasAttribute('data-count-target')) countUp(el);
+      });
+      return;
+    }
+    var obs = ensureObserver();
+    if (obs) obs.observe(el);
+    else el.classList.add('is-in');
+  }
+
+  LK.motion.scan = function (root) {
+    if (reduce) return;
+    var ctx = root && root.querySelectorAll ? root : document;
+
+    GROUPS.forEach(function (g) {
+      $$(g[0], ctx).forEach(function (box) {
+        var kids;
+        try {
+          kids = Array.prototype.slice.call(box.querySelectorAll(g[1]));
+        } catch (e) {
+          kids = Array.prototype.slice.call(box.children);
+        }
+        kids.forEach(function (kid, i) {
+          prepare(kid, g[2], Math.min(i, 5) * 70);
+        });
+      });
+    });
+
+    SINGLES.forEach(function (sel) {
+      $$(sel, ctx).forEach(function (el) {
+        // не дублируем то, что уже попало в группу
+        if (el.hasAttribute('data-m')) return;
+        prepare(el, 'm-item', 0);
+      });
+    });
+
+    // Счётчики
+    $$('.stat b', ctx).forEach(markCounter);
+  };
+
+  // Страховка: если что-то пошло не так, контент всё равно появится
+  function safetyNet() {
+    setTimeout(function () {
+      $$('.m-item:not(.is-in), .m-media:not(.is-in)').forEach(function (el) {
+        el.classList.add('is-in');
+      });
+    }, 3000);
+  }
+
+  /* ====================================================================
+     2. Анимация чисел
+     ==================================================================== */
+
+  function parseNum(s) {
+    var digits = String(s).replace(/[^\d]/g, '');
+    return digits ? parseInt(digits, 10) : null;
+  }
+
+  function markCounter(el) {
+    var v = parseNum(el.textContent);
+    if (v == null || v === 0 || v > 99999999) return;
+    if (el.getAttribute('data-count-target') === String(v)) return;
+    el.setAttribute('data-count-target', String(v));
+    el.setAttribute('data-count-raw', el.textContent);
+    if (el.classList.contains('is-in')) countUp(el);
+  }
+
+  function countUp(el) {
+    if (reduce) return;
+    var target = parseNum(el.getAttribute('data-count-target'));
+    if (target == null || el.getAttribute('data-counted') === String(target)) return;
+    el.setAttribute('data-counted', String(target));
+    var raw = el.getAttribute('data-count-raw') || el.textContent;
+    var dur = 1100;
+    var start = null;
+
+    function frame(t) {
+      if (start == null) start = t;
+      var p = Math.min(1, (t - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(target * eased);
+      el.textContent = LK.num ? LK.num(val) : String(val);
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = raw; // возвращаем исходное форматирование
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Числа в блоке «Ключевые цифры» приходят из fetch — ловим их появление
+  function watchCounters() {
+    if (reduce || !('MutationObserver' in window)) return;
+    $$('.stat b').forEach(function (el) {
+      new MutationObserver(function () {
+        markCounter(el);
+        if (el.classList.contains('is-in') || !el.classList.contains('m-item')) countUp(el);
+      }).observe(el, { childList: true, characterData: true, subtree: true });
+    });
+  }
+
+  /* ====================================================================
+     3. Hero: вход, наплыв фона, параллакс
+     ==================================================================== */
+
+  function initHero() {
+    var hero = $('.hero');
+    if (!hero) return;
+
+    // Класс включает скрытие в CSS: ставим его только когда точно сможем показать
+    if (!reduce) hero.classList.add('is-anim');
+
+    var start = function () {
+      requestAnimationFrame(function () {
+        hero.classList.add('is-ready');
+      });
+    };
+
+    // Если есть интро — ждём, пока оно уйдёт
+    var intro = $('#intro');
+    if (intro && !reduce) {
+      var mo = new MutationObserver(function () {
+        if (!document.getElementById('intro')) {
+          mo.disconnect();
+          start();
+        }
+      });
+      mo.observe(document.body, { childList: true });
+      setTimeout(start, 6500); // страховка
+    } else {
+      start();
+    }
+
+    if (reduce) return;
+
+    var media = $('.hero-media', hero);
+    if (!media) return;
+    var ticking = false;
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        if (y < window.innerHeight * 1.2) {
+          media.style.setProperty('--parallax', (y * 0.16).toFixed(1) + 'px');
+        }
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ====================================================================
+     4. Плавное проявление изображений
+     ==================================================================== */
+
+  function fadeImages(root) {
+    $$('.media img', root || document).forEach(function (img) {
+      if (img.classList.contains('img-in') || img.classList.contains('img-pending')) return;
+      // Уже загруженное не трогаем — иначе мигнёт
+      if (img.complete && img.naturalWidth > 0) return;
+      if (reduce) return;
+      img.classList.add('img-pending');
+      var show = function () {
+        img.classList.remove('img-pending');
+        img.classList.add('img-in');
+      };
+      img.addEventListener('load', show, { once: true });
+      img.addEventListener('error', show, { once: true });
+      // Страховка: если событие не придёт, картинка всё равно покажется
+      setTimeout(show, 6000);
+    });
+  }
+
+  /* ====================================================================
+     5. Прогресс чтения и кнопка «Наверх»
+     ==================================================================== */
+
+  function initProgressAndTop() {
+    var header = $('.site-header');
+    var bar = null;
+    if (header) {
+      bar = document.createElement('span');
+      bar.className = 'scroll-progress';
+      bar.setAttribute('aria-hidden', 'true');
+      header.appendChild(bar);
+    }
+
+    var top = document.createElement('button');
+    top.type = 'button';
+    top.className = 'to-top';
+    top.setAttribute('aria-label', 'Наверх страницы');
+    top.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(top);
+    top.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      var h1 = $('main h1');
+      if (h1) {
+        h1.setAttribute('tabindex', '-1');
+        h1.focus({ preventScroll: true });
+      }
+      if (LK.track) LK.track('to_top_click', {});
+    });
+
+    var resultsBar = $('.results-bar');
+    var ticking = false;
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        if (bar) bar.style.setProperty('--progress', max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+        top.classList.toggle('is-on', y > 900);
+        if (resultsBar) {
+          resultsBar.classList.toggle('is-stuck', resultsBar.getBoundingClientRect().top <= parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) + 1);
+        }
+        ticking = false;
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ====================================================================
+     6. Микроотклики: тема, избранное, счётчик выдачи
+     ==================================================================== */
+
+  function initMicro() {
+    // Переключатель темы
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-theme-toggle]');
+      if (!btn || reduce) return;
+      btn.classList.add('is-switching');
+      setTimeout(function () { btn.classList.remove('is-switching'); }, 260);
+    });
+
+    // Сердце избранного
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-fav]');
+      if (!btn || reduce) return;
+      btn.classList.remove('is-pop');
+      void btn.offsetWidth; // перезапуск анимации
+      btn.classList.add('is-pop');
+    });
+
+    // Счётчик в шапке
+    if (!reduce && 'MutationObserver' in window) {
+      $$('[data-fav-count]').forEach(function (el) {
+        new MutationObserver(function () {
+          if (el.hidden) return;
+          el.classList.remove('is-bump');
+          void el.offsetWidth;
+          el.classList.add('is-bump');
+        }).observe(el, { childList: true, characterData: true, subtree: true });
+      });
+
+      var cnt = $('[data-count]');
+      if (cnt) {
+        new MutationObserver(function () {
+          cnt.classList.remove('is-bump');
+          void cnt.offsetWidth;
+          cnt.classList.add('is-bump');
+        }).observe(cnt, { childList: true, characterData: true, subtree: true });
+      }
+    }
+  }
+
+  /* ====================================================================
+     7. Копирование контактов
+     ==================================================================== */
+
+  function initCopy() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-copy]');
+      if (!btn) return;
+      e.preventDefault();
+      var value = btn.getAttribute('data-copy');
+      var done = function () {
+        if (LK.toast) LK.toast('Скопировано: ' + value);
+        if (LK.track) LK.track('copy_contact', { value_type: btn.getAttribute('data-copy-type') || 'text' });
+      };
+      // Запасной путь: Clipboard API может быть недоступен или отклонён
+      // (нет разрешения, небезопасный контекст, отсутствие жеста пользователя).
+      var legacy = function () {
+        var ta = document.createElement('textarea');
+        ta.value = value;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, ta.value.length);
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        ta.remove();
+        if (ok) done();
+        else if (LK.toast) LK.toast('Не удалось скопировать. Выделите текст вручную', 'error');
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(done, legacy);
+      } else {
+        legacy();
+      }
+    });
+  }
+
+  /* ====================================================================
+     8. Предзагрузка страниц по наведению
+     ==================================================================== */
+
+  function initPrefetch() {
+    var conn = navigator.connection || {};
+    if (conn.saveData || /2g/.test(conn.effectiveType || '')) return;
+    var seen = {};
+    var prefetch = function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || /^(https?:|mailto:|tel:)/.test(href)) return;
+      var path = href.split('?')[0].split('#')[0];
+      if (!/\.html$/.test(path) || seen[path]) return;
+      seen[path] = true;
+      var link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = path;
+      document.head.appendChild(link);
+    };
+    document.addEventListener('mouseover', prefetch, { passive: true });
+    document.addEventListener('touchstart', prefetch, { passive: true });
+  }
+
+  /* ====================================================================
+     9. Отслеживание динамического контента
+     ==================================================================== */
+
+  function watchDynamic() {
+    if (!('MutationObserver' in window)) return;
+    var timer = null;
+    var pending = [];
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        Array.prototype.forEach.call(m.addedNodes, function (nd) {
+          if (nd.nodeType === 1) pending.push(nd);
+        });
+      });
+      if (!pending.length) return;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var nodes = pending.slice();
+        pending = [];
+        nodes.forEach(function (nd) {
+          if (!nd.isConnected) return;
+          fadeImages(nd);
+          LK.motion.scan(nd.parentElement || nd);
+        });
+      }, 90);
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ====================================================================
+     Старт
+     ==================================================================== */
+
+  function boot() {
+    initHero();
+    fadeImages();
+    initProgressAndTop();
+    initMicro();
+    initCopy();
+    initPrefetch();
+    if (!reduce) {
+      LK.motion.scan(document);
+      watchCounters();
+      watchDynamic();
+      safetyNet();
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();

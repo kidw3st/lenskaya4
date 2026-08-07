@@ -1,0 +1,57 @@
+<!--
+  Справочный файл для разработчика и контент-менеджера.
+  Здесь собраны повторяющиеся блоки разметки, которые продублированы
+  в каждой странице сайта: header, мобильное меню, footer, модальные окна,
+  lightbox и cookie-баннер.
+
+  Файл НЕ подключается и не отдаётся пользователю — это эталон.
+  При переносе на CMS каждый блок становится отдельным шаблоном-партиалом.
+
+  Правила при правке:
+  1. Пункты «Квартиры» и «Земельные участки» — соседние, но разделены
+     элементом .nav-sep и имеют разные цветовые индикаторы
+     (оливковый / бронзовый). Объединять их в один пункт нельзя.
+  2. Бейдж «Новый формат» у пункта «Земельные участки» управляется одним
+     переключателем в CMS — удалять его вручную из каждой страницы не нужно.
+  3. Текст дисклеймера в footer (DISC-01) хранится одним полем в CMS.
+  4. На страницах с Hero у <header> добавляется атрибут data-over-hero
+     и класс is-transparent. На всех остальных — без них.
+  5. У активного пункта меню проставляется aria-current="page".
+
+  Список страниц, содержащих эти блоки:
+  index, about, architecture, landscape, location, infrastructure,
+  flats, flat, land, land-plot, gallery, progress, news, news-article,
+  contacts, favorites, documents, privacy, consent, 404.
+-->
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="index.html">Ленская<small>Пермь · правый берег</small></a>
+    <nav class="nav" aria-label="Главное меню">
+      <ul class="nav-list">
+        <li class="nav-item" data-dropdown>
+          <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">Проект <span aria-hidden="true">▾</span></button>
+          <div class="nav-dropdown">
+            <a href="about.html">О проекте</a><a href="architecture.html">Архитектура</a><a href="landscape.html">Благоустройство</a><a href="location.html">Расположение</a><a href="infrastructure.html">Инфраструктура</a>
+          </div>
+        </li>
+        <li><a class="nav-link" href="flats.html">Квартиры</a></li>
+        <li aria-hidden="true"><span class="nav-sep"></span></li>
+        <li><a class="nav-link nav-link--land" href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
+        <li><a class="nav-link" href="gallery.html">Галерея</a></li>
+        <li><a class="nav-link" href="progress.html">Ход проекта</a></li>
+        <li><a class="nav-link" href="contacts.html">Контакты</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="icon-btn" href="favorites.html" aria-label="Избранное">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/></svg>
+        <span class="fav-count" data-fav-count hidden>0</span>
+      </a>
+      <a class="header-phone" href="tel:+73422000000" data-placement="header">+7 (342) 200-00-00</a>
+      <button type="button" class="btn btn--sm header-cta" data-modal="modal-consult">Заявка</button>
+      <button type="button" class="icon-btn burger" data-menu-open aria-expanded="false" aria-controls="mobile-menu" aria-label="Открыть меню"><span></span></button>
+    </div>
+  </div>
+</header>
