@@ -194,7 +194,14 @@ function svg(W, H, body, aria) {
 // Если для слота уже есть реальный материал (<ID>.jpg), плейсхолдер
 // не перезаписываем и не создаём — иначе он начнёт конкурировать с фото.
 let skipped = [];
+const drawn = [];
+// Слоты, которые рисует tools/gen-drawings.mjs — настоящие чертежи из данных.
+// Атмосферная заглушка не должна их затирать: это не «пока нет картинки»,
+// а готовый материал. Порядок запуска после этого не важен.
+const DRAWN = /^(LAND-SCHEME-[0-9]+|LAND-PLOT-SCHEME|MASTERPLAN-01|MASTERPLAN-03|MAP-01F|MAP-02|MAP-03|MAP-04|PLAN-.+|ARCH-0[67])$/;
+
 const write = (id, content) => {
+  if (DRAWN.test(id)) { drawn.push(id); return; }
   if (existsSync(resolve(OUT, `${id}.jpg`))) { skipped.push(id); return; }
   writeFileSync(resolve(OUT, `${id}.svg`), content, 'utf8');
 };
@@ -784,4 +791,5 @@ for (const p of land) {
 
 console.log(`Создано плейсхолдеров: ${count - skipped.length}`);
 if (skipped.length) console.log(`Пропущено (есть реальное фото): ${skipped.join(', ')}`);
+if (drawn.length) console.log(`Не тронуто (чертежи из gen-drawings): ${drawn.length} слотов`);
 console.log('Каталог: site/assets/img/');

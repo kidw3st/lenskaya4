@@ -102,6 +102,25 @@ for (const file of htmlFiles) {
   if (/href="flats?\.html/.test(html)) warn(file, 'Ссылка на удалённый каталог квартир');
 }
 
+// Реестр LK.PHOTO_SLOTS должен точно совпадать с .jpg на диске:
+// разойдутся — сайт запросит .svg там, где лежит фото, и наоборот.
+{
+  const siteJs = readFileSync(resolve(SITE, 'assets/js/site.js'), 'utf8');
+  const a = siteJs.indexOf('LK.PHOTO_SLOTS = {');
+  const b = a < 0 ? -1 : siteJs.indexOf('};', a);
+  const m = a < 0 || b < 0 ? null : [null, siteJs.slice(a + 18, b)];
+  if (!m) {
+    warn('assets/js/site.js', 'Не найден реестр LK.PHOTO_SLOTS');
+  } else {
+    const declared = new Set(m[1].split(String.fromCharCode(39)).filter((_, k) => k % 2 === 1));
+    const onDisk = new Set(readdirSync(resolve(SITE, 'assets/img')).filter((f) => f.endsWith('.jpg')).map((f) => f.slice(0, -4)));
+    for (const id of onDisk)
+      if (!declared.has(id)) warn('assets/js/site.js', 'Фото ' + id + '.jpg есть на диске, но не объявлено в LK.PHOTO_SLOTS');
+    for (const id of declared)
+      if (!onDisk.has(id)) warn('assets/js/site.js', 'В LK.PHOTO_SLOTS объявлен ' + id + ', но файла ' + id + '.jpg нет');
+  }
+}
+
 // Итог
 const errors = problems.filter((p) => p.level === 'ошибка');
 const notes = problems.filter((p) => p.level === 'замечание');

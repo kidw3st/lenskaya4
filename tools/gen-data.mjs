@@ -356,6 +356,70 @@ const write = (name, data) => {
   console.log(`${name}: ${Array.isArray(data) ? data.length + ' записей' : 'ok'}`);
 };
 
+/* ------------------------------------------------------------------ */
+/* Посадка участков на территории                                       */
+/*                                                                      */
+/* Каждому участку считается место в метрах от юго-западного угла        */
+/* территории. Река идёт по югу, лес — по северу; между ними две улицы,  */
+/* вдоль каждой участки по обе стороны. Координаты нужны генплану и      */
+/* режиму «На схеме» в каталоге, поэтому живут в данных, а не в          */
+/* рисовалке: обе картинки обязаны показывать одну и ту же территорию.   */
+/*                                                                      */
+/* ВАЖНО: раскладка демонстрационная. Фактические границы определяются   */
+/* межеванием и подлежат замене на данные Заказчика.                     */
+/* ------------------------------------------------------------------ */
+
+const ROW_SIZE = 12; // участков в ряду
+const STREET_W = 9; // ширина проезда, м
+const GAP = 1.5; // межевой зазор между соседними участками, м
+const PROMENADE = 28; // набережная между застройкой и водой, м
+const CORPUS_BAND = 62; // полоса жилых корпусов у воды, м
+
+// Ряды: 0 и 1 смотрят друг на друга через улицу А, 2 и 3 — через улицу Б.
+// Ряды 1 и 2 разделены зелёным бульваром: это и есть коридор лес → река.
+const BOULEVARD = 22;
+
+let cursorY = PROMENADE + CORPUS_BAND; // отступ от воды
+const rowGeom = [];
+for (let r = 0; r < 4; r++) {
+  const inRow = land.slice(r * ROW_SIZE, (r + 1) * ROW_SIZE);
+  const depth = Math.max(...inRow.map((p) => p.depth_m));
+  rowGeom.push({ y: cursorY, depth, plots: inRow, facesNorth: r % 2 === 1 });
+  cursorY += depth;
+  if (r === 0 || r === 2) cursorY += STREET_W; // улица между парой рядов
+  if (r === 1) cursorY += BOULEVARD; // зелёный бульвар между парами
+}
+
+const territoryDepth = cursorY + 34; // + лесная опушка на севере
+let territoryWidth = 0;
+
+for (const row of rowGeom) {
+  let x = 0;
+  for (const p of row.plots) {
+    p.plan_x_m = Math.round(x * 10) / 10;
+    p.plan_y_m = Math.round(row.y * 10) / 10;
+    p.plan_w_m = p.width_m;
+    p.plan_d_m = p.depth_m;
+    // Фасадная сторона обращена к проезду: у чётных рядов — на юг, у нечётных — на север
+    p.plan_faces = row.facesNorth ? 'north' : 'south';
+    x += p.width_m + GAP;
+  }
+  territoryWidth = Math.max(territoryWidth, x - GAP);
+}
+
+const territory = {
+  width_m: Math.round(territoryWidth * 10) / 10,
+  depth_m: Math.round(territoryDepth * 10) / 10,
+  promenade_m: PROMENADE,
+  corpus_band_m: CORPUS_BAND,
+  street_m: STREET_W,
+  boulevard_m: BOULEVARD,
+  rows: rowGeom.map((r) => ({ y_m: Math.round(r.y * 10) / 10, depth_m: r.depth })),
+  note: 'Демонстрационная посадка. Фактические границы определяются межеванием.',
+};
+
+write('territory.json', territory);
+
 write('land.json', land);
 write('house-projects.json', houseProjects);
 write('gallery.json', gallery);
