@@ -27,16 +27,15 @@
         features: { field: 'features', mode: 'and', array: true, label: 'Особенности', names: LK.FEATURE_LABELS },
         view: { field: 'view', mode: 'or', array: true, label: 'Вид', names: LK.VIEW_LABELS },
       },
+      // Цены по лотам не публикуются, поэтому фильтра и сортировки
+      // по цене здесь нет — см. LK.FLAT_PRICE_PUBLIC в site.js.
       ranges: {
         area: { field: 'area_total', label: 'Площадь', unit: 'м²' },
-        price: { field: 'price', label: 'Цена', unit: '₽' },
         floor: { field: 'floor', label: 'Этаж', unit: '' },
       },
       selects: { finishing: { field: 'finishing', label: 'Отделка', names: { none: 'Без отделки', pre_finish: 'Предчистовая', turnkey: 'С отделкой' } } },
       sorters: {
         default: function (a, b) { return a.lot_number.localeCompare(b.lot_number, 'ru'); },
-        price_asc: function (a, b) { return (a.price || Infinity) - (b.price || Infinity); },
-        price_desc: function (a, b) { return (b.price || 0) - (a.price || 0); },
         area_asc: function (a, b) { return a.area_total - b.area_total; },
         area_desc: function (a, b) { return b.area_total - a.area_total; },
         floor_desc: function (a, b) { return b.floor - a.floor; },
@@ -58,15 +57,14 @@
         utilities: { field: 'utilities', mode: 'and', array: true, label: 'Коммуникации', names: LK.UTILITY_LABELS },
         view: { field: 'view', mode: 'or', array: true, label: 'Вид', names: LK.VIEW_LABELS },
       },
+      // Цены участков не публикуются, поэтому фильтра и сортировки
+      // по цене в этом каталоге нет — они вводили бы в заблуждение.
       ranges: {
         area: { field: 'area_ares', label: 'Площадь', unit: 'сот.' },
-        price: { field: 'price', label: 'Цена', unit: '₽' },
       },
       selects: {},
       sorters: {
         default: function (a, b) { return Number(a.plot_number) - Number(b.plot_number); },
-        price_asc: function (a, b) { return (a.price || Infinity) - (b.price || Infinity); },
-        price_desc: function (a, b) { return (b.price || 0) - (a.price || 0); },
         area_asc: function (a, b) { return a.area_ares - b.area_ares; },
         area_desc: function (a, b) { return b.area_ares - a.area_ares; },
         updated: function (a, b) { return a.updated_at < b.updated_at ? 1 : -1; },
@@ -89,7 +87,6 @@
     let all = [];
     let filtered = [];
     let page = 1;
-    let priceMode = 'total'; // только для участков
 
     const state = { groups: {}, ranges: {}, selects: {}, sort: 'default' };
     Object.keys(cfg.groups).forEach(function (g) {
@@ -118,7 +115,6 @@
       });
       if (p.has('sort')) state.sort = p.get('sort');
       if (p.has('page')) page = Math.max(1, Number(p.get('page')) || 1);
-      if (p.has('price_mode')) priceMode = p.get('price_mode');
     }
 
     function writeUrl(replace) {
@@ -137,7 +133,6 @@
       });
       if (state.sort !== 'default') p.set('sort', state.sort);
       if (page > 1) p.set('page', page);
-      if (cfg.isLand && priceMode !== 'total') p.set('price_mode', priceMode);
       const url = location.pathname + (p.toString() ? '?' + p.toString() : '');
       history[replace ? 'replaceState' : 'pushState']({}, '', url);
     }
@@ -189,11 +184,6 @@
 
     /* ---------------- Фильтрация ---------------- */
 
-    function priceField(item) {
-      if (cfg.isLand && priceMode === 'are') return item.price_per_are;
-      return item.price;
-    }
-
     function apply() {
       filtered = all.filter(function (item) {
         // Непубликуемые лоты не отдаются в выдачу.
@@ -214,7 +204,7 @@
         for (const r in cfg.ranges) {
           const range = state.ranges[r];
           if (range.from == null && range.to == null) continue;
-          const val = r === 'price' ? priceField(item) : item[cfg.ranges[r].field];
+          const val = item[cfg.ranges[r].field];
           if (val == null) return false; // «цена по запросу» не проходит фильтр по цене
           if (range.from != null && val < range.from) return false;
           if (range.to != null && val > range.to) return false;
@@ -401,17 +391,6 @@
         });
       });
 
-      $$('[data-price-mode]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          priceMode = btn.getAttribute('data-price-mode');
-          $$('[data-price-mode]').forEach(function (b) {
-            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-          });
-          const lbl = $('[data-price-label]');
-          if (lbl) lbl.textContent = priceMode === 'are' ? 'Цена за сотку, ₽' : 'Цена за участок, ₽';
-          update();
-        });
-      });
     }
 
     /* ---------------- Обновление ---------------- */

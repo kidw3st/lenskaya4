@@ -37,12 +37,11 @@
 
   LK.cardFlat = function (f) {
     const title = f.rooms_short + ' · ' + LK.area(f.area_total);
-    const priceHtml =
-      f.status === 'sold'
-        ? '<span class="muted">Продано</span>'
-        : f.price
-        ? LK.money(f.price) + '<small>Актуально на ' + LK.dateRu(f.updated_at) + '</small>'
-        : 'Цена по запросу<small>Актуально на ' + LK.dateRu(f.updated_at) + '</small>';
+    const priceHtml = LK.FLAT_PRICE_PUBLIC && f.price
+      ? LK.money(f.price) + '<small>Актуально на ' + LK.dateRu(f.updated_at) + '</small>'
+      : f.status === 'sold'
+      ? '<span class="muted">Продано</span>'
+      : 'Цена по запросу<small>Уточните по телефону +7 (342) 200-00-00</small>';
 
     const snap = {
       title: title,
@@ -92,12 +91,10 @@
 
   LK.cardLand = function (p) {
     const title = 'Участок №' + p.plot_number;
-    const priceHtml =
-      p.status === 'sold'
-        ? '<span class="muted">Продан</span>'
-        : p.price
-        ? LK.money(p.price) + '<small>' + LK.num(p.price_per_are) + ' ₽ за сотку · на ' + LK.dateRu(p.updated_at) + '</small>'
-        : 'Цена по запросу<small>Актуально на ' + LK.dateRu(p.updated_at) + '</small>';
+    const priceHtml = LK.LAND_PRICE_PUBLIC && p.price
+      ? LK.money(p.price) + '<small>' + LK.num(p.price_per_are) + ' ₽ за сотку · на ' + LK.dateRu(p.updated_at) + '</small>'
+      : LK.landPriceLabel(p) +
+        (p.status === 'sold' ? '' : '<small>Уточните по телефону +7 (342) 200-00-00</small>');
 
     const utils = p.utilities
       .slice(0, 3)

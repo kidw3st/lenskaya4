@@ -82,8 +82,23 @@
     return '<span class="status ' + s.cls + '">' + (isLand ? s.labelLand : s.label) + '</span>';
   };
 
+  // Слоты, для которых Заказчик предоставил реальные материалы (JPEG).
+  // Остальные остаются SVG-плейсхолдерами до получения съёмки или рендера.
+  LK.PHOTO_SLOTS = {
+    'HERO-01F': 1,
+    'MASTERPLAN-02': 1,
+    'LOCATION-01': 1,
+    'LOCATION-02': 1,
+    'ARCH-01': 1,
+    'ARCH-08': 1,
+    'ARCH-09': 1,
+    'INFRA-01': 1,
+    'YARD-03': 1,
+    'ABOUT-01': 1,
+  };
+
   LK.img = function (id) {
-    return 'assets/img/' + id + '.svg';
+    return 'assets/img/' + id + (LK.PHOTO_SLOTS[id] ? '.jpg' : '.svg');
   };
 
   LK.esc = function (s) {
@@ -112,6 +127,20 @@
     connected: 'подведено',
     at_border: 'по границе участка',
     planned: 'планируется',
+  };
+
+  // ЕДИНАЯ ПОЛИТИКА ЦЕН.
+  // Участки — основной продукт: цену называет менеджер по телефону.
+  // Корпуса — готовый проект, показанный инвесторам, а не розничная продажа
+  // квартир, поэтому ценники по лотам там тоже не публикуются.
+  // Цены в land.json и flats.json сохранены: они нужны CRM и выгрузкам.
+  // Чтобы вернуть публикацию — поставить нужный флаг в true.
+  LK.LAND_PRICE_PUBLIC = false;
+  LK.FLAT_PRICE_PUBLIC = false;
+
+  LK.landPriceLabel = function (p) {
+    if (p && p.status === 'sold') return 'Продан';
+    return 'Цена по запросу';
   };
 
   LK.DISC3 = 'Иллюстративная визуализация. Итоговый вид определяется выбранным проектом застройки.';
@@ -932,7 +961,7 @@
             if (link) {
               const toFlats = type === 'flat';
               link.href = toFlats ? 'flats.html' : 'land.html';
-              link.textContent = toFlats ? 'Смотреть каталог квартир' : 'Смотреть каталог участков';
+              link.textContent = toFlats ? 'Изучить проект корпусов' : 'Смотреть каталог участков';
             }
             success.setAttribute('tabindex', '-1');
             success.focus();

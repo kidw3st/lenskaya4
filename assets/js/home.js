@@ -42,7 +42,7 @@
 
         // В ленту — только свободные лоты с ценой; иначе — свободные без цены.
         let pool = published.filter(function (f) {
-          return f.status === 'free' && f.price;
+          return f.status === 'free';
         });
         if (pool.length < 4) {
           pool = published.filter(function (f) {
