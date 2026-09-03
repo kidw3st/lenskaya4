@@ -9,13 +9,28 @@
 //         node tools/bump-assets.mjs 7      — задать версию явно
 
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = resolve(ROOT, 'site');
 
-const files = readdirSync(SITE).filter((f) => f.endsWith('.html'));
+// Страницы лежат по адресам без .html: главная в корне, остальные —
+// каждая в своей директории. Собираем и те и другие.
+const listPages = (dir, prefix = '') => {
+  const out = [];
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.') || e.name.startsWith('_')) continue;
+    if (e.isDirectory()) {
+      if (['assets', 'data'].includes(e.name)) continue;
+      out.push(...listPages(join(dir, e.name), prefix + e.name + '/'));
+    } else if (e.name.endsWith('.html')) {
+      out.push(prefix + e.name);
+    }
+  }
+  return out;
+};
+const files = listPages(SITE);
 
 // Текущая версия — максимальная из встреченных
 let current = 0;

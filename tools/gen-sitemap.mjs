@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = resolve(ROOT, 'site');
-const BASE = process.env.BASE_URL || 'https://lenskaya.example';
+const BASE = process.env.BASE_URL || 'https://kidw3st.github.io/lenskaya4';
 const TODAY = '2026-08-06';
 
 const read = (p) => JSON.parse(readFileSync(resolve(SITE, 'data', p), 'utf8'));
@@ -16,28 +16,28 @@ const read = (p) => JSON.parse(readFileSync(resolve(SITE, 'data', p), 'utf8'));
 // Приоритеты отражают иерархию продуктов: земельные участки — основной раздел.
 const pages = [
   ['', 1.0],
-  ['land.html', 0.9],
-  ['about.html', 0.8],
-  ['architecture.html', 0.7],
-  ['landscape.html', 0.7],
-  ['location.html', 0.7],
-  ['infrastructure.html', 0.6],
-  ['gallery.html', 0.6],
-  ['news.html', 0.6],
-  ['contacts.html', 0.7],
-  ['documents.html', 0.4],
-  ['privacy.html', 0.3],
-  ['consent.html', 0.3],
+  ['land/', 0.9],
+  ['about/', 0.8],
+  ['architecture/', 0.7],
+  ['landscape/', 0.7],
+  ['location/', 0.7],
+  ['infrastructure/', 0.6],
+  ['gallery/', 0.6],
+  ['news/', 0.6],
+  ['contacts/', 0.7],
+  ['documents/', 0.4],
+  ['privacy/', 0.3],
+  ['consent/', 0.3],
 ];
 
 const urls = pages.map(([p, prio]) => ({ loc: `${BASE}/${p}`, priority: prio }));
 
 for (const p of read('land.json')) {
   if (!p.is_published || p.status === 'sold') continue;
-  urls.push({ loc: `${BASE}/land-plot.html?id=${p.id}`, priority: 0.7, lastmod: p.updated_at });
+  urls.push({ loc: `${BASE}/land-plot/?id=${p.id}`, priority: 0.7, lastmod: p.updated_at });
 }
 for (const n of read('news.json')) {
-  urls.push({ loc: `${BASE}/news-article.html?slug=${n.slug}`, priority: 0.5, lastmod: n.date });
+  urls.push({ loc: `${BASE}/news-article/?slug=${n.slug}`, priority: 0.5, lastmod: n.date });
 }
 
 const xml =

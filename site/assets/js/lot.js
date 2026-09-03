@@ -19,7 +19,7 @@
     box.innerHTML =
       '<div class="empty"><p class="h3">Лот не найден</p>' +
       '<p class="caption max-44">Возможно, он снят с публикации или ссылка устарела.</p>' +
-      '<a class="btn btn--land" href="land.html">В каталог участков</a></div>';
+      '<a class="btn btn--land" href="' + LK.url('land/') + '">В каталог участков</a></div>';
   }
 
   function galleryHtml(items) {
@@ -81,7 +81,7 @@
       return (
         '<div class="cta-stack">' +
         '<p class="note-strip">Лот продан. Подберём похожий вариант из доступных.</p>' +
-        '<a class="btn btn--land" href="land.html">' +
+        '<a class="btn btn--land" href="' + LK.url('land/') + '">' +
         (isLand ? 'Подобрать похожий участок' : 'Подобрать похожее') +
         '</a>' +
         '<div class="contact-row">' +
@@ -459,7 +459,7 @@
             '<div><p class="micro">' + LK.esc(title) + '</p>' +
             '<p style="font-weight:600">' + (p.status === 'sold' ? 'Продан' : LK.LAND_PRICE_PUBLIC && p.price ? LK.money(p.price) : 'Цена по запросу') + '</p></div>' +
             (p.status === 'sold'
-              ? '<a class="btn btn--land" href="land.html">Похожие</a>'
+              ? '<a class="btn btn--land" href="' + LK.url('land/') + '">Похожие</a>'
               : '<button type="button" class="btn btn--land" data-modal="modal-consult" data-modal-ctx=\'' +
                 JSON.stringify({ object_type: 'land', object_id: p.id, object_title: title, title: 'Заявка по участку: ' + title }) +
                 '\'>Консультация</button>');
@@ -487,7 +487,7 @@
       })
       .catch(function (e) {
         if (window.console) console.error("initPlot:", e);
-        box.innerHTML = '<div class="empty"><p class="h3">Не удалось загрузить участок</p><a class="btn btn--land" href="land.html">В каталог участков</a></div>';
+        box.innerHTML = '<div class="empty"><p class="h3">Не удалось загрузить участок</p><a class="btn btn--land" href="' + LK.url('land/') + '">В каталог участков</a></div>';
       });
   };
 

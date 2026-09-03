@@ -92,7 +92,7 @@
   };
 
   LK.img = function (id) {
-    return 'assets/img/' + id + (LK.PHOTO_SLOTS[id] ? '.jpg' : '.svg');
+    return LK.BASE + 'assets/img/' + id + (LK.PHOTO_SLOTS[id] ? '.jpg' : '.svg');
   };
 
   LK.esc = function (s) {
@@ -147,15 +147,28 @@
   // Версия берётся из ссылки на сам скрипт (assets/js/site.js?v=N) и
   // добавляется к запросам данных. Иначе хостинг отдаёт JSON из кэша,
   // и цены со статусами могут отставать от свежей выкладки.
-  const ASSET_VERSION = (function () {
+  const SELF_SRC = (function () {
     const el = document.currentScript || $('script[src*="site.js"]');
-    const m = el && /[?&]v=(\d+)/.exec(el.getAttribute('src') || '');
-    return m ? m[1] : '';
+    return (el && el.getAttribute('src')) || '';
   })();
+
+  const ASSET_VERSION = (/[?&]v=(\d+)/.exec(SELF_SRC) || [])[1] || '';
+
+  // Адреса без .html: главная лежит в корне, остальные страницы — каждая
+  // в своей директории. Значит один и тот же скрипт подключается то как
+  // «assets/js/site.js», то как «../assets/js/site.js». Отсюда и берём
+  // префикс, вместо того чтобы гадать по location.pathname: тот зависит
+  // ещё и от подкаталога, в котором сайт лежит на хостинге.
+  LK.BASE = SELF_SRC.replace(/assets\/js\/site\.js.*$/, '');
+
+  /** Адрес страницы или файла сайта относительно текущей. */
+  LK.url = function (path) {
+    return LK.BASE + path;
+  };
 
   LK.load = function (name) {
     if (!cache[name]) {
-      const url = 'data/' + name + '.json' + (ASSET_VERSION ? '?v=' + ASSET_VERSION : '');
+      const url = LK.BASE + 'data/' + name + '.json' + (ASSET_VERSION ? '?v=' + ASSET_VERSION : '');
       cache[name] = fetch(url).then(function (r) {
         if (!r.ok) throw new Error('Не удалось загрузить ' + name);
         return r.json();
@@ -962,7 +975,7 @@
             // единственный продаваемый продукт проекта.
             const link = success.querySelector('[data-success-catalog]');
             if (link) {
-              link.href = 'land.html';
+              link.href = LK.url('land/');
               link.textContent = 'Смотреть каталог участков';
             }
             success.setAttribute('tabindex', '-1');
@@ -1069,13 +1082,55 @@
     });
   }
 
+  /* ====================================================================
+     Яндекс Карты по клику
+
+     Карта не грузится сама: пока посетитель её не открыл, на месте
+     виджета лежит нарисованная схема. Это и приватнее (Яндекс не видит
+     визит, пока карту не попросили), и заметно дешевле — сторонний
+     виджет тянет свой скрипт, тайлы и шрифты.
+
+     Точка задаётся адресом, а не координатами: координаты пришлось бы
+     выдумывать, а адрес Заказчик подтвердил. Если появятся точные
+     координаты — впишите их в data-map-ll у нужного блока.
+     ==================================================================== */
+
+  const MAP_QUERY = {
+    location: 'Пермь, улица Ленская',
+    office: 'Пермь, улица Ленская, 1',
+  };
+
+  function mapSrc(holder) {
+    const ll = holder.getAttribute('data-map-ll'); // «долгота,широта»
+    const z = holder.getAttribute('data-map-zoom') || '15';
+    const base = 'https://yandex.ru/map-widget/v1/?lang=ru_RU&z=' + encodeURIComponent(z);
+    if (ll) return base + '&ll=' + encodeURIComponent(ll) + '&pt=' + encodeURIComponent(ll) + ',pm2rdm';
+    const key = holder.getAttribute('data-map-activate');
+    return base + '&text=' + encodeURIComponent(MAP_QUERY[key] || MAP_QUERY.office);
+  }
+
   function initMapPlaceholders() {
     $$('[data-map-activate]').forEach(function (holder) {
       const btn = $('button', holder);
       if (!btn) return;
+
       btn.addEventListener('click', function () {
-        LK.track('map_activate', { layer: holder.getAttribute('data-map-activate') });
-        LK.toast('Интерактивная карта подключается на этапе разработки (Яндекс Карты, раздел 8.3)');
+        if (holder.classList.contains('is-live')) return;
+        const key = holder.getAttribute('data-map-activate');
+        LK.track('map_activate', { layer: key });
+
+        const frame = document.createElement('iframe');
+        frame.src = mapSrc(holder);
+        frame.title = key === 'office' ? 'Яндекс Карты: офис продаж' : 'Яндекс Карты: расположение проекта';
+        frame.loading = 'lazy';
+        frame.allowFullscreen = true;
+        // Виджет ставит свои куки — ограничиваем ему права до необходимого
+        frame.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        frame.className = 'map-frame';
+
+        holder.classList.add('is-live');
+        holder.appendChild(frame);
+        btn.remove();
       });
     });
   }

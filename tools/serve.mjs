@@ -28,8 +28,13 @@ const TYPES = {
 
 createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
-  let rel = normalize(url).replace(/^([/\\])+/, '');
-  if (rel === '' || rel.endsWith('/')) rel += 'index.html';
+  // Каталожность адреса определяем ДО normalize: на Windows он меняет
+  // прямые слэши на обратные, и проверка endsWith("/") переставала работать —
+  // короткие адреса вроде /land/ начинали отдавать 404.
+  const isDir = url === '' || url.endsWith('/');
+  const parts = normalize(url).split(/[\\/]+/).filter(Boolean);
+  let rel = parts.join('/');
+  if (isDir) rel = rel ? rel + '/index.html' : 'index.html';
 
   let file = join(ROOT, rel);
   if (!file.startsWith(ROOT)) {

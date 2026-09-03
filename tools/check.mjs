@@ -9,7 +9,22 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = resolve(ROOT, 'site');
 
-const htmlFiles = readdirSync(SITE).filter((f) => f.endsWith('.html'));
+// Страницы лежат по адресам без .html: главная в корне, остальные —
+// каждая в своей директории. Собираем и те и другие.
+const listPages = (dir, prefix = '') => {
+  const out = [];
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.') || e.name.startsWith('_')) continue;
+    if (e.isDirectory()) {
+      if (['assets', 'data'].includes(e.name)) continue;
+      out.push(...listPages(join(dir, e.name), prefix + e.name + '/'));
+    } else if (e.name.endsWith('.html')) {
+      out.push(prefix + e.name);
+    }
+  }
+  return out;
+};
+const htmlFiles = listPages(SITE);
 const problems = [];
 const warn = (file, msg) => problems.push({ file, msg, level: 'ошибка' });
 const note = (file, msg) => problems.push({ file, msg, level: 'замечание' });
@@ -62,10 +77,15 @@ for (const file of htmlFiles) {
     if (/^(https?:|mailto:|tel:|data:|\/\/)/.test(ref)) continue;
     const clean = ref.split('?')[0].split('#')[0];
     if (!clean) continue;
-    // Ведущий «/» — корень сайта, а не корень диска.
-    const target = clean.startsWith('/') ? resolve(SITE, '.' + clean) : resolve(SITE, clean);
-    const isDirRoot = clean === '/';
-    if (!isDirRoot && !existsSync(target)) warn(file, `Битая ссылка: ${ref}`);
+    // Ведущий «/» — корень сайта, а не корень диска. Всё остальное
+    // считается от директории самой страницы: адреса без .html означают,
+    // что страницы лежат в подкаталогах и ссылаются друг на друга через «../».
+    if (clean === "/" || clean === "./") continue;
+    const pageDir = resolve(SITE, dirname(file));
+    const target = clean.startsWith("/") ? resolve(SITE, "." + clean) : resolve(pageDir, clean);
+    // Короткий адрес — это директория, внутри неё должен лежать index.html
+    const ok = existsSync(target) && (!clean.endsWith("/") || existsSync(join(target, "index.html")));
+    if (!ok) warn(file, `Битая ссылка: ${ref}`);
   }
 
   // alt у изображений
@@ -99,7 +119,8 @@ for (const file of htmlFiles) {
 
   // Квартиры сняты с сайта: ни карточки, ни ссылки на удалённый каталог
   if (/class="card-flat"/.test(html)) warn(file, 'Найдена карточка квартиры — раздел снят с сайта');
-  if (/href="flats?\.html/.test(html)) warn(file, 'Ссылка на удалённый каталог квартир');
+  if (new RegExp("href=\"[^\"]*flats?/").test(html)) warn(file, "Ссылка на удалённый каталог квартир");
+  if (new RegExp("(href|action)=\"[^\"]*[a-z0-9][.]html\"").test(html)) warn(file, "Осталась ссылка с расширением .html");
 }
 
 // Реестр LK.PHOTO_SLOTS должен точно совпадать с .jpg на диске:
