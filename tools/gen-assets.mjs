@@ -762,11 +762,6 @@ make('404-01', '16:9', (W, H, r) => sceneTexture(W, H, r, '#26302B', '#4A5A4E'),
 make('OG-01', '1.91:1', (W, H, r) => scenePanorama(W, H, r, 'golden'), 'Превью проекта для соцсетей', true);
 make('OG-LAND-01', '1.91:1', (W, H, r) => sceneLand(W, H, r, true), 'Превью раздела «Земельные участки»', false);
 
-/* --- Ход проекта --- */
-[1, 2, 3, 4, 5, 6].forEach((i) =>
-  make(`PROGRESS-0${i}`, '3:2', i <= 2 ? (W, H, r) => sceneScheme(W, H, r) : (W, H, r) => sceneLand(W, H, r, true), `Материал по ходу проекта ${i}`, false, i * 3)
-);
-
 /* --- Превью каталога квартир --- */
 [1, 2, 3, 4].forEach((i) =>
   make(`FLATPREV-0${i}`, '4:5', (W, H, r) => sceneInterior(W, H, r, i % 2 ? 'golden' : 'day'), `Превью каталога квартир ${i}`, false, i * 5)

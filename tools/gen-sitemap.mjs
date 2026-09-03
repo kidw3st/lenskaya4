@@ -24,7 +24,6 @@ const pages = [
   ['location.html', 0.7],
   ['infrastructure.html', 0.6],
   ['gallery.html', 0.6],
-  ['progress.html', 0.6],
   ['news.html', 0.6],
   ['contacts.html', 0.7],
   ['documents.html', 0.4],

@@ -38,7 +38,6 @@ for (const hp of readJson('house-projects.json')) {
 }
 for (const g of readJson('gallery.json')) referencedMedia.add(g.media_id);
 for (const n of readJson('news.json')) referencedMedia.add(n.cover);
-for (const s of readJson('progress.json')) (s.images || []).forEach((m) => referencedMedia.add(m));
 
 // Слот считается закрытым, если есть либо реальное фото (.jpg),
 // либо SVG-плейсхолдер. Одно из двух обязательно.

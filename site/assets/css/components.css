@@ -391,6 +391,19 @@
   display: none;
 }
 
+/* Невидимый мостик поверх зазора в 8 px между кнопкой и меню.
+   Без него курсор на пути к пунктам покидает .nav-item, срабатывает
+   mouseleave, и меню закрывается прямо под рукой. Мостик шире меню
+   на 12 px с каждой стороны — он же прощает движение по диагонали. */
+.nav-dropdown::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  right: -12px;
+  bottom: 100%;
+  height: 14px;
+}
+
 .nav-item.is-open .nav-dropdown {
   display: block;
 }

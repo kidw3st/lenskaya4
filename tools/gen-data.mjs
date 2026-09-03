@@ -481,49 +481,6 @@ const news = [
   },
 ];
 
-const progress = [
-  {
-    id: 'stage-05',
-    date: '2026-07',
-    title: 'Архитектурная концепция',
-    current: true,
-    text: 'Концепция сформирована и вынесена на согласование. Строительство не начато.',
-    images: ['MASTERPLAN-02'],
-  },
-  {
-    id: 'stage-04',
-    date: '2026-05',
-    title: 'Генеральный план территории',
-    current: false,
-    text: 'Определена посадка корпусов, границы дворов, трассировка зелёных коридоров и нарезка земельных участков.',
-    images: ['MASTERPLAN-01', 'LAND-PLOT-SCHEME'],
-  },
-  {
-    id: 'stage-03',
-    date: '2026-03',
-    title: 'Изыскания на площадке',
-    current: false,
-    text: 'Выполнены геодезические и геологические изыскания, обследование зелёных насаждений.',
-    images: ['LOCATION-01'],
-  },
-  {
-    id: 'stage-02',
-    date: '2026-01',
-    title: 'Формирование земельного массива',
-    current: false,
-    text: 'Оформлены права на земельный массив, определены границы будущей территории проекта.',
-    images: [],
-  },
-  {
-    id: 'stage-01',
-    date: '2025-10',
-    title: 'Предпроектные исследования',
-    current: false,
-    text: 'Анализ участка, видовых характеристик и связей с набережной и лесным массивом.',
-    images: [],
-  },
-];
-
 /* ------------------------------------------------------------------ */
 
 const meta = {
@@ -545,7 +502,6 @@ write('land.json', land);
 write('house-projects.json', houseProjects);
 write('gallery.json', gallery);
 write('news.json', news);
-write('progress.json', progress);
 write('meta.json', meta);
 write('utility-labels.json', UTILITY_LABELS);
 

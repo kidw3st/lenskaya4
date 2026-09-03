@@ -393,16 +393,28 @@
     // Выпадающее меню «Проект»
     $$('.nav-item[data-dropdown]').forEach(function (item) {
       const trigger = $('.nav-link', item);
+      let closeTimer = null;
+
       const open = function (v) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
         item.classList.toggle('is-open', v);
         trigger.setAttribute('aria-expanded', v ? 'true' : 'false');
       };
+
+      // Закрытие с отсрочкой: курсор успевает соскользнуть с кнопки
+      // и вернуться, не потеряв меню. Возврат внутрь отменяет таймер.
+      const closeSoon = function () {
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(function () {
+          open(false);
+        }, 260);
+      };
+
       item.addEventListener('mouseenter', function () {
         open(true);
       });
-      item.addEventListener('mouseleave', function () {
-        open(false);
-      });
+      item.addEventListener('mouseleave', closeSoon);
       trigger.addEventListener('click', function (e) {
         e.preventDefault();
         open(!item.classList.contains('is-open'));
