@@ -110,145 +110,6 @@ const houseProjects = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/* Квартиры — 709 лотов                                                */
-/* ------------------------------------------------------------------ */
-
-const BUILDINGS = [
-  { id: 'A', title: 'Корпус A', floors: 16, sections: 3, count: 192, riverFacing: true },
-  { id: 'B', title: 'Корпус B', floors: 14, sections: 3, count: 184, riverFacing: true },
-  { id: 'C', title: 'Корпус C', floors: 12, sections: 2, count: 176, riverFacing: false },
-  { id: 'D', title: 'Корпус D', floors: 9, sections: 2, count: 157, riverFacing: false },
-];
-
-const ROOM_TYPES = [
-  { key: 'studio', label: 'Студия', short: 'Ст', w: 12, area: [28, 37], kitchen: null },
-  { key: '1', label: '1 комната', short: '1К', w: 26, area: [38, 49], kitchen: [10, 14] },
-  { key: '2', label: '2 комнаты', short: '2К', w: 34, area: [57, 75], kitchen: [13, 18] },
-  { key: '3', label: '3 комнаты', short: '3К', w: 20, area: [82, 105], kitchen: [16, 22] },
-  { key: '4_plus', label: '4 комнаты и более', short: '4К+', w: 8, area: [118, 154], kitchen: [20, 27] },
-];
-
-function pickRoomType() {
-  const total = ROOM_TYPES.reduce((s, r) => s + r.w, 0);
-  let t = rnd() * total;
-  for (const r of ROOM_TYPES) {
-    t -= r.w;
-    if (t <= 0) return r;
-  }
-  return ROOM_TYPES[2];
-}
-
-const FINISHING = [
-  { key: 'none', label: 'Без отделки', w: 45 },
-  { key: 'pre_finish', label: 'Предчистовая', w: 40 },
-  { key: 'turnkey', label: 'С отделкой', w: 15 },
-];
-function pickFinishing() {
-  const total = FINISHING.reduce((s, r) => s + r.w, 0);
-  let t = rnd() * total;
-  for (const r of FINISHING) {
-    t -= r.w;
-    if (t <= 0) return r;
-  }
-  return FINISHING[0];
-}
-
-const flats = [];
-let seq = 0;
-
-for (const b of BUILDINGS) {
-  let made = 0;
-  let floor = 2;
-  while (made < b.count) {
-    const perFloor = Math.min(b.count - made, intBetween(4, 7));
-    for (let i = 0; i < perFloor; i++) {
-      seq += 1;
-      made += 1;
-      const rt = pickRoomType();
-      const section = String(intBetween(1, b.sections));
-      const areaTotal = round2(between(rt.area[0], rt.area[1]));
-      const areaKitchen = rt.kitchen ? round2(between(rt.kitchen[0], rt.kitchen[1])) : null;
-      const areaLiving = round2(areaTotal * between(0.44, 0.56));
-      const isTerraceFloor = floor >= b.floors - 3;
-      const areaTerrace = isTerraceFloor && chance(0.55) ? round2(between(6, 19)) : null;
-
-      const view = [];
-      if (b.riverFacing && floor >= 5 && chance(0.72)) view.push('river');
-      if (chance(0.5)) view.push('forest');
-      if (chance(0.45)) view.push('yard');
-      if (floor >= 9 && chance(0.3)) view.push('city');
-      if (view.length === 0) view.push('yard');
-
-      const features = [];
-      if (areaTerrace) features.push('terrace');
-      if (floor >= 4 && chance(0.42)) features.push('panoramic_glazing');
-      if (i === 0 || i === perFloor - 1) features.push('corner');
-      if (chance(0.18)) features.push('two_side');
-
-      // Цена: база + этаж + вид + терраса. Демонстрационная, не утверждена.
-      let perSqm = 168000;
-      perSqm += Math.min(floor, 12) * 1450;
-      if (view.includes('river')) perSqm += 21000;
-      if (view.includes('forest')) perSqm += 7000;
-      if (features.includes('panoramic_glazing')) perSqm += 6500;
-      if (areaTerrace) perSqm += 9000;
-      perSqm = Math.round((perSqm * between(0.97, 1.04)) / 1000) * 1000;
-
-      const r = rnd();
-      let status = 'free';
-      if (r < 0.03) status = 'unpublished';
-      else if (r < 0.17) status = 'sold';
-      else if (r < 0.26) status = 'reserved';
-
-      const priceOnRequest = chance(0.06);
-      const price = priceOnRequest ? null : Math.round((perSqm * areaTotal) / 1000) * 1000;
-
-      const fin = pickFinishing();
-
-      flats.push({
-        id: `F-${b.id}-${String(seq).padStart(4, '0')}`,
-        object_type: 'flat',
-        lot_number: `${b.id}-${String(floor).padStart(2, '0')}${String(i + 1).padStart(2, '0')}`,
-        building: b.id,
-        building_title: b.title,
-        section,
-        floor,
-        floors_total: b.floors,
-        flat_number: String(made),
-        rooms: rt.key,
-        rooms_label: rt.label,
-        rooms_short: rt.short,
-        area_total: areaTotal,
-        area_living: areaLiving,
-        area_kitchen: areaKitchen,
-        area_terrace: areaTerrace,
-        layout_type: `${rt.short}-${String(intBetween(1, 6)).padStart(2, '0')}`,
-        finishing: fin.key,
-        finishing_label: fin.label,
-        view,
-        features,
-        price,
-        price_per_sqm: price ? Math.round(price / areaTotal) : null,
-        status,
-        updated_at: daysAgo(intBetween(0, 26)),
-        plan_image: `PLAN-${rt.key.toUpperCase().replace('_PLUS', 'P')}`,
-        interior_images: chance(0.6) ? ['INT-01', 'INT-02'] : ['INT-01'],
-        view_image: view.includes('river') ? 'VIEW-RIVER' : view.includes('forest') ? 'VIEW-FOREST' : 'VIEW-YARD',
-        floor_plan: `FLOOR-${b.id}`,
-        tour_url: null,
-        is_published: status !== 'unpublished',
-      });
-    }
-    floor += 1;
-    if (floor > b.floors) floor = 2;
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/* Земельные участки                                                   */
-/* ------------------------------------------------------------------ */
-
 const LAND_USE = [
   { key: 'izhs', label: 'ИЖС' },
   { key: 'lph', label: 'ЛПХ' },
@@ -485,8 +346,6 @@ const news = [
 
 const meta = {
   generated_at: TODAY.toISOString().slice(0, 10),
-  flats_total: flats.length,
-  flats_published: flats.filter((f) => f.is_published).length,
   land_total: land.length,
   land_published: land.filter((l) => l.is_published).length,
   disclaimer: 'Демонстрационные данные. Цены, площади и статусы подлежат письменному утверждению Заказчиком.',
@@ -497,7 +356,6 @@ const write = (name, data) => {
   console.log(`${name}: ${Array.isArray(data) ? data.length + ' записей' : 'ok'}`);
 };
 
-write('flats.json', flats);
 write('land.json', land);
 write('house-projects.json', houseProjects);
 write('gallery.json', gallery);
@@ -505,5 +363,4 @@ write('news.json', news);
 write('meta.json', meta);
 write('utility-labels.json', UTILITY_LABELS);
 
-console.log(`\nВсего квартир: ${meta.flats_total} (опубликовано ${meta.flats_published})`);
 console.log(`Всего участков: ${meta.land_total} (опубликовано ${meta.land_published})`);

@@ -1,9 +1,6 @@
 /* ==========================================================================
    ЖК «Ленская» — карточки лотов.
-   LK.initFlat()  — карточка квартиры  (flat.html?id=…)
-   LK.initPlot()  — карточка участка   (land-plot.html?id=…)
-   Блоки «Похожие» строго однотипны: у квартиры — только квартиры,
-   у участка — только участки (раздел 3.1 спецификации).
+   LK.initPlot() — карточка земельного участка (land-plot.html?id=…).
    ========================================================================== */
 
 (function () {
@@ -22,9 +19,7 @@
     box.innerHTML =
       '<div class="empty"><p class="h3">Лот не найден</p>' +
       '<p class="caption max-44">Возможно, он снят с публикации или ссылка устарела.</p>' +
-      '<a class="btn ' + (isLand ? 'btn--land' : 'btn--flats') + '" href="' + (isLand ? 'land.html' : 'flats.html') + '">' +
-      (isLand ? 'В каталог участков' : 'В каталог квартир') +
-      '</a></div>';
+      '<a class="btn btn--land" href="land.html">В каталог участков</a></div>';
   }
 
   function galleryHtml(items) {
@@ -76,7 +71,7 @@
   function ctaBlock(obj, isLand) {
     const title = isLand ? 'Участок №' + obj.plot_number : obj.rooms_short + ' · ' + LK.area(obj.area_total);
     const ctx = JSON.stringify({
-      object_type: isLand ? 'land' : 'flat',
+      object_type: 'land',
       object_id: obj.id,
       object_title: title,
       title: 'Заявка по лоту: ' + title,
@@ -86,7 +81,7 @@
       return (
         '<div class="cta-stack">' +
         '<p class="note-strip">Лот продан. Подберём похожий вариант из доступных.</p>' +
-        '<a class="btn ' + (isLand ? 'btn--land' : 'btn--flats') + '" href="' + (isLand ? 'land.html' : 'flats.html') + '">' +
+        '<a class="btn btn--land" href="land.html">' +
         (isLand ? 'Подобрать похожий участок' : 'Подобрать похожее') +
         '</a>' +
         '<div class="contact-row">' +
@@ -98,7 +93,7 @@
 
     return (
       '<div class="cta-stack">' +
-      '<button type="button" class="btn ' + (isLand ? 'btn--land' : 'btn--flats') + '" data-modal="modal-consult" data-modal-ctx=\'' + ctx + '\' data-cta="lot_consult">' +
+      '<button type="button" class="btn btn--land" data-modal="modal-consult" data-modal-ctx=\'' + ctx + '\' data-cta="lot_consult">' +
       (isLand ? 'Получить консультацию по участку' : 'Получить консультацию') +
       '</button>' +
       '<button type="button" class="btn btn--secondary" data-modal="modal-visit" data-modal-ctx=\'' + ctx + '\' data-cta="lot_visit">' +
@@ -108,7 +103,7 @@
       '<a class="contact-btn" href="tel:+73422000000" data-placement="lot_card">Позвонить</a>' +
       '<a class="contact-btn" href="https://t.me/" data-messenger="telegram" data-placement="lot_card" rel="noopener" target="_blank">Telegram</a>' +
       '<a class="contact-btn" href="https://wa.me/" data-messenger="whatsapp" data-placement="lot_card" rel="noopener" target="_blank">WhatsApp</a>' +
-      '<button type="button" class="contact-btn" data-fav="' + (isLand ? 'land' : 'flat') + '" data-fav-id="' + obj.id + '" data-label="' + LK.esc(title) + '" aria-pressed="false">' +
+      '<button type="button" class="contact-btn" data-fav="land" data-fav-id="' + obj.id + '" data-label="' + LK.esc(title) + '" aria-pressed="false">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/></svg> В избранное</button>' +
       '</div></div>'
     );
@@ -117,7 +112,7 @@
   function priceBlock(obj, updated, isLand) {
     if (obj.status === 'sold') return '<p class="lot-price muted">' + (isLand ? 'Продан' : 'Продано') + '</p>';
     // Цены не публикуются — их сообщает менеджер
-    if (isLand ? !LK.LAND_PRICE_PUBLIC : !LK.FLAT_PRICE_PUBLIC) {
+    if (!LK.LAND_PRICE_PUBLIC) {
       return (
         '<p class="lot-price">Цена по запросу</p>' +
         '<p class="caption mt-2">Стоимость сообщаем по телефону ' +
@@ -141,109 +136,6 @@
     return '<tr><th scope="row">' + LK.esc(label) + '</th><td>' + value + '</td></tr>';
   }
 
-  /* ====================================================================
-     Карточка КВАРТИРЫ
-     ==================================================================== */
-
-  LK.initFlat = function () {
-    const box = $('#lot');
-    const id = idFromUrl();
-
-    LK.load('flats')
-      .then(function (flats) {
-        const f = flats.filter(function (x) { return x.is_published; }).find(function (x) { return x.id === id; });
-        if (!f) {
-          notFound(box, false);
-          document.title = 'Лот не найден — ЖК «Ленская»';
-          return;
-        }
-
-        const title = f.rooms_label + ', ' + LK.area(f.area_total);
-        document.title = title + ' — квартиры ЖК «Ленская»';
-        const crumb = $('#crumb-current');
-        if (crumb) crumb.textContent = f.rooms_short + ', ' + LK.area(f.area_total) + ', №' + f.lot_number;
-
-        const items = [
-          { src: LK.img(f.plan_image), caption: 'Схема планировки: ' + f.rooms_label, ratio: '4/5' },
-        ];
-        f.interior_images.forEach(function (m, i) {
-          items.push({ src: LK.img(m), caption: 'Визуализация интерьера ' + (i + 1), disc: DISC2, ratio: '3/2' });
-        });
-        if (f.view_image) items.push({ src: LK.img(f.view_image), caption: 'Вид из окна', disc: DISC2, ratio: '16/9' });
-        if (f.floor_plan) items.push({ src: LK.img(f.floor_plan), caption: 'План этажа, ' + f.building_title, ratio: '16/10' });
-
-        box.innerHTML =
-          '<div class="lot-layout">' +
-          '<div>' + galleryHtml(items) + '</div>' +
-          '<div class="stack-lg">' +
-          '<div>' +
-          '<div class="lot-head"><h1 class="h2">' + LK.esc(title) + '</h1>' + LK.statusHtml(f.status, false) + '</div>' +
-          '<p class="caption mt-3">Лот №' + LK.esc(f.lot_number) + ' · ' + LK.esc(f.building_title) + ' · секция ' + LK.esc(f.section) + '</p>' +
-          '<div class="mt-5">' + priceBlock(f, f.updated_at) + '</div>' +
-          (LK.FLAT_PRICE_PUBLIC && f.price ? '<p class="caption mt-2">' + LK.num(f.price_per_sqm) + ' ₽ за м²</p>' : '') +
-          '</div>' +
-          ctaBlock(f, false) +
-          '<table class="params"><caption class="visually-hidden">Параметры квартиры</caption><tbody>' +
-          row('Комнатность', LK.esc(f.rooms_label)) +
-          row('Общая площадь', LK.area(f.area_total)) +
-          row('Жилая площадь', f.area_living ? LK.area(f.area_living) : null) +
-          row('Площадь кухни', f.area_kitchen ? LK.area(f.area_kitchen) : null) +
-          row('Терраса / балкон', f.area_terrace ? LK.area(f.area_terrace) : null) +
-          row('Этаж', f.floor + ' из ' + f.floors_total) +
-          row('Корпус', LK.esc(f.building_title)) +
-          row('Секция', LK.esc(f.section)) +
-          row('Отделка', LK.esc(f.finishing_label)) +
-          row('Тип планировки', LK.esc(f.layout_type)) +
-          row('Вид из окон', f.view.map(function (v) { return LK.VIEW_LABELS[v]; }).join(', ')) +
-          row('Особенности', f.features.length ? f.features.map(function (v) { return LK.FEATURE_LABELS[v]; }).join(', ') : null) +
-          row('Обновлено', LK.dateRu(f.updated_at)) +
-          '</tbody></table>' +
-          '</div></div>';
-
-        box.removeAttribute('aria-busy');
-        bindGallery(box, items);
-        LK.syncFavButtons(box);
-
-        // Липкая панель на мобильном
-        const bar = $('.sticky-bar');
-        if (bar) {
-          bar.innerHTML =
-            '<div><p class="micro">' + LK.esc(f.rooms_short + ' · ' + LK.area(f.area_total)) + '</p>' +
-            '<p style="font-weight:600">' + (f.status === 'sold' ? 'Продано' : LK.FLAT_PRICE_PUBLIC && f.price ? LK.money(f.price) : 'Цена по запросу') + '</p></div>' +
-            (f.status === 'sold'
-              ? '<a class="btn btn--flats" href="flats.html">Похожие</a>'
-              : '<button type="button" class="btn btn--flats" data-modal="modal-consult" data-modal-ctx=\'' +
-                JSON.stringify({ object_type: 'flat', object_id: f.id, object_title: title, title: 'Заявка по лоту: ' + title }) +
-                '\'>Консультация</button>');
-        }
-
-        LK.track('flat_card_view', { object_id: f.id, status: f.status, price_available: !!f.price });
-
-        // Похожие — ТОЛЬКО квартиры
-        const similar = flats
-          .filter(function (x) {
-            return (
-              x.is_published &&
-              x.id !== f.id &&
-              x.status !== 'sold' &&
-              x.rooms === f.rooms &&
-              Math.abs(x.area_total - f.area_total) / f.area_total < 0.18
-            );
-          })
-          .slice(0, 4);
-        const simBox = $('#similar');
-        if (simBox) {
-          if (similar.length) simBox.innerHTML = similar.map(LK.cardFlat).join('');
-          else {
-            simBox.innerHTML = '<p class="caption">Похожих доступных лотов сейчас нет.</p>';
-          }
-          LK.syncFavButtons(simBox);
-        }
-      })
-      .catch(function () {
-        box.innerHTML = '<div class="empty"><p class="h3">Не удалось загрузить лот</p><a class="btn" href="flats.html">В каталог</a></div>';
-      });
-  };
 
   /* ====================================================================
      Схема посадки дома: границы, отступы, зона застройки, пятно дома.
@@ -593,7 +485,8 @@
           LK.syncFavButtons(simBox);
         }
       })
-      .catch(function () {
+      .catch(function (e) {
+        if (window.console) console.error("initPlot:", e);
         box.innerHTML = '<div class="empty"><p class="h3">Не удалось загрузить участок</p><a class="btn btn--land" href="land.html">В каталог участков</a></div>';
       });
   };

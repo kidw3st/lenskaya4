@@ -19,12 +19,6 @@ const dataDir = resolve(SITE, 'data');
 const readJson = (n) => JSON.parse(readFileSync(join(dataDir, n), 'utf8'));
 
 const referencedMedia = new Set();
-for (const f of readJson('flats.json')) {
-  referencedMedia.add(f.plan_image);
-  f.interior_images.forEach((m) => referencedMedia.add(m));
-  if (f.view_image) referencedMedia.add(f.view_image);
-  if (f.floor_plan) referencedMedia.add(f.floor_plan);
-}
 for (const p of readJson('land.json')) {
   p.plot_images.forEach((m) => referencedMedia.add(m));
   if (p.plot_scheme) referencedMedia.add(p.plot_scheme);
@@ -103,24 +97,9 @@ for (const file of htmlFiles) {
     }
   }
 
-  // Разделение каталогов: карточка участка не должна вести в каталог квартир и наоборот
-  if (file === 'land.html' && /class="card-flat"/.test(html)) warn(file, 'В каталоге участков найдена карточка квартиры');
-  if (file === 'flats.html' && /class="card-land"/.test(html)) warn(file, 'В каталоге квартир найдена карточка участка');
-
-  // Соседство пунктов меню: разделы идут подряд, но всегда через .nav-sep.
-  // Порядок — участки первыми (приоритет утверждён Заказчиком).
-  if (/nav-list/.test(html)) {
-    const navBlock = html.slice(html.indexOf('nav-list'), html.indexOf('</ul>', html.indexOf('nav-list')));
-    const separated =
-      /land\.html[\s\S]*nav-sep[\s\S]*flats\.html/.test(navBlock) ||
-      /flats\.html[\s\S]*nav-sep[\s\S]*land\.html/.test(navBlock);
-    if (!separated) {
-      warn(file, 'В меню «Земельные участки» и «Квартиры» не разделены элементом .nav-sep');
-    }
-    if (!/land\.html[\s\S]*nav-sep[\s\S]*flats\.html/.test(navBlock)) {
-      note(file, 'В меню «Квартиры» стоят раньше «Земельных участков» — проверьте приоритет');
-    }
-  }
+  // Квартиры сняты с сайта: ни карточки, ни ссылки на удалённый каталог
+  if (/class="card-flat"/.test(html)) warn(file, 'Найдена карточка квартиры — раздел снят с сайта');
+  if (/href="flats?\.html/.test(html)) warn(file, 'Ссылка на удалённый каталог квартир');
 }
 
 // Итог

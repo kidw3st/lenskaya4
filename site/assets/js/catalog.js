@@ -1,8 +1,5 @@
 /* ==========================================================================
-   ЖК «Ленская» — движок каталогов.
-   Один модуль обслуживает ДВА независимых каталога: 'flats' и 'land'.
-   Наборы данных, фильтры, карточки и события у них разные и не пересекаются:
-   ни при каком сочетании фильтров лот одного типа не попадёт в выдачу другого.
+   ЖК «Ленская» — движок каталога земельных участков.
    ========================================================================== */
 
 (function () {
@@ -12,37 +9,6 @@
   const $$ = LK.$$;
 
   const CONFIGS = {
-    flats: {
-      data: 'flats',
-      card: function (x) { return LK.cardFlat(x); },
-      isLand: false,
-      perPage: function () { return window.innerWidth < 768 ? 12 : 24; },
-      countWord: ['лот', 'лота', 'лотов'],
-      emptyAction: { href: 'flats.html', label: 'Сбросить фильтры' },
-      defaults: { status: ['free'] },
-      groups: {
-        rooms: { field: 'rooms', mode: 'or', label: 'Комнатность', names: { studio: 'Студия', 1: '1К', 2: '2К', 3: '3К', '4_plus': '4К+' } },
-        building: { field: 'building', mode: 'or', label: 'Корпус' },
-        status: { field: 'status', mode: 'or', label: 'Статус', names: { free: 'Свободна', reserved: 'Бронь', sold: 'Продано' } },
-        features: { field: 'features', mode: 'and', array: true, label: 'Особенности', names: LK.FEATURE_LABELS },
-        view: { field: 'view', mode: 'or', array: true, label: 'Вид', names: LK.VIEW_LABELS },
-      },
-      // Цены по лотам не публикуются, поэтому фильтра и сортировки
-      // по цене здесь нет — см. LK.FLAT_PRICE_PUBLIC в site.js.
-      ranges: {
-        area: { field: 'area_total', label: 'Площадь', unit: 'м²' },
-        floor: { field: 'floor', label: 'Этаж', unit: '' },
-      },
-      selects: { finishing: { field: 'finishing', label: 'Отделка', names: { none: 'Без отделки', pre_finish: 'Предчистовая', turnkey: 'С отделкой' } } },
-      sorters: {
-        default: function (a, b) { return a.lot_number.localeCompare(b.lot_number, 'ru'); },
-        area_asc: function (a, b) { return a.area_total - b.area_total; },
-        area_desc: function (a, b) { return b.area_total - a.area_total; },
-        floor_desc: function (a, b) { return b.floor - a.floor; },
-        updated: function (a, b) { return a.updated_at < b.updated_at ? 1 : -1; },
-      },
-    },
-
     land: {
       data: 'land',
       card: function (x) { return LK.cardLand(x); },

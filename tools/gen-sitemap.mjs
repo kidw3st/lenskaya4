@@ -17,7 +17,6 @@ const read = (p) => JSON.parse(readFileSync(resolve(SITE, 'data', p), 'utf8'));
 const pages = [
   ['', 1.0],
   ['land.html', 0.9],
-  ['flats.html', 0.8],
   ['about.html', 0.8],
   ['architecture.html', 0.7],
   ['landscape.html', 0.7],
@@ -36,10 +35,6 @@ const urls = pages.map(([p, prio]) => ({ loc: `${BASE}/${p}`, priority: prio }))
 for (const p of read('land.json')) {
   if (!p.is_published || p.status === 'sold') continue;
   urls.push({ loc: `${BASE}/land-plot.html?id=${p.id}`, priority: 0.7, lastmod: p.updated_at });
-}
-for (const f of read('flats.json')) {
-  if (!f.is_published || f.status === 'sold') continue;
-  urls.push({ loc: `${BASE}/flat.html?id=${f.id}`, priority: 0.5, lastmod: f.updated_at });
 }
 for (const n of read('news.json')) {
   urls.push({ loc: `${BASE}/news-article.html?slug=${n.slug}`, priority: 0.5, lastmod: n.date });

@@ -289,11 +289,11 @@ body.has-bottom-bar .to-top {
 }
 
 /* Карточки чуть приподнимаются */
-.card-flat .media {
+.card-news .media {
   transition: box-shadow var(--dur) var(--ease);
 }
 
-.card-flat:hover .media {
+.card-news:hover .media {
   box-shadow: var(--shadow-md);
 }
 
