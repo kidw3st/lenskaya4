@@ -11,10 +11,10 @@
 <meta property="og:description" content="Участки под застройку на первой линии правого берега Камы. Типовые проекты домов на выбор. Проект в стадии архитектурной концепции.">
 <meta property="og:image" content="assets/img/OG-LAND-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=19">
-<link rel="stylesheet" href="assets/css/base.css?v=19">
-<link rel="stylesheet" href="assets/css/components.css?v=19">
-<link rel="stylesheet" href="assets/css/motion.css?v=19">
+<link rel="stylesheet" href="assets/css/tokens.css?v=21">
+<link rel="stylesheet" href="assets/css/base.css?v=21">
+<link rel="stylesheet" href="assets/css/components.css?v=21">
+<link rel="stylesheet" href="assets/css/motion.css?v=21">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"ЖК «Ленская»","url":"/","address":{"@type":"PostalAddress","addressLocality":"Пермь","streetAddress":"ул. Ленская","addressCountry":"RU"},"telephone":"+7 342 200-00-00"}
@@ -364,6 +364,7 @@
 
       <div class="mt-7">
         <h3 class="h3">Что можно здесь построить</h3>
+        <p class="caption mt-3 max-60">Помимо частных домов на территории реализуем формат <a href="#plans-preview">клубного дома на четыре квартиры</a> — он рассчитан на инвестора, а не на одну семью.</p>
         <p class="disclaimer disclaimer--boxed mt-4 max-60">Изображения носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные дома не являются построенными объектами и не продаются в составе данного предложения.</p>
         <div class="viz-strip mt-5" data-lb-group>
           <figure>
@@ -389,43 +390,64 @@
   </section>
 
   <!-- ============================================================
-       Блок 10. Примеры планировок.
-       Квартиры не продаются: блок показывает, какие планировочные
-       решения реализуемы в проекте. Ни каталога, ни цен, ни фильтров —
-       только несколько типов как ориентир.
+       Блок 10. Клубный дом — формат для инвестора.
+       Не розничная продажа квартир: показываем сам объект, который
+       инвестор может построить на территории, и что у него внутри.
        ============================================================ -->
   <section class="section section--limestone" id="plans-preview">
     <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Проектные решения</p>
-        <h2>Какие планировки возможны</h2>
-        <p class="lead max-60 mt-4">Несколько типовых планировок из проектной проработки — чтобы было понятно, какие решения реализуемы на территории. Это примеры, а не предложение о продаже.</p>
+      <div class="section-head section-head--split">
+        <div>
+          <h2>Клубный дом на четыре квартиры</h2>
+          <p class="lead max-60 mt-4">Малоэтажный формат, рассчитанный на четыре домохозяйства: собственный вход, терраса и парковочный навес у каждого. Проект проработан до планировок — от студии до четырёх комнат с террасой.</p>
+        </div>
+        <button type="button" class="btn btn--secondary" data-modal="modal-consult" data-modal-ctx='{"title":"Запрос материалов по клубному дому"}' data-cta="home_club">Запросить материалы</button>
       </div>
 
-      <div class="plans-strip mt-6">
+      <div class="club-frames mt-6" data-lb-group>
+        <figure>
+          <div class="media media--16-9" data-lb-item data-lb-src="assets/img/CLUB-01.jpg" data-lb-caption="Клубный дом на территории проекта" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in">
+            <span class="viz-badge">Визуализация</span>
+            <img src="assets/img/CLUB-01.jpg" alt="Клубный дом в ландшафте на вечернем свету" loading="lazy" width="1920" height="1071">
+          </div>
+          <figcaption class="caption mt-3">Дом в ландшафте: озеленение подходит вплотную, транзитного проезда нет.</figcaption>
+        </figure>
+        <figure>
+          <div class="media media--16-9" data-lb-item data-lb-src="assets/img/CLUB-02.jpg" data-lb-caption="Клубный дом: главный фасад и подъезд" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in">
+            <span class="viz-badge">Визуализация</span>
+            <img src="assets/img/CLUB-02.jpg" alt="Клубный дом: главный фасад, входная группа и подъездная дорожка" loading="lazy" width="1920" height="1071">
+          </div>
+          <figcaption class="caption mt-3">Главный фасад: центральный вход, по два уровня на каждую сторону.</figcaption>
+        </figure>
+      </div>
+
+      <p class="disclaimer mt-4">Архитектурные визуализации. Не являются отображением фактически построенных объектов.</p>
+
+      <h3 class="h3 mt-7">Какие планировки внутри</h3>
+      <div class="plans-strip mt-5">
         <figure class="plan-card">
           <div class="media media--4-5"><img src="assets/img/PLAN-STUDIO.svg" alt="Пример планировки: студия" loading="lazy" width="1120" height="1400"></div>
-          <figcaption><h3 class="h4">Студия</h3><p class="caption">Единое пространство, кухонная зона у окна.</p></figcaption>
+          <figcaption><h4 class="h4">Студия</h4><p class="caption">Единое пространство, кухонная зона у окна.</p></figcaption>
         </figure>
         <figure class="plan-card">
           <div class="media media--4-5"><img src="assets/img/PLAN-1.svg" alt="Пример планировки: однокомнатная" loading="lazy" width="1120" height="1400"></div>
-          <figcaption><h3 class="h4">Одна комната</h3><p class="caption">Спальня отделена, кухня-гостиная выходит на балкон.</p></figcaption>
+          <figcaption><h4 class="h4">Одна комната</h4><p class="caption">Спальня отделена, кухня-гостиная выходит на балкон.</p></figcaption>
         </figure>
         <figure class="plan-card">
           <div class="media media--4-5"><img src="assets/img/PLAN-2.svg" alt="Пример планировки: двухкомнатная" loading="lazy" width="1120" height="1400"></div>
-          <figcaption><h3 class="h4">Две комнаты</h3><p class="caption">Разведённые спальни, общая зона по центру.</p></figcaption>
+          <figcaption><h4 class="h4">Две комнаты</h4><p class="caption">Разведённые спальни, общая зона по центру.</p></figcaption>
         </figure>
         <figure class="plan-card">
           <div class="media media--4-5"><img src="assets/img/PLAN-3.svg" alt="Пример планировки: трёхкомнатная" loading="lazy" width="1120" height="1400"></div>
-          <figcaption><h3 class="h4">Три комнаты</h3><p class="caption">Два санузла, кладовая, окна на две стороны.</p></figcaption>
+          <figcaption><h4 class="h4">Три комнаты</h4><p class="caption">Два санузла, кладовая, окна на две стороны.</p></figcaption>
         </figure>
         <figure class="plan-card">
           <div class="media media--4-5"><img src="assets/img/PLAN-4P.svg" alt="Пример планировки: четырёхкомнатная с террасой" loading="lazy" width="1120" height="1400"></div>
-          <figcaption><h3 class="h4">Четыре комнаты</h3><p class="caption">Терраса на верхнем уровне, мастер-спальня с гардеробной.</p></figcaption>
+          <figcaption><h4 class="h4">Четыре комнаты</h4><p class="caption">Терраса на верхнем уровне, мастер-спальня с гардеробной.</p></figcaption>
         </figure>
       </div>
 
-      <p class="disclaimer disclaimer--boxed mt-6 max-60">Планировки приведены как примеры проектных решений. Квартиры не являются предметом продажи: проект «Ленская» продаёт земельные участки под застройку.</p>
+      <p class="disclaimer disclaimer--boxed mt-6 max-60">Планировки приведены как примеры проектных решений. Квартиры не являются предметом розничной продажи: «Ленская» продаёт земельные участки под застройку.</p>
     </div>
   </section>
 
@@ -627,9 +649,9 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=19"></script>
-<script src="assets/js/motion.js?v=19"></script>
-<script src="assets/js/cards.js?v=19"></script>
-<script src="assets/js/home.js?v=19"></script>
+<script src="assets/js/site.js?v=21"></script>
+<script src="assets/js/motion.js?v=21"></script>
+<script src="assets/js/cards.js?v=21"></script>
+<script src="assets/js/home.js?v=21"></script>
 </body>
 </html>
