@@ -85,16 +85,10 @@
   // Слоты, для которых Заказчик предоставил реальные материалы (JPEG).
   // Остальные остаются SVG-плейсхолдерами до получения съёмки или рендера.
   LK.PHOTO_SLOTS = {
-    'HERO-01F': 1,
-    'MASTERPLAN-02': 1,
-    'LOCATION-01': 1,
-    'LOCATION-02': 1,
-    'ARCH-01': 1,
-    'ARCH-08': 1,
-    'ARCH-09': 1,
-    'INFRA-01': 1,
-    'YARD-03': 1,
-    'ABOUT-01': 1,
+    'ABOUT-01':1,'ABOUT-02':1,'ABOUT-03':1,'ABOUT-05':1,'ARCH-01':1,
+    'ARCH-02':1,'ARCH-08':1,'ARCH-09':1,'ARCH-10':1,'HERO-01F':1,
+    'INFRA-01':1,'INFRA-04':1,'LAND-PLOT-A':1,'LAND-PLOT-B':1,'LOCATION-01':1,
+    'LOCATION-02':1,'MASTERPLAN-02':1,'YARD-01':1,'YARD-03':1,'YARD-07':1,
   };
 
   LK.img = function (id) {
