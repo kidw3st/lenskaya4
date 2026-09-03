@@ -79,13 +79,18 @@
     if (el.hasAttribute('data-m')) return;
     // Внутри шапки, меню, модалок и героя своя анимация
     if (el.closest('.site-header, .mobile-menu, .modal, .lightbox, .hero, .intro, .cookie-bar')) return;
+    // Геометрию читаем ДО записи классов и стилей. Иначе на каждом
+    // элементе получается «записал — прочитал», и браузер пересчитывает
+    // раскладку столько раз, сколько элементов в пачке.
+    var r = el.getBoundingClientRect();
+    var вКадре = r.top < window.innerHeight * 0.96 && r.bottom > 0;
+
     el.setAttribute('data-m', '1');
     el.classList.add(cls);
     if (delay) el.style.setProperty('--m-delay', delay + 'ms');
 
-    var r = el.getBoundingClientRect();
     // Уже в кадре при загрузке — показываем сразу, без ожидания скролла
-    if (r.top < window.innerHeight * 0.96 && r.bottom > 0) {
+    if (вКадре) {
       requestAnimationFrame(function () {
         el.classList.add('is-in');
         if (el.hasAttribute('data-count-target')) countUp(el);
@@ -438,11 +443,22 @@
       timer = setTimeout(function () {
         var nodes = pending.slice();
         pending = [];
+        // Вставка 24 карточек — это 24 добавленных узла с одним родителем.
+        // Сканировать этого родителя 24 раза незачем: собираем уникальные
+        // контейнеры и проходим каждый ровно один раз.
+        var roots = [];
         nodes.forEach(function (nd) {
           if (!nd.isConnected) return;
           fadeImages(nd);
-          LK.motion.scan(nd.parentElement || nd);
+          var root = nd.parentElement || nd;
+          if (roots.indexOf(root) === -1) roots.push(root);
         });
+        // Вложенные контейнеры отбрасываем: родитель уже их покроет.
+        roots
+          .filter(function (r) {
+            return !roots.some(function (o) { return o !== r && o.contains(r); });
+          })
+          .forEach(function (r) { LK.motion.scan(r); });
       }, 90);
     }).observe(document.body, { childList: true, subtree: true });
   }

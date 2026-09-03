@@ -13,18 +13,20 @@
    1. Появление при скролле
    ========================================================================== */
 
+/* will-change здесь нет намеренно: таких блоков на странице до полусотни,
+   и все они разом получали по отдельному слою композитинга ещё до того,
+   как что-то анимируется. Браузер и так поднимает элемент на время
+   перехода opacity/transform. */
 .m-item {
   opacity: 0;
   transform: translateY(22px);
   transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
   transition-delay: var(--m-delay, 0ms);
-  will-change: opacity, transform;
 }
 
 .m-item.is-in {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 
 /* Мягкий вариант для крупных медиа: чуть больше ход и лёгкий зум */
@@ -89,9 +91,10 @@
 }
 
 /* Параллакс задаётся из JS через переменную — только transform */
+/* translate3d сам поднимает элемент на отдельный слой, will-change здесь
+   был бы лишним удержанием крупной текстуры в памяти видеокарты. */
 .hero-media {
   transform: translate3d(0, var(--parallax, 0px), 0);
-  will-change: transform;
 }
 
 /* Подсказка скролла живёт своей жизнью */
@@ -388,8 +391,7 @@ body.has-bottom-bar .to-top {
     z-index: 40;
     margin-inline: calc(var(--page-pad) * -1);
     padding: var(--s-3) var(--page-pad);
-    background: color-mix(in srgb, var(--bg) 94%, transparent);
-    backdrop-filter: blur(12px);
+    background: var(--bg);
     border-bottom: 1px solid var(--line);
     transition: box-shadow var(--dur) var(--ease);
   }
