@@ -153,30 +153,4 @@
       });
   }
 
-  /* ---------- Блок 12. Ход проекта ---------- */
-
-  const progressBox = $('#home-progress');
-
-  if (progressBox) {
-    LK.load('progress')
-      .then(function (items) {
-        progressBox.innerHTML = items
-          .slice(0, 4)
-          .map(function (s) {
-            const d = s.date.split('-');
-            const months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
-            return (
-              '<div class="timeline-item' + (s.current ? ' is-current' : '') + '">' +
-              '<p class="micro" style="color:var(--c-bronze-text)">' + months[Number(d[1]) - 1] + ' ' + d[0] + (s.current ? ' · текущая стадия' : '') + '</p>' +
-              '<h3 class="h4">' + LK.esc(s.title) + '</h3>' +
-              '<p class="caption">' + LK.esc(s.text) + '</p>' +
-              '</div>'
-            );
-          })
-          .join('');
-      })
-      .catch(function () {
-        progressBox.innerHTML = '<p class="caption">Хронология временно недоступна.</p>';
-      });
-  }
 })();
