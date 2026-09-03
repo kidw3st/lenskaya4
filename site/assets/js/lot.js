@@ -116,6 +116,15 @@
 
   function priceBlock(obj, updated, isLand) {
     if (obj.status === 'sold') return '<p class="lot-price muted">' + (isLand ? 'Продан' : 'Продано') + '</p>';
+    // Цены не публикуются — их сообщает менеджер
+    if (isLand ? !LK.LAND_PRICE_PUBLIC : !LK.FLAT_PRICE_PUBLIC) {
+      return (
+        '<p class="lot-price">Цена по запросу</p>' +
+        '<p class="caption mt-2">Стоимость сообщаем по телефону ' +
+        '<a href="tel:+73422000000" data-placement="lot_price">+7 (342) 200-00-00</a> ' +
+        'или в ответ на заявку. Условия не являются публичной офертой.</p>'
+      );
+    }
     if (!obj.price)
       return (
         '<p class="lot-price">Цена по запросу</p>' +
@@ -171,7 +180,7 @@
           '<div class="lot-head"><h1 class="h2">' + LK.esc(title) + '</h1>' + LK.statusHtml(f.status, false) + '</div>' +
           '<p class="caption mt-3">Лот №' + LK.esc(f.lot_number) + ' · ' + LK.esc(f.building_title) + ' · секция ' + LK.esc(f.section) + '</p>' +
           '<div class="mt-5">' + priceBlock(f, f.updated_at) + '</div>' +
-          (f.price ? '<p class="caption mt-2">' + LK.num(f.price_per_sqm) + ' ₽ за м²</p>' : '') +
+          (LK.FLAT_PRICE_PUBLIC && f.price ? '<p class="caption mt-2">' + LK.num(f.price_per_sqm) + ' ₽ за м²</p>' : '') +
           '</div>' +
           ctaBlock(f, false) +
           '<table class="params"><caption class="visually-hidden">Параметры квартиры</caption><tbody>' +
@@ -200,7 +209,7 @@
         if (bar) {
           bar.innerHTML =
             '<div><p class="micro">' + LK.esc(f.rooms_short + ' · ' + LK.area(f.area_total)) + '</p>' +
-            '<p style="font-weight:600">' + (f.status === 'sold' ? 'Продано' : f.price ? LK.money(f.price) : 'Цена по запросу') + '</p></div>' +
+            '<p style="font-weight:600">' + (f.status === 'sold' ? 'Продано' : LK.FLAT_PRICE_PUBLIC && f.price ? LK.money(f.price) : 'Цена по запросу') + '</p></div>' +
             (f.status === 'sold'
               ? '<a class="btn btn--flats" href="flats.html">Похожие</a>'
               : '<button type="button" class="btn btn--flats" data-modal="modal-consult" data-modal-ctx=\'' +
@@ -387,7 +396,11 @@
       '<h2 class="h3">Что входит в стоимость</h2>' +
       '<ul class="incl mt-5">' +
       '<li class="incl-yes"><b>Земельный участок</b><span>' +
-      (p.status === 'sold' ? 'Продан' : p.price ? LK.money(p.price) + ' · ' + LK.num(p.price_per_are) + ' ₽ за сотку' : 'Цена по запросу') +
+      (p.status === 'sold'
+        ? 'Продан'
+        : LK.LAND_PRICE_PUBLIC && p.price
+        ? LK.money(p.price) + ' · ' + LK.num(p.price_per_are) + ' ₽ за сотку'
+        : 'Стоимость сообщаем по телефону: <a href="tel:+73422000000" data-placement="plot_economics">+7 (342) 200-00-00</a>') +
       '</span></li>' +
       '<li class="incl-no"><b>Дом и строительство</b><span>Не входят в стоимость участка. Стоимость строительства по типовому проекту — по запросу.</span></li>' +
       '<li class="incl-no"><b>Подключение коммуникаций</b><span>Условия и стоимость подключения уточняются по техническим условиям.</span></li>' +
@@ -451,7 +464,7 @@
             ? '<p class="note-strip mt-4">Участок забронирован до ' + LK.dateRu(p.reserved_until) + '.</p>'
             : '') +
           '<div class="mt-5">' + priceBlock(p, p.updated_at, true) + '</div>' +
-          (p.price ? '<p class="caption mt-2">' + LK.num(p.price_per_are) + ' ₽ за сотку</p>' : '') +
+          (LK.LAND_PRICE_PUBLIC && p.price ? '<p class="caption mt-2">' + LK.num(p.price_per_are) + ' ₽ за сотку</p>' : '') +
           '</div>' +
           ctaBlock(p, true) +
           '</div></div>';
@@ -552,7 +565,7 @@
         if (bar) {
           bar.innerHTML =
             '<div><p class="micro">' + LK.esc(title) + '</p>' +
-            '<p style="font-weight:600">' + (p.status === 'sold' ? 'Продан' : p.price ? LK.money(p.price) : 'Цена по запросу') + '</p></div>' +
+            '<p style="font-weight:600">' + (p.status === 'sold' ? 'Продан' : LK.LAND_PRICE_PUBLIC && p.price ? LK.money(p.price) : 'Цена по запросу') + '</p></div>' +
             (p.status === 'sold'
               ? '<a class="btn btn--land" href="land.html">Похожие</a>'
               : '<button type="button" class="btn btn--land" data-modal="modal-consult" data-modal-ctx=\'' +

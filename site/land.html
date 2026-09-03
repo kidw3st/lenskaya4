@@ -9,10 +9,10 @@
 <meta property="og:title" content="Земельные участки на территории проекта «Ленская»">
 <meta property="og:image" content="assets/img/OG-LAND-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=3">
-<link rel="stylesheet" href="assets/css/base.css?v=3">
-<link rel="stylesheet" href="assets/css/components.css?v=3">
-<link rel="stylesheet" href="assets/css/motion.css?v=3">
+<link rel="stylesheet" href="assets/css/tokens.css?v=7">
+<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/components.css?v=7">
+<link rel="stylesheet" href="assets/css/motion.css?v=7">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"/"},{"@type":"ListItem","position":2,"name":"Земельные участки","item":"/land.html"}]}
@@ -35,7 +35,7 @@
         </li>
         <li><a class="nav-link nav-link--land" href="land.html" aria-current="page">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
         <li aria-hidden="true"><span class="nav-sep"></span></li>
-        <li><a class="nav-link" href="flats.html">Квартиры</a></li>
+        <li><a class="nav-link" href="flats.html">Проект корпусов</a></li>
         <li><a class="nav-link" href="gallery.html">Галерея</a></li>
         <li><a class="nav-link" href="progress.html">Ход проекта</a></li>
         <li><a class="nav-link" href="contacts.html">Контакты</a></li>
@@ -65,7 +65,7 @@
   <nav class="mobile-nav" aria-label="Мобильное меню">
     <ul>
       <li class="mobile-nav-item--land"><a href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-      <li class="mobile-nav-item--flats"><a href="flats.html">Квартиры</a></li>
+      <li class="mobile-nav-item--flats"><a href="flats.html">Проект корпусов</a></li>
       <li>
         <button type="button" data-acc="m-project" aria-expanded="false">Проект <span aria-hidden="true">+</span></button>
         <ul class="mobile-nav-sub" id="m-project">
@@ -94,8 +94,9 @@
       </nav>
       <p><span class="badge badge--new">Новый формат</span></p>
       <h1 class="mt-4">Земельные участки</h1>
-      <p class="lead">Участок под застройку на территории проекта. Вы приобретаете землю и строите дом или квартиру по одному из представленных проектов. Готовое жильё в составе этого предложения не продаётся.</p>
-      <p class="note-strip mt-5" data-catalog-meta>Данные каталога загружаются…</p>
+      <p class="lead">Участок под застройку на территории проекта. Вы приобретаете землю и строите дом по одному из представленных типовых проектов. Готовое жильё в составе этого предложения не продаётся, стоимость участка сообщает менеджер.</p>
+      <p class="note-strip note-strip--land mt-5"><b>Цены на участки не публикуются.</b> Стоимость зависит от площади, вида и состава подведённых коммуникаций — её называет менеджер по телефону <a href="tel:+73422000000" data-placement="land_hero">+7 (342) 200-00-00</a> или в ответ на заявку.</p>
+      <p class="note-strip mt-4" data-catalog-meta>Данные каталога загружаются…</p>
     </div>
   </section>
 
@@ -103,12 +104,13 @@
   <section class="section--tight" id="how">
     <div class="container">
       <h2 class="h3">Как это работает</h2>
-      <div class="feature-list feature-list--3 mt-5">
+      <div class="feature-list feature-list--4 mt-5">
         <div class="feature"><span class="num">Шаг 01</span><h3 class="h4">Выбираете участок</h3><p class="caption">Площадь, границы, назначение земли, состав коммуникаций и видовые характеристики указаны в карточке каждого участка.</p></div>
-        <div class="feature"><span class="num">Шаг 02</span><h3 class="h4">Выбираете типовой проект</h3><p class="caption">К каждому участку привязаны 3–4 проекта, согласованных с архитектурной концепцией территории.</p></div>
-        <div class="feature"><span class="num">Шаг 03</span><h3 class="h4">Согласуете и строите</h3><p class="caption">Порядок согласования и условия застройки фиксируются договором. Условия подлежат утверждению Заказчиком.</p></div>
+        <div class="feature"><span class="num">Шаг 02</span><h3 class="h4">Узнаёте цену</h3><p class="caption">Стоимость конкретного участка называет менеджер: она зависит от площади, вида и подведённых коммуникаций. Звоните или оставьте заявку — ответим в рабочее время.</p></div>
+        <div class="feature"><span class="num">Шаг 03</span><h3 class="h4">Выбираете типовой проект</h3><p class="caption">К каждому участку привязаны 3–4 проекта, согласованных с архитектурной концепцией территории.</p></div>
+        <div class="feature"><span class="num">Шаг 04</span><h3 class="h4">Согласуете и строите</h3><p class="caption">Порядок согласования и условия застройки фиксируются договором. Условия подлежат утверждению Заказчиком.</p></div>
       </div>
-      <p class="disclaimer disclaimer--boxed mt-6 max-60">Изображения домов и квартир в этом разделе носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные объекты не являются построенными и не продаются в составе данного предложения.</p>
+      <p class="disclaimer disclaimer--boxed mt-6 max-60">Изображения домов в этом разделе носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные объекты не являются построенными и не продаются в составе данного предложения.</p>
     </div>
   </section>
 
@@ -132,17 +134,10 @@
             </div>
           </div>
 
-          <div class="filter-group">
-            <span class="filter-label" data-price-label>Цена за участок, ₽</span>
-            <div class="view-switch mt-2" role="group" aria-label="Единица цены">
-              <button type="button" data-price-mode="total" aria-pressed="true">За участок</button>
-              <button type="button" data-price-mode="are" aria-pressed="false">За сотку</button>
-            </div>
-            <div class="range mt-3">
-              <input id="price_from" name="price_from" type="number" inputmode="numeric" placeholder="от" min="0" step="100000" aria-label="Цена от">
-              <span>—</span>
-              <input id="price_to" name="price_to" type="number" inputmode="numeric" placeholder="до" min="0" step="100000" aria-label="Цена до">
-            </div>
+          <div class="filter-note">
+            <p class="filter-note-title">Стоимость — по запросу</p>
+            <p>Цену конкретного участка называет менеджер: она зависит от площади, вида и подведённых коммуникаций.</p>
+            <a class="filter-note-tel" href="tel:+73422000000" data-placement="land_filters">+7 (342) 200-00-00</a>
           </div>
 
           <div class="filter-group">
@@ -203,8 +198,6 @@
                 <option value="default">По номеру участка</option>
                 <option value="area_asc">Площадь: по возрастанию</option>
                 <option value="area_desc">Площадь: по убыванию</option>
-                <option value="price_asc">Цена: по возрастанию</option>
-                <option value="price_desc">Цена: по убыванию</option>
                 <option value="updated">Дата обновления</option>
               </select>
             </div>
@@ -313,7 +306,7 @@
       <div>
         <p class="footer-title">Разделы</p>
         <ul class="footer-list">
-          <li><a href="about.html">О проекте</a></li><li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Квартиры</a></li><li><a href="gallery.html">Галерея</a></li><li><a href="progress.html">Ход проекта</a></li><li><a href="news.html">Новости</a></li>
+          <li><a href="about.html">О проекте</a></li><li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Проект корпусов</a></li><li><a href="gallery.html">Галерея</a></li><li><a href="progress.html">Ход проекта</a></li><li><a href="news.html">Новости</a></li>
         </ul>
       </div>
       <div>
@@ -386,10 +379,10 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=3"></script>
-<script src="assets/js/motion.js?v=3"></script>
-<script src="assets/js/cards.js?v=3"></script>
-<script src="assets/js/catalog.js?v=3"></script>
+<script src="assets/js/site.js?v=7"></script>
+<script src="assets/js/motion.js?v=7"></script>
+<script src="assets/js/cards.js?v=7"></script>
+<script src="assets/js/catalog.js?v=7"></script>
 <script>
 window.LK.initCatalog('land');
 

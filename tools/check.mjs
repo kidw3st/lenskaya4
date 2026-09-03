@@ -40,9 +40,13 @@ for (const g of readJson('gallery.json')) referencedMedia.add(g.media_id);
 for (const n of readJson('news.json')) referencedMedia.add(n.cover);
 for (const s of readJson('progress.json')) (s.images || []).forEach((m) => referencedMedia.add(m));
 
+// Слот считается закрытым, если есть либо реальное фото (.jpg),
+// либо SVG-плейсхолдер. Одно из двух обязательно.
 for (const id of referencedMedia) {
-  if (!existsSync(resolve(SITE, 'assets/img', id + '.svg'))) {
-    warn('data/*.json', `Нет файла медиа: assets/img/${id}.svg`);
+  const hasPhoto = existsSync(resolve(SITE, 'assets/img', id + '.jpg'));
+  const hasPlaceholder = existsSync(resolve(SITE, 'assets/img', id + '.svg'));
+  if (!hasPhoto && !hasPlaceholder) {
+    warn('data/*.json', `Нет ни фото, ни плейсхолдера: assets/img/${id}`);
   }
 }
 

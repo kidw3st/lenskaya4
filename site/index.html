@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>«Ленская» — земельные участки под застройку и квартиры в Перми</title>
-<meta name="description" content="Земельные участки под застройку на правом берегу Камы между рекой и Закамским Бором: покупаете землю и строите по одному из типовых проектов. Также в проекте — квартиры в корпусах.">
+<title>«Ленская» — земельные участки под застройку в Перми</title>
+<meta name="description" content="Земельные участки под застройку на правом берегу Камы между рекой и Закамским Бором: покупаете землю и строите по одному из типовых проектов. Цены на участки — по запросу. Отдельно представлен готовый проект жилых корпусов для инвесторов.">
 <link rel="canonical" href="./">
 <meta property="og:type" content="website">
 <meta property="og:title" content="«Ленская» — земельные участки между рекой и лесом">
 <meta property="og:description" content="Участки под застройку на первой линии правого берега Камы. Типовые проекты домов на выбор. Проект в стадии архитектурной концепции.">
 <meta property="og:image" content="assets/img/OG-LAND-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=3">
-<link rel="stylesheet" href="assets/css/base.css?v=3">
-<link rel="stylesheet" href="assets/css/components.css?v=3">
-<link rel="stylesheet" href="assets/css/motion.css?v=3">
+<link rel="stylesheet" href="assets/css/tokens.css?v=7">
+<link rel="stylesheet" href="assets/css/base.css?v=7">
+<link rel="stylesheet" href="assets/css/components.css?v=7">
+<link rel="stylesheet" href="assets/css/motion.css?v=7">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"ЖК «Ленская»","url":"/","address":{"@type":"PostalAddress","addressLocality":"Пермь","streetAddress":"ул. Ленская","addressCountry":"RU"},"telephone":"+7 342 200-00-00"}
@@ -73,7 +73,7 @@
         </li>
         <li><a class="nav-link nav-link--land" href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
         <li aria-hidden="true"><span class="nav-sep"></span></li>
-        <li><a class="nav-link" href="flats.html">Квартиры</a></li>
+        <li><a class="nav-link" href="flats.html">Проект корпусов</a></li>
         <li><a class="nav-link" href="gallery.html">Галерея</a></li>
         <li><a class="nav-link" href="progress.html">Ход проекта</a></li>
         <li><a class="nav-link" href="contacts.html">Контакты</a></li>
@@ -107,7 +107,7 @@
   <nav class="mobile-nav" aria-label="Мобильное меню">
     <ul>
       <li class="mobile-nav-item--land"><a href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-      <li class="mobile-nav-item--flats"><a href="flats.html">Квартиры</a></li>
+      <li class="mobile-nav-item--flats"><a href="flats.html">Проект корпусов</a></li>
       <li>
         <button type="button" data-acc="m-project" aria-expanded="false">Проект <span aria-hidden="true">+</span></button>
         <ul class="mobile-nav-sub" id="m-project">
@@ -143,17 +143,17 @@
   <section class="hero">
     <div class="hero-media">
       <picture>
-        <source media="(max-width: 767px)" srcset="assets/img/HERO-01M.svg">
-        <img src="assets/img/HERO-01F.svg" alt="Панорама: река Кама, жилой комплекс и лесной массив" fetchpriority="high" width="2100" height="900">
+        <!-- Вертикального кроп-кадра для мобильного пока нет: один снимок кадрируется через object-fit -->
+        <img src="assets/img/HERO-01F.jpg" alt="Панорама: река Кама, жилой комплекс и лесной массив" fetchpriority="high" width="1280" height="714">
       </picture>
     </div>
     <div class="hero-inner container">
       <p class="micro hero-loc">Пермь · правый берег · первая линия</p>
       <h1>Ленская</h1>
-      <p class="lead">Земельные участки под застройку и квартиры в корпусах — между Камой и Закамским Бором</p>
+      <p class="lead">Земельные участки под застройку между Камой и Закамским Бором</p>
       <div class="hero-actions btn-row">
         <a class="btn btn--land" href="land.html" data-cta="hero_land" data-section="hero">Смотреть участки</a>
-        <a class="btn btn--on-dark" href="flats.html" data-cta="hero_flats" data-section="hero">Квартиры в комплексе</a>
+        <a class="btn btn--on-dark" href="tel:+73422000000" data-cta="hero_call" data-placement="hero" data-section="hero">Позвонить и узнать цену</a>
       </div>
       <div class="hero-foot">
         <span class="scroll-hint"><i></i> Листайте</span>
@@ -232,7 +232,7 @@
 
       <div class="split">
         <figure>
-          <div class="media media--16-9"><img src="assets/img/LOCATION-01.svg" alt="Аэросъёмка: река Кама, участок проекта и Закамский Бор" loading="lazy" width="1600" height="900"></div>
+          <div class="media media--16-9"><img src="assets/img/LOCATION-01.jpg" alt="Аэросъёмка: река Кама, участок проекта и Закамский Бор" loading="lazy" width="1280" height="714"></div>
           <figcaption class="disclaimer">Архитектурная визуализация. Не является отображением фактически построенного объекта.</figcaption>
         </figure>
         <div>
@@ -261,7 +261,7 @@
       </div>
 
       <div class="hscroll" data-lb-group>
-        <figure><div class="media media--3-2" data-lb-item data-lb-src="assets/img/ARCH-01.svg" data-lb-caption="Фасады со стороны реки" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in"><img src="assets/img/ARCH-01.svg" alt="Фасады со стороны реки" loading="lazy" width="1500" height="1000"></div><figcaption class="media-note">Фасады со стороны реки</figcaption></figure>
+        <figure><div class="media media--3-2" data-lb-item data-lb-src="assets/img/ARCH-01.jpg" data-lb-caption="Фасады со стороны реки" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in"><img src="assets/img/ARCH-01.jpg" alt="Фасады со стороны реки" loading="lazy" width="1280" height="714"></div><figcaption class="media-note">Фасады со стороны реки</figcaption></figure>
         <figure><div class="media media--3-2" data-lb-item data-lb-src="assets/img/ARCH-02.svg" data-lb-caption="Ступенчатые террасы верхних уровней" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in"><img src="assets/img/ARCH-02.svg" alt="Ступенчатые террасы верхних уровней" loading="lazy" width="1120" height="1400"></div><figcaption class="media-note">Ступенчатые террасы</figcaption></figure>
         <figure><div class="media media--3-2" data-lb-item data-lb-src="assets/img/ARCH-03.svg" data-lb-caption="Известняк в отделке цоколя" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in"><img src="assets/img/ARCH-03.svg" alt="Известняк в отделке цоколя" loading="lazy" width="1500" height="1000"></div><figcaption class="media-note">Известняк в уровне пешехода</figcaption></figure>
         <figure><div class="media media--3-2" data-lb-item data-lb-src="assets/img/ARCH-05.svg" data-lb-caption="Бронзовые профили ограждений" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта." style="cursor:zoom-in"><img src="assets/img/ARCH-05.svg" alt="Бронзовые профили ограждений" loading="lazy" width="1500" height="1000"></div><figcaption class="media-note">Бронза в деталях</figcaption></figure>
@@ -286,7 +286,7 @@
       <div class="cards cards--flats" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <figure><div class="media media--3-2"><img src="assets/img/YARD-01.svg" alt="Двор без транзитного проезда" loading="lazy" width="1500" height="1000"></div><figcaption class="mt-4"><h3 class="h4">Приватные дворы</h3><p class="caption">Ни один двор не является проходным.</p></figcaption></figure>
         <figure><div class="media media--3-2"><img src="assets/img/YARD-02.svg" alt="Пешеходная связь к набережной" loading="lazy" width="1120" height="1400"></div><figcaption class="mt-4"><h3 class="h4">Связь с водой</h3><p class="caption">Пешеходные коридоры выходят на набережную.</p></figcaption></figure>
-        <figure><div class="media media--3-2"><img src="assets/img/YARD-03.svg" alt="Детская зона в тени сосен" loading="lazy" width="1500" height="1000"></div><figcaption class="mt-4"><h3 class="h4">Сохранённые сосны</h3><p class="caption">Трассировка проложена по существующим просекам.</p></figcaption></figure>
+        <figure><div class="media media--3-2"><img src="assets/img/YARD-03.jpg" alt="Детская зона в тени сосен" loading="lazy" width="1280" height="714"></div><figcaption class="mt-4"><h3 class="h4">Сохранённые сосны</h3><p class="caption">Трассировка проложена по существующим просекам.</p></figcaption></figure>
         <figure><div class="media media--3-2"><img src="assets/img/YARD-04.svg" alt="Вечерний сценарий освещения" loading="lazy" width="1600" height="900"></div><figcaption class="mt-4"><h3 class="h4">Вечерний свет</h3><p class="caption">Освещение по нижнему ярусу, без засветки окон.</p></figcaption></figure>
       </div>
       <p class="disclaimer">Архитектурная визуализация. Не является отображением фактически построенного объекта.</p>
@@ -324,7 +324,7 @@
           <p class="note-strip mt-6">Состав инфраструктуры уточняется по проектной документации.</p>
         </div>
         <figure>
-          <div class="media media--16-9"><img src="assets/img/INFRA-01.svg" alt="Первые этажи с витринным остеклением" loading="lazy" width="1600" height="900"></div>
+          <div class="media media--16-9"><img src="assets/img/INFRA-01.jpg" alt="Первые этажи с витринным остеклением" loading="lazy" width="1280" height="714"></div>
           <figcaption class="disclaimer">Архитектурная визуализация. Не является отображением фактически построенного объекта.</figcaption>
         </figure>
       </div>
@@ -344,10 +344,13 @@
         <div>
           <p><span class="badge badge--new">Новый формат</span></p>
           <h2 class="mt-3">Земельные участки</h2>
-          <p class="lead max-60 mt-4">Участок под застройку на территории проекта. Вы приобретаете землю и строите дом или квартиру по одному из представленных проектов. Готовое жильё в составе этого предложения не продаётся.</p>
+          <p class="lead max-60 mt-4">Участок под застройку на территории проекта. Вы приобретаете землю и строите дом по одному из представленных типовых проектов. Готовое жильё в составе этого предложения не продаётся, стоимость участка сообщает менеджер.</p>
           <p class="caption mt-4" data-land-summary>Загружаем данные каталога…</p>
         </div>
-        <a class="btn btn--land" href="land.html" data-cta="home_land_all" data-section="land_preview">Смотреть все участки</a>
+        <div class="btn-row btn-row--stack">
+          <a class="btn btn--land" href="land.html" data-cta="home_land_all" data-section="land_preview">Смотреть все участки</a>
+          <a class="btn btn--ghost" href="tel:+73422000000" data-placement="land_preview">Узнать цену: +7 (342) 200-00-00</a>
+        </div>
       </div>
 
       <div class="feature-list feature-list--3">
@@ -368,7 +371,7 @@
 
       <div class="mt-7">
         <h3 class="h3">Что можно здесь построить</h3>
-        <p class="disclaimer disclaimer--boxed mt-4 max-60">Изображения носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные дома и квартиры не являются построенными объектами и не продаются в составе данного предложения.</p>
+        <p class="disclaimer disclaimer--boxed mt-4 max-60">Изображения носят иллюстративный характер и показывают возможные варианты застройки участка по типовым проектам. Представленные дома не являются построенными объектами и не продаются в составе данного предложения.</p>
         <div class="viz-strip mt-5" data-lb-group>
           <figure>
             <div class="media media--16-9" data-lb-item data-lb-src="assets/img/HOUSE-VIZ-01.svg" data-lb-caption="Типовой проект «Кромка»" data-lb-disc="Иллюстративная визуализация. Итоговый вид определяется выбранным проектом застройки." style="cursor:zoom-in"><img src="assets/img/HOUSE-VIZ-01.svg" alt="Типовой проект «Кромка», иллюстративная визуализация" loading="lazy" width="1600" height="900"></div>
@@ -393,19 +396,21 @@
   </section>
 
   <!-- ============================================================
-       Блок 10. Квартиры в корпусах — второй продукт.
-       Вторичный CTA (контурный), чтобы не конкурировать с участками.
+       Блок 10. Жилые корпуса — готовый проект, а не второй продукт
+       в продаже. Блок адресован инвесторам и партнёрам: показывает
+       глубину проработки территории. CTA — контурный, чтобы не
+       конкурировать с участками (основной продукт).
        ============================================================ -->
   <section class="section t-flats" id="flats-preview">
     <div class="container">
       <div class="section-head section-head--split">
         <div>
-          <p class="eyebrow">Также в проекте</p>
-          <h2>Квартиры в корпусах</h2>
-          <p class="lead max-60 mt-4">Помимо участков под застройку в проекте есть квартиры в четырёх корпусах — с готовыми планировками и сроками, определяемыми проектной документацией.</p>
-          <p class="caption mt-4" data-flats-summary>Загружаем данные каталога…</p>
+          <p class="eyebrow">Готовый проект · для инвесторов</p>
+          <h2>Жилые корпуса</h2>
+          <p class="lead max-60 mt-4">Проект четырёх корпусов проработан до планировок каждой квартиры. Мы показываем его как готовое решение для инвесторов и партнёров — оценить масштаб, посадку на местности и структуру квартирографии.</p>
+          <p class="caption mt-4" data-flats-summary>Загружаем данные проекта…</p>
         </div>
-        <a class="btn btn--secondary" href="flats.html" data-cta="home_flats_all" data-section="flats_preview">Смотреть каталог квартир</a>
+        <a class="btn btn--secondary" href="flats.html" data-cta="home_flats_all" data-section="flats_preview">Изучить проект корпусов</a>
       </div>
 
       <div class="chips mt-5">
@@ -433,7 +438,7 @@
         <a class="btn btn--secondary" href="gallery.html" data-cta="home_gallery">Вся галерея</a>
       </div>
       <div class="masonry" data-lb-group>
-        <figure><button type="button" data-lb-item data-lb-src="assets/img/ARCH-08.svg" data-lb-caption="Вид с юго-запада" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта."><img src="assets/img/ARCH-08.svg" alt="Вид с юго-запада" loading="lazy" width="1500" height="1000"></button></figure>
+        <figure><button type="button" data-lb-item data-lb-src="assets/img/ARCH-08.jpg" data-lb-caption="Вид с юго-запада" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта."><img src="assets/img/ARCH-08.jpg" alt="Вид с юго-запада" loading="lazy" width="1280" height="714"></button></figure>
         <figure><button type="button" data-lb-item data-lb-src="assets/img/VIEW-RIVER.svg" data-lb-caption="Вид на Каму с верхних этажей" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта."><img src="assets/img/VIEW-RIVER.svg" alt="Вид на Каму с верхних этажей" loading="lazy" width="1600" height="900"></button></figure>
         <figure><button type="button" data-lb-item data-lb-src="assets/img/INT-02.svg" data-lb-caption="Кухня-столовая" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта."><img src="assets/img/INT-02.svg" alt="Кухня-столовая" loading="lazy" width="1120" height="1400"></button></figure>
         <figure><button type="button" data-lb-item data-lb-src="assets/img/YARD-05.svg" data-lb-caption="Утро во дворе" data-lb-disc="Архитектурная визуализация. Не является отображением фактически построенного объекта."><img src="assets/img/YARD-05.svg" alt="Утро во дворе" loading="lazy" width="1500" height="1000"></button></figure>
@@ -474,13 +479,13 @@
       <div class="split" style="align-items:start">
         <div>
           <h3 class="h4">Земельные участки</h3>
-          <p class="caption mt-3" style="color:var(--on-dark-2)">Границы, коммуникации, типовые проекты застройки.</p>
+          <p class="caption mt-3" style="color:var(--on-dark-2)">Границы, коммуникации, типовые проекты застройки. Цена — по запросу.</p>
           <button type="button" class="btn btn--land mt-4" data-modal="modal-consult" data-modal-ctx='{"object_type":"land","title":"Консультация по земельным участкам"}' data-cta="final_cta_land">Получить консультацию по участку</button>
         </div>
         <div>
-          <h3 class="h4">Квартиры в корпусах</h3>
-          <p class="caption mt-3" style="color:var(--on-dark-2)">Планировки, этажи, виды из окон.</p>
-          <button type="button" class="btn btn--on-dark mt-4" data-modal="modal-consult" data-modal-ctx='{"object_type":"flat","title":"Консультация по квартирам"}' data-cta="final_cta_flat">Получить консультацию по квартире</button>
+          <h3 class="h4">Проект жилых корпусов</h3>
+          <p class="caption mt-3" style="color:var(--on-dark-2)">Готовое решение для инвесторов и партнёров.</p>
+          <button type="button" class="btn btn--on-dark mt-4" data-modal="modal-consult" data-modal-ctx='{"object_type":"flat","title":"Запрос по проекту жилых корпусов"}' data-cta="final_cta_flat">Запросить материалы по проекту</button>
         </div>
       </div>
       <div class="contact-row mt-7" style="max-width:640px">
@@ -506,7 +511,7 @@
         <p class="footer-title">Разделы</p>
         <ul class="footer-list">
           <li><a href="about.html">О проекте</a></li>
-          <li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Квартиры</a></li>
+          <li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Проект корпусов</a></li>
           <li><a href="gallery.html">Галерея</a></li>
           <li><a href="progress.html">Ход проекта</a></li>
           <li><a href="news.html">Новости</a></li>
@@ -602,7 +607,7 @@
         <a class="contact-btn" href="https://t.me/" data-messenger="telegram" data-placement="form_success" rel="noopener" target="_blank">Telegram</a>
         <a class="contact-btn" href="https://wa.me/" data-messenger="whatsapp" data-placement="form_success" rel="noopener" target="_blank">WhatsApp</a>
       </div>
-      <a class="btn btn--secondary mt-4" href="flats.html" data-success-catalog>Смотреть каталог квартир</a>
+      <a class="btn btn--secondary mt-4" href="flats.html" data-success-catalog>Изучить проект корпусов</a>
     </div>
   </div>
 </div>
@@ -636,9 +641,9 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=3"></script>
-<script src="assets/js/motion.js?v=3"></script>
-<script src="assets/js/cards.js?v=3"></script>
-<script src="assets/js/home.js?v=3"></script>
+<script src="assets/js/site.js?v=7"></script>
+<script src="assets/js/motion.js?v=7"></script>
+<script src="assets/js/cards.js?v=7"></script>
+<script src="assets/js/home.js?v=7"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
 // чтобы он не наезжал на текст, который страница кладёт поверх изображения.
 // Каждый файл заменяется через CMS на утверждённый Заказчиком материал.
 
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -191,7 +191,13 @@ function svg(W, H, body, aria) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(aria)}" preserveAspectRatio="xMidYMid slice">${body}</svg>`;
 }
 
-const write = (id, content) => writeFileSync(resolve(OUT, `${id}.svg`), content, 'utf8');
+// Если для слота уже есть реальный материал (<ID>.jpg), плейсхолдер
+// не перезаписываем и не создаём — иначе он начнёт конкурировать с фото.
+let skipped = [];
+const write = (id, content) => {
+  if (existsSync(resolve(OUT, `${id}.jpg`))) { skipped.push(id); return; }
+  writeFileSync(resolve(OUT, `${id}.svg`), content, 'utf8');
+};
 
 /* ------------------------------------------------------------------ */
 /* Сцены                                                               */
@@ -794,5 +800,6 @@ for (const p of land) {
   count++;
 }
 
-console.log(`Создано плейсхолдеров: ${count}`);
+console.log(`Создано плейсхолдеров: ${count - skipped.length}`);
+if (skipped.length) console.log(`Пропущено (есть реальное фото): ${skipped.join(', ')}`);
 console.log('Каталог: site/assets/img/');

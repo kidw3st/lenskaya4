@@ -2724,6 +2724,25 @@ fieldset {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s-6);
   }
+  /* Четыре шага: на планшете 2×2, на десктопе — в строку (см. ниже) */
+  .feature-list--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .feature-list--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Вертикальная стопка кнопок в шапке секции: на узких экранах кнопки
+   не сжимаются в нечитаемые обрубки, на широких — идут в столбик справа. */
+.btn-row--stack {
+  display: grid;
+  gap: var(--s-3);
+  justify-items: start;
 }
 
 .feature {
@@ -2811,6 +2830,19 @@ fieldset {
 
 .note-strip b {
   color: var(--text);
+}
+
+/* Возврат к основному продукту — земле. Ставится в разделах, которые
+   рассказывают о жилых корпусах, чтобы посетитель не терял главную линию. */
+.note-strip--land {
+  background: color-mix(in srgb, var(--bronze) 7%, var(--surface));
+  border-left-width: 4px;
+  color: var(--text);
+}
+
+.note-strip--land a {
+  color: var(--bronze-text);
+  font-weight: 600;
 }
 
 .map-holder {
@@ -2980,3 +3012,41 @@ figure {
   background: var(--bg-sage);
   border-color: color-mix(in srgb, var(--bronze) 45%, transparent);
 }
+
+/* --------------------------------------------------------------------------
+   Пояснение вместо фильтра цены в каталоге участков.
+   Цены участков не публикуются — блок отвечает на вопрос «а сколько стоит?»
+   прямо в том месте, где пользователь искал ползунок цены.
+   -------------------------------------------------------------------------- */
+
+.filter-note {
+  padding: var(--s-4);
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-2);
+  background: color-mix(in srgb, var(--bronze) 5%, var(--surface));
+}
+
+.filter-note p {
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-2);
+  margin: 0;
+}
+
+.filter-note-title {
+  font-weight: 600;
+  color: var(--text) !important;
+  margin-bottom: var(--s-2) !important;
+}
+
+.filter-note-tel {
+  display: inline-block;
+  margin-top: var(--s-3);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--bronze-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--bronze) 45%, transparent);
+}
+
+.filter-note-tel:hover { border-bottom-color: var(--bronze); }
