@@ -1,6 +1,5 @@
 /* ==========================================================================
-   Главная страница: превью каталога квартир, превью участков, ход проекта.
-   Две выдачи строятся независимо и никогда не смешиваются (раздел 3.1).
+   Главная страница: превью каталога земельных участков.
    ========================================================================== */
 
 (function () {
@@ -8,82 +7,7 @@
   const LK = window.LK;
   const $ = LK.$;
 
-  /* ---------- Блок 9. Превью квартир ---------- */
-
-  const flatsBox = $('#flats-preview-list');
-  const summary = $('[data-flats-summary]');
-
-  if (flatsBox) {
-    flatsBox.innerHTML = LK.skeletons(4, '4/5');
-
-    Promise.all([LK.load('flats'), LK.load('meta')])
-      .then(function (res) {
-        const flats = res[0];
-        const meta = res[1];
-        const published = flats.filter(function (f) {
-          return f.is_published;
-        });
-
-        if (summary) {
-          const areas = published.map(function (f) {
-            return f.area_total;
-          });
-          summary.textContent =
-            LK.num(published.length) +
-            ' ' +
-            LK.plural(published.length, ['лот', 'лота', 'лотов']) +
-            ' · студии, 1–4 комнаты · площади от ' +
-            LK.area(Math.min.apply(null, areas)) +
-            ' до ' +
-            LK.area(Math.max.apply(null, areas)) +
-            ' · данные актуальны на ' +
-            LK.dateRu(meta.generated_at);
-        }
-
-        // В ленту — только свободные лоты с ценой; иначе — свободные без цены.
-        let pool = published.filter(function (f) {
-          return f.status === 'free';
-        });
-        if (pool.length < 4) {
-          pool = published.filter(function (f) {
-            return f.status === 'free';
-          });
-        }
-
-        // Разная комнатность, чтобы лента была информативной.
-        const seen = {};
-        const pick = [];
-        pool.forEach(function (f) {
-          if (pick.length >= 4) return;
-          if (seen[f.rooms]) return;
-          seen[f.rooms] = true;
-          pick.push(f);
-        });
-        while (pick.length < 4 && pool.length > pick.length) {
-          const next = pool[pick.length];
-          if (pick.indexOf(next) === -1) pick.push(next);
-          else break;
-        }
-
-        if (!pick.length) {
-          // Свёрнутый вид: заголовок и CTA остаются, пустая сетка не показывается.
-          flatsBox.remove();
-          return;
-        }
-
-        flatsBox.innerHTML = pick.map(LK.cardFlat).join('');
-        flatsBox.removeAttribute('aria-busy');
-        LK.syncFavButtons(flatsBox);
-      })
-      .catch(function () {
-        flatsBox.innerHTML =
-          '<p class="note-strip">Каталог временно недоступен. Позвоните: <a href="tel:+73422000000">+7 (342) 200-00-00</a></p>';
-        flatsBox.removeAttribute('aria-busy');
-        if (summary) summary.textContent = '';
-      });
-  }
-
-  /* ---------- Блок 10. Превью земельных участков ---------- */
+  /* ---------- Превью земельных участков ---------- */
 
   const landBox = $('#land-preview-list');
   const landSummary = $('[data-land-summary]');

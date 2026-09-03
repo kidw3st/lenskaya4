@@ -133,10 +133,9 @@
   // Участки — основной продукт: цену называет менеджер по телефону.
   // Корпуса — готовый проект, показанный инвесторам, а не розничная продажа
   // квартир, поэтому ценники по лотам там тоже не публикуются.
-  // Цены в land.json и flats.json сохранены: они нужны CRM и выгрузкам.
+  // Цены в land.json сохранены: они нужны CRM и выгрузкам.
   // Чтобы вернуть публикацию — поставить нужный флаг в true.
   LK.LAND_PRICE_PUBLIC = false;
-  LK.FLAT_PRICE_PUBLIC = false;
 
   LK.landPriceLabel = function (p) {
     if (p && p.status === 'sold') return 'Продан';
@@ -965,15 +964,12 @@
           if (success) {
             form.hidden = true;
             success.classList.add('is-on');
-            // Быстрое действие ведёт в каталог, соответствующий заявке.
-            // Для заявок без типа объекта — в каталог участков: это основной
-            // продукт проекта (раздел 11.1, п. 4 спецификации).
-            const type = payload.object_type || 'general';
+            // Быстрое действие всегда ведёт в каталог участков —
+            // единственный продаваемый продукт проекта.
             const link = success.querySelector('[data-success-catalog]');
             if (link) {
-              const toFlats = type === 'flat';
-              link.href = toFlats ? 'flats.html' : 'land.html';
-              link.textContent = toFlats ? 'Изучить проект корпусов' : 'Смотреть каталог участков';
+              link.href = 'land.html';
+              link.textContent = 'Смотреть каталог участков';
             }
             success.setAttribute('tabindex', '-1');
             success.focus();

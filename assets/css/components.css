@@ -1087,7 +1087,7 @@
 
 /* --- Карточка КВАРТИРЫ: вертикальная 4:5, воздушная, оливковый код --- */
 
-.card-flat {
+.card-news {
   display: flex;
   flex-direction: column;
   background: transparent;
@@ -1097,20 +1097,20 @@
   transition: transform var(--dur-fast) var(--ease);
 }
 
-.card-flat .media {
+.card-news .media {
   aspect-ratio: 4 / 5;
   margin-bottom: var(--s-4);
 }
 
-.card-flat .media img {
+.card-news .media img {
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-.card-flat:hover .media img {
+.card-news:hover .media img {
   transform: scale(1.04);
 }
 
-.card-flat:hover .card-title {
+.card-news:hover .card-title {
   color: var(--accent-text);
 }
 
@@ -3062,3 +3062,41 @@ figure {
 }
 
 .filter-note-tel:hover { border-bottom-color: var(--bronze); }
+
+/* --------------------------------------------------------------------------
+   Примеры планировок. Не каталог: карточки не кликабельны, цен и статусов
+   нет — блок только показывает, какие решения реализуемы в проекте.
+   -------------------------------------------------------------------------- */
+
+.plans-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s-5);
+}
+
+.plan-card {
+  margin: 0;
+  min-width: 0;
+}
+
+.plan-card .media {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.plan-card .media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: var(--doc-dim);
+}
+
+.plan-card figcaption {
+  margin-top: var(--s-4);
+}
+
+.plan-card h3 {
+  margin-bottom: var(--s-2);
+}

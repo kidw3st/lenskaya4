@@ -1,8 +1,6 @@
 /* ==========================================================================
-   ЖК «Ленская» — рендер карточек лотов.
-   Карточка квартиры и карточка участка — РАЗНЫЕ типы (раздел 3.1 спецификации):
-   разное соотношение сторон, рамка, акцентный цвет и метка типа объекта.
-   Ни одна функция не смешивает два типа в одной выдаче.
+   ЖК «Ленская» — рендер карточки земельного участка.
+   Участок — единственный продаваемый объект, поэтому тип карточки один.
    ========================================================================== */
 
 (function () {
@@ -32,60 +30,6 @@
       '</button>'
     );
   }
-
-  /* ---------- Карточка КВАРТИРЫ: вертикальная 4:5, оливковый код ---------- */
-
-  LK.cardFlat = function (f) {
-    const title = f.rooms_short + ' · ' + LK.area(f.area_total);
-    const priceHtml = LK.FLAT_PRICE_PUBLIC && f.price
-      ? LK.money(f.price) + '<small>Актуально на ' + LK.dateRu(f.updated_at) + '</small>'
-      : f.status === 'sold'
-      ? '<span class="muted">Продано</span>'
-      : 'Цена по запросу<small>Уточните по телефону +7 (342) 200-00-00</small>';
-
-    const snap = {
-      title: title,
-      price: f.price,
-      status: f.status,
-      image: f.plan_image,
-      url: 'flat.html?id=' + f.id,
-    };
-
-    return (
-      '<article class="card-wrap"><a class="card-flat" href="flat.html?id=' +
-      f.id +
-      '">' +
-      '<div class="media media--4-5">' +
-      '<div class="card-top">' +
-      LK.statusHtml(f.status, false) +
-      favBtn('flat', f.id, title, snap) +
-      '</div>' +
-      '<img src="' +
-      LK.img(f.plan_image) +
-      '" alt="Схема планировки: ' +
-      LK.esc(f.rooms_label) +
-      ', ' +
-      LK.area(f.area_total) +
-      '" loading="lazy" width="1120" height="1400">' +
-      '</div>' +
-      '<h3 class="card-title">' +
-      LK.esc(title) +
-      '</h3>' +
-      '<p class="card-meta">' +
-      LK.esc(f.building_title) +
-      ' · этаж ' +
-      f.floor +
-      ' из ' +
-      f.floors_total +
-      ' · ' +
-      LK.esc(f.finishing_label) +
-      '</p>' +
-      '<p class="card-price">' +
-      priceHtml +
-      '</p>' +
-      '</a></article>'
-    );
-  };
 
   /* ---------- Карточка УЧАСТКА: горизонтальная 3:2, бронзовая рамка ---------- */
 
@@ -181,7 +125,7 @@
       LK.esc(opts.text) +
       '</p>' +
       (opts.action
-        ? '<a class="btn ' + (opts.land ? 'btn--land' : 'btn--flats') + '" href="' + opts.action.href + '">' + LK.esc(opts.action.label) + '</a>'
+        ? '<a class="btn btn--land" href="' + opts.action.href + '">' + LK.esc(opts.action.label) + '</a>'
         : '') +
       (opts.secondary
         ? '<button type="button" class="btn btn--ghost" ' + opts.secondary.attrs + '>' + LK.esc(opts.secondary.label) + '</button>'

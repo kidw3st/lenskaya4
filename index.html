@@ -11,10 +11,10 @@
 <meta property="og:description" content="Участки под застройку на первой линии правого берега Камы. Типовые проекты домов на выбор. Проект в стадии архитектурной концепции.">
 <meta property="og:image" content="assets/img/OG-LAND-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=10">
-<link rel="stylesheet" href="assets/css/base.css?v=10">
-<link rel="stylesheet" href="assets/css/components.css?v=10">
-<link rel="stylesheet" href="assets/css/motion.css?v=10">
+<link rel="stylesheet" href="assets/css/tokens.css?v=15">
+<link rel="stylesheet" href="assets/css/base.css?v=15">
+<link rel="stylesheet" href="assets/css/components.css?v=15">
+<link rel="stylesheet" href="assets/css/motion.css?v=15">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"ЖК «Ленская»","url":"/","address":{"@type":"PostalAddress","addressLocality":"Пермь","streetAddress":"ул. Ленская","addressCountry":"RU"},"telephone":"+7 342 200-00-00"}
@@ -72,8 +72,6 @@
           </div>
         </li>
         <li><a class="nav-link nav-link--land" href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-        <li aria-hidden="true"><span class="nav-sep"></span></li>
-        <li><a class="nav-link" href="flats.html">Проект корпусов</a></li>
         <li><a class="nav-link" href="gallery.html">Галерея</a></li>
         <li><a class="nav-link" href="contacts.html">Контакты</a></li>
       </ul>
@@ -106,7 +104,6 @@
   <nav class="mobile-nav" aria-label="Мобильное меню">
     <ul>
       <li class="mobile-nav-item--land"><a href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-      <li class="mobile-nav-item--flats"><a href="flats.html">Проект корпусов</a></li>
       <li>
         <button type="button" data-acc="m-project" aria-expanded="false">Проект <span aria-hidden="true">+</span></button>
         <ul class="mobile-nav-sub" id="m-project">
@@ -207,10 +204,6 @@
 
       <ul class="btn-row mt-5">
         <li><a class="btn btn--land btn--sm" href="land.html">Зона земельных участков</a></li>
-        <li><a class="btn btn--secondary btn--sm" href="flats.html?building=A">Корпус A</a></li>
-        <li><a class="btn btn--secondary btn--sm" href="flats.html?building=B">Корпус B</a></li>
-        <li><a class="btn btn--secondary btn--sm" href="flats.html?building=C">Корпус C</a></li>
-        <li><a class="btn btn--secondary btn--sm" href="flats.html?building=D">Корпус D</a></li>
       </ul>
     </div>
   </section>
@@ -332,9 +325,9 @@
   <!-- ============================================================
        Блок 9. ЗЕМЕЛЬНЫЕ УЧАСТКИ — ОСНОВНОЙ ПРОДУКТ.
        Приоритет утверждён Заказчиком (раздел 11.1, п. 4 спецификации):
-       участки идут перед квартирами и получают главный CTA.
+       участки — единственный продаваемый продукт и получают главный CTA.
        Фон --c-sage, бронзовый акцент, собственный CTA.
-       Интервал до блока квартир — не менее 128 px на desktop.
+       Интервал до следующего блока — не менее 128 px на desktop.
        ============================================================ -->
   <section class="section section--land t-land" id="land-preview">
     <div class="container">
@@ -394,32 +387,39 @@
   </section>
 
   <!-- ============================================================
-       Блок 10. Жилые корпуса — готовый проект, а не второй продукт
-       в продаже. Блок адресован инвесторам и партнёрам: показывает
-       глубину проработки территории. CTA — контурный, чтобы не
-       конкурировать с участками (основной продукт).
+       Блок 10. Примеры планировок.
+       Квартиры не продаются: блок показывает, какие планировочные
+       решения реализуемы в проекте. Ни каталога, ни цен, ни фильтров —
+       только несколько типов как ориентир.
        ============================================================ -->
-  <section class="section t-flats" id="flats-preview">
+  <section class="section section--limestone" id="plans-preview">
     <div class="container">
-      <div class="section-head section-head--split">
-        <div>
-          <p class="eyebrow">Готовый проект · для инвесторов</p>
-          <h2>Жилые корпуса</h2>
-          <p class="lead max-60 mt-4">Проект четырёх корпусов проработан до планировок каждой квартиры. Мы показываем его как готовое решение для инвесторов и партнёров — оценить масштаб, посадку на местности и структуру квартирографии.</p>
-          <p class="caption mt-4" data-flats-summary>Загружаем данные проекта…</p>
-        </div>
-        <a class="btn btn--secondary" href="flats.html" data-cta="home_flats_all" data-section="flats_preview">Изучить проект корпусов</a>
+      <div class="section-head">
+        <p class="eyebrow">Проектные решения</p>
+        <h2>Какие планировки возможны</h2>
+        <p class="lead max-60 mt-4">Несколько типовых планировок из проектной проработки — чтобы было понятно, какие решения реализуемы на территории. Это примеры, а не предложение о продаже.</p>
       </div>
 
-      <div class="chips mt-5">
-        <a class="chip" href="flats.html?rooms=studio">Студия</a>
-        <a class="chip" href="flats.html?rooms=1">1К</a>
-        <a class="chip" href="flats.html?rooms=2">2К</a>
-        <a class="chip" href="flats.html?rooms=3">3К</a>
-        <a class="chip" href="flats.html?rooms=4_plus">4К+</a>
+      <div class="plans-strip mt-6">
+        <figure class="plan-card">
+          <div class="media media--4-5"><img src="assets/img/PLAN-STUDIO.svg" alt="Пример планировки: студия" loading="lazy" width="1120" height="1400"></div>
+          <figcaption><h3 class="h4">Студия</h3><p class="caption">Единое пространство, кухонная зона у окна.</p></figcaption>
+        </figure>
+        <figure class="plan-card">
+          <div class="media media--4-5"><img src="assets/img/PLAN-1.svg" alt="Пример планировки: однокомнатная" loading="lazy" width="1120" height="1400"></div>
+          <figcaption><h3 class="h4">Одна комната</h3><p class="caption">Спальня отделена, кухня-гостиная выходит на балкон.</p></figcaption>
+        </figure>
+        <figure class="plan-card">
+          <div class="media media--4-5"><img src="assets/img/PLAN-2.svg" alt="Пример планировки: двухкомнатная" loading="lazy" width="1120" height="1400"></div>
+          <figcaption><h3 class="h4">Две комнаты</h3><p class="caption">Разведённые спальни, общая зона по центру.</p></figcaption>
+        </figure>
+        <figure class="plan-card">
+          <div class="media media--4-5"><img src="assets/img/PLAN-3.svg" alt="Пример планировки: трёхкомнатная" loading="lazy" width="1120" height="1400"></div>
+          <figcaption><h3 class="h4">Три комнаты</h3><p class="caption">Два санузла, кладовая, окна на две стороны.</p></figcaption>
+        </figure>
       </div>
 
-      <div class="cards cards--flats mt-6" id="flats-preview-list" aria-busy="true"></div>
+      <p class="disclaimer disclaimer--boxed mt-6 max-60">Планировки приведены как примеры проектных решений. Квартиры не являются предметом продажи: проект «Ленская» продаёт земельные участки под застройку.</p>
     </div>
   </section>
 
@@ -464,9 +464,9 @@
           <button type="button" class="btn btn--land mt-4" data-modal="modal-consult" data-modal-ctx='{"object_type":"land","title":"Консультация по земельным участкам"}' data-cta="final_cta_land">Получить консультацию по участку</button>
         </div>
         <div>
-          <h3 class="h4">Проект жилых корпусов</h3>
-          <p class="caption mt-3" style="color:var(--on-dark-2)">Готовое решение для инвесторов и партнёров.</p>
-          <button type="button" class="btn btn--on-dark mt-4" data-modal="modal-consult" data-modal-ctx='{"object_type":"flat","title":"Запрос по проекту жилых корпусов"}' data-cta="final_cta_flat">Запросить материалы по проекту</button>
+          <h3 class="h4">Проект территории</h3>
+          <p class="caption mt-3" style="color:var(--on-dark-2)">Генплан, архитектура, планировочные решения.</p>
+          <button type="button" class="btn btn--on-dark mt-4" data-modal="modal-consult" data-modal-ctx='{"title":"Запрос материалов по проекту"}' data-cta="final_cta_project">Запросить материалы по проекту</button>
         </div>
       </div>
       <div class="contact-row mt-7" style="max-width:640px">
@@ -492,7 +492,7 @@
         <p class="footer-title">Разделы</p>
         <ul class="footer-list">
           <li><a href="about.html">О проекте</a></li>
-          <li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Проект корпусов</a></li>
+          <li><a href="land.html">Земельные участки</a></li>
           <li><a href="gallery.html">Галерея</a></li>
               <li><a href="news.html">Новости</a></li>
         </ul>
@@ -587,7 +587,7 @@
         <a class="contact-btn" href="https://t.me/" data-messenger="telegram" data-placement="form_success" rel="noopener" target="_blank">Telegram</a>
         <a class="contact-btn" href="https://wa.me/" data-messenger="whatsapp" data-placement="form_success" rel="noopener" target="_blank">WhatsApp</a>
       </div>
-      <a class="btn btn--secondary mt-4" href="flats.html" data-success-catalog>Изучить проект корпусов</a>
+      <a class="btn btn--land mt-4" href="land.html" data-success-catalog>Смотреть каталог участков</a>
     </div>
   </div>
 </div>
@@ -621,9 +621,9 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=10"></script>
-<script src="assets/js/motion.js?v=10"></script>
-<script src="assets/js/cards.js?v=10"></script>
-<script src="assets/js/home.js?v=10"></script>
+<script src="assets/js/site.js?v=15"></script>
+<script src="assets/js/motion.js?v=15"></script>
+<script src="assets/js/cards.js?v=15"></script>
+<script src="assets/js/home.js?v=15"></script>
 </body>
 </html>

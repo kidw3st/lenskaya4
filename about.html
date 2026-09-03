@@ -8,10 +8,10 @@
 <link rel="canonical" href="about.html">
 <meta property="og:image" content="assets/img/OG-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=10">
-<link rel="stylesheet" href="assets/css/base.css?v=10">
-<link rel="stylesheet" href="assets/css/components.css?v=10">
-<link rel="stylesheet" href="assets/css/motion.css?v=10">
+<link rel="stylesheet" href="assets/css/tokens.css?v=15">
+<link rel="stylesheet" href="assets/css/base.css?v=15">
+<link rel="stylesheet" href="assets/css/components.css?v=15">
+<link rel="stylesheet" href="assets/css/motion.css?v=15">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"/"},{"@type":"ListItem","position":2,"name":"О проекте","item":"/about.html"}]}
@@ -33,8 +33,6 @@
           </div>
         </li>
         <li><a class="nav-link nav-link--land" href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-        <li aria-hidden="true"><span class="nav-sep"></span></li>
-        <li><a class="nav-link" href="flats.html">Проект корпусов</a></li>
         <li><a class="nav-link" href="gallery.html">Галерея</a></li>
         <li><a class="nav-link" href="contacts.html">Контакты</a></li>
       </ul>
@@ -63,7 +61,6 @@
   <nav class="mobile-nav" aria-label="Мобильное меню">
     <ul>
       <li class="mobile-nav-item--land"><a href="land.html">Земельные участки <span class="badge badge--new">Новый формат</span></a></li>
-      <li class="mobile-nav-item--flats"><a href="flats.html">Проект корпусов</a></li>
       <li>
         <button type="button" data-acc="m-project" aria-expanded="false">Проект <span aria-hidden="true">+</span></button>
         <ul class="mobile-nav-sub" id="m-project">
@@ -131,7 +128,7 @@
         <div class="stat"><b>4</b><span>корпуса переменной этажности</span></div>
         <div class="stat"><b>9–16</b><span>этажей, ступенчатая композиция</span></div>
         <div class="stat"><b data-land-count>48</b><span>земельных участков под застройку</span></div>
-        <div class="stat"><b data-flats-count>709</b><span>квартир в проекте корпусов</span></div>
+        <div class="stat"><b>5</b><span>типов планировок в проработке</span></div>
       </div>
       <p class="note-strip mt-6" data-updated>Данные приведены по архитектурной концепции и подлежат уточнению по проектной документации.</p>
     </div>
@@ -169,12 +166,12 @@
           <a class="btn btn--land mt-5" href="land.html" data-cta="about_land">Смотреть все участки</a>
         </article>
 
-        <article class="panel t-flats">
-          <p class="eyebrow">Также в проекте</p>
-          <h2 class="h3 mt-3">Квартиры в корпусах</h2>
-          <p class="caption mt-4">Готовый проект: квартирография от студий до четырёхкомнатных, посадка корпусов, планировки. Опубликован для инвесторов и партнёров — квартиры в нём не продаются.</p>
-          <div class="media media--4-5 mt-5" style="max-width:220px"><img src="assets/img/FLATPREV-01.svg" alt="Пример планировки квартиры" loading="lazy" width="1120" height="1400"></div>
-          <a class="btn btn--secondary mt-5" href="flats.html" data-cta="about_flats">Изучить проект корпусов</a>
+        <article class="panel">
+          <p class="eyebrow">Проектные решения</p>
+          <h2 class="h3 mt-3">Планировки как ориентир</h2>
+          <p class="caption mt-4">В проектной проработке есть планировочные решения от студии до четырёхкомнатной. Мы показываем несколько как пример того, что реализуемо на территории. Квартиры не продаются.</p>
+          <div class="media media--4-5 mt-5" style="max-width:220px"><img src="assets/img/PLAN-2.svg" alt="Пример планировочного решения" loading="lazy" width="1120" height="1400"></div>
+          <a class="btn btn--secondary mt-5" href="index.html#plans-preview" data-cta="about_plans">Посмотреть примеры</a>
         </article>
       </div>
     </div>
@@ -228,7 +225,6 @@
         <fieldset style="border:0;padding:0;margin:0">
           <legend class="filter-label" style="color:var(--on-dark-2)">Что интересует <span class="req">*</span></legend>
           <label class="check" style="color:var(--on-dark)"><input type="radio" name="object_type" value="land" required> Земельные участки</label>
-          <label class="check" style="color:var(--on-dark)"><input type="radio" name="object_type" value="flat"> Квартиры</label>
           <label class="check" style="color:var(--on-dark)"><input type="radio" name="object_type" value="general"> Проект целиком</label>
           <span class="field-error"></span>
         </fieldset>
@@ -244,7 +240,7 @@
       <div class="form-success" role="status" style="background:transparent;border-color:var(--on-dark-line)">
         <h3 class="h3">Презентация отправлена</h3>
         <p class="mt-3">Проверьте почту — письмо придёт в течение нескольких минут.</p>
-        <a class="btn btn--secondary mt-4" href="flats.html" data-success-catalog style="--btn-fg:var(--on-dark);--btn-bd:var(--on-dark-line)">Изучить проект корпусов</a>
+        <a class="btn btn--secondary mt-4" href="land.html" data-success-catalog style="--btn-fg:var(--on-dark);--btn-bd:var(--on-dark-line)">Смотреть каталог участков</a>
       </div>
     </div>
   </section>
@@ -261,7 +257,7 @@
       <div>
         <p class="footer-title">Разделы</p>
         <ul class="footer-list">
-          <li><a href="about.html">О проекте</a></li><li><a href="land.html">Земельные участки</a></li><li><a href="flats.html">Проект корпусов</a></li><li><a href="gallery.html">Галерея</a></li><li><a href="news.html">Новости</a></li>
+          <li><a href="about.html">О проекте</a></li><li><a href="land.html">Земельные участки</a></li><li><a href="gallery.html">Галерея</a></li><li><a href="news.html">Новости</a></li>
         </ul>
       </div>
       <div>
@@ -306,7 +302,7 @@
     </form>
     <div class="form-success" role="status">
       <h3 class="h3">Заявка отправлена</h3><p class="mt-3">Менеджер свяжется с вами в рабочее время.</p>
-      <a class="btn btn--secondary mt-4" href="flats.html" data-success-catalog>Изучить проект корпусов</a>
+      <a class="btn btn--land mt-4" href="land.html" data-success-catalog>Смотреть каталог участков</a>
     </div>
   </div>
 </div>
@@ -331,12 +327,11 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=10"></script>
-<script src="assets/js/motion.js?v=10"></script>
+<script src="assets/js/site.js?v=15"></script>
+<script src="assets/js/motion.js?v=15"></script>
 <script>
 // Ключевые цифры берём из тех же данных, что и каталоги, — чтобы не расходились.
 window.LK.load('meta').then(function (m) {
-  document.querySelector('[data-flats-count]').textContent = window.LK.num(m.flats_published);
   document.querySelector('[data-land-count]').textContent = window.LK.num(m.land_published);
   document.querySelector('[data-updated]').textContent =
     'Данные приведены по архитектурной концепции и актуальны на ' + window.LK.dateRu(m.generated_at) +
