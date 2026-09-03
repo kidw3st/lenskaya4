@@ -762,25 +762,12 @@ make('404-01', '16:9', (W, H, r) => sceneTexture(W, H, r, '#26302B', '#4A5A4E'),
 make('OG-01', '1.91:1', (W, H, r) => scenePanorama(W, H, r, 'golden'), 'Превью проекта для соцсетей', true);
 make('OG-LAND-01', '1.91:1', (W, H, r) => sceneLand(W, H, r, true), 'Превью раздела «Земельные участки»', false);
 
-/* --- Превью каталога квартир --- */
-[1, 2, 3, 4].forEach((i) =>
-  make(`FLATPREV-0${i}`, '4:5', (W, H, r) => sceneInterior(W, H, r, i % 2 ? 'golden' : 'day'), `Превью каталога квартир ${i}`, false, i * 5)
-);
-
 /* --- Планировки --- */
 const planNames = { STUDIO: 'Студия', 1: '1 комната', 2: '2 комнаты', 3: '3 комнаты', '4P': '4 комнаты и более' };
 for (const kind of ['STUDIO', '1', '2', '3', '4P']) {
   const [W, H] = AR['4:5'];
   const id = `PLAN-${kind}`;
   write(id, svg(W, H, planSvg(kind, planNames[kind]) + chip(W, H, id, false), `Схема планировки: ${planNames[kind]}`));
-  count++;
-}
-
-/* --- Планы этажей --- */
-for (const b of ['A', 'B', 'C', 'D']) {
-  const [W, H] = AR['16:10'];
-  const id = `FLOOR-${b}`;
-  write(id, svg(W, H, floorSvg(b) + chip(W, H, id, false), `План типового этажа корпуса ${b}`));
   count++;
 }
 

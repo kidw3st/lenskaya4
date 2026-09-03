@@ -11,10 +11,10 @@
 <meta property="og:description" content="Участки под застройку на первой линии правого берега Камы. Типовые проекты домов на выбор. Проект в стадии архитектурной концепции.">
 <meta property="og:image" content="assets/img/OG-LAND-01.svg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="assets/css/tokens.css?v=15">
-<link rel="stylesheet" href="assets/css/base.css?v=15">
-<link rel="stylesheet" href="assets/css/components.css?v=15">
-<link rel="stylesheet" href="assets/css/motion.css?v=15">
+<link rel="stylesheet" href="assets/css/tokens.css?v=17">
+<link rel="stylesheet" href="assets/css/base.css?v=17">
+<link rel="stylesheet" href="assets/css/components.css?v=17">
+<link rel="stylesheet" href="assets/css/motion.css?v=17">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"ЖК «Ленская»","url":"/","address":{"@type":"PostalAddress","addressLocality":"Пермь","streetAddress":"ул. Ленская","addressCountry":"RU"},"telephone":"+7 342 200-00-00"}
@@ -138,7 +138,9 @@
   <section class="hero">
     <div class="hero-media">
       <picture>
-        <!-- Вертикального кроп-кадра для мобильного пока нет: один снимок кадрируется через object-fit -->
+        <!-- Вертикальный кадр для мобильного. Пока это заглушка: когда появится
+             настоящий снимок, положите HERO-01M.jpg и поменяйте здесь расширение. -->
+        <source media="(max-width: 640px)" srcset="assets/img/HERO-01M.svg">
         <img src="assets/img/HERO-01F.jpg" alt="Панорама: река Кама, жилой комплекс и лесной массив" fetchpriority="high" width="1280" height="714">
       </picture>
     </div>
@@ -417,6 +419,10 @@
           <div class="media media--4-5"><img src="assets/img/PLAN-3.svg" alt="Пример планировки: трёхкомнатная" loading="lazy" width="1120" height="1400"></div>
           <figcaption><h3 class="h4">Три комнаты</h3><p class="caption">Два санузла, кладовая, окна на две стороны.</p></figcaption>
         </figure>
+        <figure class="plan-card">
+          <div class="media media--4-5"><img src="assets/img/PLAN-4P.svg" alt="Пример планировки: четырёхкомнатная с террасой" loading="lazy" width="1120" height="1400"></div>
+          <figcaption><h3 class="h4">Четыре комнаты</h3><p class="caption">Терраса на верхнем уровне, мастер-спальня с гардеробной.</p></figcaption>
+        </figure>
       </div>
 
       <p class="disclaimer disclaimer--boxed mt-6 max-60">Планировки приведены как примеры проектных решений. Квартиры не являются предметом продажи: проект «Ленская» продаёт земельные участки под застройку.</p>
@@ -621,9 +627,9 @@
   </div>
 </div>
 
-<script src="assets/js/site.js?v=15"></script>
-<script src="assets/js/motion.js?v=15"></script>
-<script src="assets/js/cards.js?v=15"></script>
-<script src="assets/js/home.js?v=15"></script>
+<script src="assets/js/site.js?v=17"></script>
+<script src="assets/js/motion.js?v=17"></script>
+<script src="assets/js/cards.js?v=17"></script>
+<script src="assets/js/home.js?v=17"></script>
 </body>
 </html>
