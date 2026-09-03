@@ -45,7 +45,7 @@
             title: 'Свободных участков сейчас нет',
             text: 'Оставьте контакты — сообщим, когда появятся новые участки.',
             land: true,
-            action: { href: 'contacts.html', label: 'Сообщить о появлении' },
+            action: { href: 'contacts/', label: 'Сообщить о появлении' },
           });
           landBox.removeAttribute('aria-busy');
           return;

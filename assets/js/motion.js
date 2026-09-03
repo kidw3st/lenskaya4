@@ -406,22 +406,68 @@
   function initPrefetch() {
     var conn = navigator.connection || {};
     if (conn.saveData || /2g/.test(conn.effectiveType || '')) return;
+    // Слабые устройства: предзагрузка там мешает больше, чем помогает
+    if (navigator.deviceMemory && navigator.deviceMemory <= 4) return;
+
     var seen = {};
-    var prefetch = function (e) {
-      var a = e.target.closest('a[href]');
-      if (!a) return;
-      var href = a.getAttribute('href');
-      if (!href || href.charAt(0) === '#' || /^(https?:|mailto:|tel:)/.test(href)) return;
-      var path = href.split('?')[0].split('#')[0];
-      if (!/\.html$/.test(path) || seen[path]) return;
+    var count = 0;
+    var MAX = 4; // дальше четырёх страниц вперёд смотреть незачем
+    var HOLD = 160; // мс осознанного наведения
+    var timer = null;
+
+    var start = function (path) {
+      if (seen[path] || count >= MAX) return;
       seen[path] = true;
+      count++;
       var link = document.createElement('link');
       link.rel = 'prefetch';
       link.href = path;
       document.head.appendChild(link);
     };
-    document.addEventListener('mouseover', prefetch, { passive: true });
-    document.addEventListener('touchstart', prefetch, { passive: true });
+
+    var pathOf = function (target) {
+      var a = target && target.closest ? target.closest('a[href]') : null;
+      if (!a) return null;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || /^(https?:|mailto:|tel:)/.test(href)) return null;
+      var path = href.split('?')[0].split('#')[0];
+      if (!path || seen[path]) return null;
+      return path;
+    };
+
+    // Наведение должно быть намеренным. Раньше курсор, проезжая по
+    // выпадающему меню «Проект», за доли секунды пересекал пять ссылок —
+    // и браузер разом тянул пять целых страниц. Именно в этот момент
+    // сайт и подвисал.
+    document.addEventListener(
+      'mouseover',
+      function (e) {
+        var path = pathOf(e.target);
+        clearTimeout(timer);
+        if (!path) return;
+        timer = setTimeout(function () {
+          start(path);
+        }, HOLD);
+      },
+      { passive: true }
+    );
+    document.addEventListener(
+      'mouseout',
+      function () {
+        clearTimeout(timer);
+      },
+      { passive: true }
+    );
+
+    // На тапе намерение очевидно — ждать нечего
+    document.addEventListener(
+      'touchstart',
+      function (e) {
+        var path = pathOf(e.target);
+        if (path) start(path);
+      },
+      { passive: true }
+    );
   }
 
   /* ====================================================================

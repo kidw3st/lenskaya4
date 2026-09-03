@@ -52,11 +52,11 @@
       price: p.price,
       status: p.status,
       image: p.plot_images[0],
-      url: 'land-plot.html?id=' + p.id,
+      url: LK.url('land-plot/?id=' + p.id),
     };
 
     return (
-      '<article class="card-wrap"><a class="card-land" href="land-plot.html?id=' +
+      '<article class="card-wrap"><a class="card-land" href="' + LK.url('land-plot/?id=') +
       p.id +
       '">' +
       '<div class="media media--3-2">' +
@@ -125,7 +125,7 @@
       LK.esc(opts.text) +
       '</p>' +
       (opts.action
-        ? '<a class="btn btn--land" href="' + opts.action.href + '">' + LK.esc(opts.action.label) + '</a>'
+        ? '<a class="btn btn--land" href="' + LK.url(opts.action.href) + '">' + LK.esc(opts.action.label) + '</a>'
         : '') +
       (opts.secondary
         ? '<button type="button" class="btn btn--ghost" ' + opts.secondary.attrs + '>' + LK.esc(opts.secondary.label) + '</button>'

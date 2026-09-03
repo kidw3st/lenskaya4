@@ -2,12 +2,11 @@ User-agent: *
 Allow: /
 
 # Служебные страницы не индексируются
-Disallow: /favorites.html
+Disallow: /favorites/
 Disallow: /404.html
 
-# Фильтрованные выдачи каталогов закрыты от индексации,
+# Фильтрованные выдачи каталога закрыты от индексации,
 # кроме согласованного списка посадочных комбинаций.
-Disallow: /flats.html?*
-Disallow: /land.html?*
+Disallow: /land/?*
 
 Sitemap: https://kidw3st.github.io/lenskaya4/sitemap.xml

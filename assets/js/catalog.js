@@ -15,7 +15,7 @@
       isLand: true,
       perPage: function () { return window.innerWidth < 768 ? 9 : 12; },
       countWord: ['участок', 'участка', 'участков'],
-      emptyAction: { href: 'land.html', label: 'Сбросить фильтры' },
+      emptyAction: { href: 'land/', label: 'Сбросить фильтры' },
       defaults: { status: ['free'] },
       groups: {
         status: { field: 'status', mode: 'or', label: 'Статус', names: { free: 'Свободен', reserved: 'Бронь', sold: 'Продан' } },
@@ -328,7 +328,7 @@
           const fill = p.status === 'free' ? cFree : p.status === 'reserved' ? cRes : cSold;
           const op = visible[p.id] ? 0.6 : 0.12;
           svg +=
-            '<a href="land-plot.html?id=' + p.id + '" class="plot-poly" aria-label="Участок №' + p.plot_number + ', ' + LK.dec(p.area_ares, 2) + ' сотки">' +
+            '<a href="' + LK.url('land-plot/?id=' + p.id) + '" class="plot-poly" aria-label="Участок №' + p.plot_number + ', ' + LK.dec(p.area_ares, 2) + ' сотки">' +
             '<rect x="' + x + '" y="' + y + '" width="' + cw + '" height="' + ch + '" rx="8" fill="' + fill + '" fill-opacity="' + op + '" stroke="' + cText + '" stroke-opacity="0.35" stroke-width="1.5"/>' +
             '<text x="' + (x + cw / 2) + '" y="' + (y + ch / 2 - 4) + '" text-anchor="middle" font-size="22" font-family="system-ui" fill="' + cText + '">№' + p.plot_number + '</text>' +
             '<text x="' + (x + cw / 2) + '" y="' + (y + ch / 2 + 22) + '" text-anchor="middle" font-size="15" font-family="system-ui" fill="' + cMuted + '">' + LK.dec(p.area_ares, 2).replace('.', ',') + ' сот.</text>' +

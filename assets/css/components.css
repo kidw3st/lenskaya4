@@ -2326,8 +2326,9 @@ fieldset {
 }
 
 .consent input {
-  width: 22px;
-  height: 22px;
+  /* 24×24 — минимум по WCAG 2.5.8 */
+  width: 24px;
+  height: 24px;
   margin: 1px 0 0;
   flex-shrink: 0;
   accent-color: var(--section-accent);
@@ -3121,5 +3122,77 @@ figure {
   .club-frames {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--s-6);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Виджет Яндекс Карт подставляется по клику на месте нарисованной схемы.
+   -------------------------------------------------------------------------- */
+
+.map-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.map-holder.is-live img,
+.map-holder.is-live::after {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Тач-цели на узких экранах.
+
+   WCAG 2.5.8 требует минимум 24×24 CSS-пикселя. Ссылки в подвале и хлебных
+   крошках были 17 px высотой, чекбоксы — 20×20: пальцем не попасть.
+   Увеличиваем именно область нажатия, а не кегль: визуальный ритм остаётся.
+   -------------------------------------------------------------------------- */
+
+.check input {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 760px) {
+  .footer-list a,
+  .footer-legal a {
+    display: inline-block;
+    padding-block: 9px;
+    /* компенсируем отступ, чтобы список не растянулся вдвое */
+    margin-block: -5px;
+  }
+
+  .footer-list li + li {
+    margin-top: 2px;
+  }
+
+  .breadcrumbs a {
+    display: inline-block;
+    padding-block: 6px;
+    margin-block: -4px;
+  }
+
+  /* Телефон и почта — самые важные ссылки подвала, им полная площадь */
+  .footer-list a[href^='tel:'],
+  .footer-list a[href^='mailto:'] {
+    padding-block: 13px;
+    margin-block: -9px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* Контакты в таблице реквизитов: телефон и почта — основные действия
+     страницы, палец должен попадать без прицеливания. */
+  .contact-table a[href^='tel:'],
+  .contact-table a[href^='mailto:'],
+  .lot-table a[href^='tel:'],
+  table a[href^='tel:'],
+  table a[href^='mailto:'] {
+    display: inline-block;
+    padding-block: 11px;
+    margin-block: -8px;
   }
 }
