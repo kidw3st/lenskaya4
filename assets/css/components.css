@@ -3196,3 +3196,160 @@ figure {
     margin-block: -8px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Технико-экономические показатели проекта.
+   Плитка чисел без карточных рамок: цифра и что она означает. Двум главным
+   для инвестора показателям — продаваемой площади и коммерции — достаётся
+   бронза, остальные держат общий тон.
+   -------------------------------------------------------------------------- */
+
+.tep-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-5) var(--s-4);
+}
+
+@media (min-width: 620px) {
+  .tep-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1000px) {
+  .tep-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6) var(--s-5); }
+}
+
+.tep {
+  min-width: 0;
+  padding-top: var(--s-3);
+  border-top: 2px solid var(--line);
+}
+
+.tep b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.25rem);
+  line-height: 1.05;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tep span {
+  display: block;
+  margin-top: var(--s-2);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.tep--accent {
+  border-top-color: var(--bronze);
+}
+
+.tep--accent b {
+  color: var(--bronze-text);
+}
+
+/* Текст и иллюстрация рядом; на узких экранах — друг под другом */
+.split--wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .split--wide {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+}
+
+.split--wide figure { margin: 0; min-width: 0; }
+
+/* --------------------------------------------------------------------------
+   Очень узкие экраны — Galaxy Fold в сложенном виде и подобные, 280–340 px.
+   Шапка там не помещалась: 20 + логотип 134 + 16 + три кнопки 148 + 20 = 338.
+   Кнопки не трогаем — 44 px это минимум для пальца; ужимаем поля и убираем
+   подпись под логотипом: название и так называет проект.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 340px) {
+  :root {
+    --page-pad: 14px;
+  }
+
+  .header-inner {
+    gap: var(--s-3);
+  }
+
+  .logo small {
+    display: none;
+  }
+
+  .header-actions {
+    gap: var(--s-1);
+  }
+
+  /* Три кнопки по 44 px в шапку не влезают: 14 + логотип 124 + 12 + 140 + 14
+     это 304 при ширине экрана 280. Мельчить цели нельзя — убираем избранное,
+     оно есть в мобильном меню. Остаются тема и бургер в полный размер. */
+  .header-actions > a[href$='favorites/'] {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Виды разрешённого использования. Код классификатора идёт первым и
+   моноширинным — по нему сверяются с ПЗЗ, поэтому он должен читаться
+   как код, а не как часть фразы.
+   -------------------------------------------------------------------------- */
+
+.zoning-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+}
+
+@media (min-width: 820px) {
+  .zoning-cols {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+}
+
+.vri {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-1);
+}
+
+.vri li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--s-3);
+  align-items: baseline;
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.vri li b {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bronze-text);
+  letter-spacing: 0.02em;
+}
+
+.vri--muted li {
+  color: var(--text-2);
+}
+
+.vri--muted li b {
+  color: var(--text-3);
+}
