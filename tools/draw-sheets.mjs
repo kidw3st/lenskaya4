@@ -343,10 +343,10 @@ const FLOOR_H = 3.2; // высота этажа, м
 /** Схема террасной этажности: четыре корпуса ступенями от реки к лесу. */
 export function steppedSection(W, H) {
   const corps = [
-    { n: 'A', f: 16 },
-    { n: 'B', f: 14 },
-    { n: 'C', f: 12 },
-    { n: 'D', f: 9 },
+    { n: 'I', f: 4 },
+    { n: 'II', f: 4 },
+    { n: 'III', f: 4 },
+    { n: 'IV', f: 4 },
   ];
   const pad = { l: 130, r: 130, t: 180, b: 190 };
   const maxH = corps[0].f * FLOOR_H;
@@ -390,7 +390,7 @@ export function steppedSection(W, H) {
   g += txt(fx + 34, ground + 24, 'Закамский Бор', { size: 12.5, anchor: 'middle', fill: '#6f7f58' });
 
   g += frame(W, H);
-  g += titleBlock(pad.l - 90, 92, 'Террасная этажность', 'Объёмы понижаются от реки к кромке леса', null);
+  g += titleBlock(pad.l - 90, 92, 'Кварталы и террасы', 'Четыре этажа по всей территории, террасы — на кровлях', null);
   g += legend(pad.l - 90, H - 118, [
     { fill: T.build, stroke: T.ink, text: 'Объём корпуса' },
     { fill: T.paper, stroke: T.bronze, text: 'Террасы верхних уровней' },
@@ -402,7 +402,7 @@ export function steppedSection(W, H) {
 
 /** Разрез по корпусу A: этажи, входная группа, терраса, отметки. */
 export function corpusSection(W, H) {
-  const floors = 16;
+  const floors = 4;
   const pad = { l: 210, r: 200, t: 170, b: 180 };
   const boxH = H - pad.t - pad.b;
   const s = boxH / (floors * FLOOR_H * 1.08);
@@ -443,7 +443,7 @@ export function corpusSection(W, H) {
   g += dimV(ground - h, ground, pad.l + cw + 96, `${m(floors * FLOOR_H, 1)} м`, { from: pad.l + cw + 34 });
 
   g += frame(W, H);
-  g += titleBlock(pad.l - 120, 92, 'Разрез по корпусу A', `${floors} этажей · высота этажа ${m(FLOOR_H, 1)} м`, null);
+  g += titleBlock(pad.l - 120, 92, 'Разрез по кварталу', `${floors} этажа · высота этажа ${m(FLOOR_H, 1)} м`, null);
   g += scaleBar(pad.l - 120, H - 88, s, { steps: [0, 5, 10] });
   g += txt(W - 90, H - 88, 'Схема. Отметки и габариты уточняются', { size: 12, anchor: 'end', fill: T.ink3 });
   g += txt(W - 90, H - 69, 'по проектной документации.', { size: 12, anchor: 'end', fill: T.ink3 });
