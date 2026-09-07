@@ -3353,3 +3353,34 @@ figure {
 .vri--muted li b {
   color: var(--text-3);
 }
+
+/* --------------------------------------------------------------------------
+   Сетка листов концепции: две колонки на широких экранах, одна на узких.
+   -------------------------------------------------------------------------- */
+
+.scheme-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+}
+
+@media (min-width: 780px) {
+  .scheme-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.scheme-grid figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.scheme-grid .media {
+  background: #ffffff;
+  border: 1px solid var(--line);
+}
+
+.scheme-grid .media img {
+  object-fit: contain;
+  filter: var(--doc-dim);
+}
