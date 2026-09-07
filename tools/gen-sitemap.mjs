@@ -17,6 +17,7 @@ const read = (p) => JSON.parse(readFileSync(resolve(SITE, 'data', p), 'utf8'));
 const pages = [
   ['', 1.0],
   ['land/', 0.9],
+  ['investor/', 0.85],
   ['about/', 0.8],
   ['architecture/', 0.7],
   ['landscape/', 0.7],
