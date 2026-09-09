@@ -71,7 +71,7 @@
       })
       .catch(function () {
         landBox.innerHTML =
-          '<p class="note-strip">Каталог участков временно недоступен. Позвоните: <a href="tel:+73422000000">+7 (342) 200-00-00</a></p>';
+          '<p class="note-strip">Каталог участков временно недоступен. Позвоните: <a href="tel:+79120611331">+7 (912) 061-13-31</a></p>';
         landBox.removeAttribute('aria-busy');
         if (landSummary) landSummary.textContent = '';
       });

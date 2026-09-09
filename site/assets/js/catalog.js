@@ -529,7 +529,7 @@
         results.innerHTML =
           '<div class="empty"><p class="h3">Каталог временно недоступен</p>' +
           '<p class="caption">Попробуйте обновить страницу или позвоните нам.</p>' +
-          '<a class="btn" href="tel:+73422000000">+7 (342) 200-00-00</a></div>';
+          '<a class="btn" href="tel:+79120611331">+7 (912) 061-13-31</a></div>';
         results.removeAttribute('aria-busy');
         countEl.textContent = '—';
       });
