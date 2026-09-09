@@ -85,9 +85,8 @@
         (isLand ? 'Подобрать похожий участок' : 'Подобрать похожее') +
         '</a>' +
         '<div class="contact-row">' +
-        '<a class="contact-btn" href="tel:+73422000000" data-placement="lot_card">Позвонить</a>' +
-        '<a class="contact-btn" href="https://t.me/" data-messenger="telegram" data-placement="lot_card" rel="noopener" target="_blank">Telegram</a>' +
-        '</div></div>'
+        '<a class="contact-btn" href="tel:+79120611331" data-placement="lot_card">Позвонить</a>' +
+              '</div></div>'
       );
     }
 
@@ -100,10 +99,9 @@
       (isLand ? 'Записаться на просмотр' : 'Записаться в офис продаж') +
       '</button>' +
       '<div class="contact-row">' +
-      '<a class="contact-btn" href="tel:+73422000000" data-placement="lot_card">Позвонить</a>' +
-      '<a class="contact-btn" href="https://t.me/" data-messenger="telegram" data-placement="lot_card" rel="noopener" target="_blank">Telegram</a>' +
-      '<a class="contact-btn" href="https://wa.me/" data-messenger="whatsapp" data-placement="lot_card" rel="noopener" target="_blank">WhatsApp</a>' +
-      '<button type="button" class="contact-btn" data-fav="land" data-fav-id="' + obj.id + '" data-label="' + LK.esc(title) + '" aria-pressed="false">' +
+      '<a class="contact-btn" href="tel:+79120611331" data-placement="lot_card">Позвонить</a>' +
+      
+            '<button type="button" class="contact-btn" data-fav="land" data-fav-id="' + obj.id + '" data-label="' + LK.esc(title) + '" aria-pressed="false">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/></svg> В избранное</button>' +
       '</div></div>'
     );
@@ -116,7 +114,7 @@
       return (
         '<p class="lot-price">Цена по запросу</p>' +
         '<p class="caption mt-2">Стоимость сообщаем по телефону ' +
-        '<a href="tel:+73422000000" data-placement="lot_price">+7 (342) 200-00-00</a> ' +
+        '<a href="tel:+79120611331" data-placement="lot_price">+7 (912) 061-13-31</a> ' +
         'или в ответ на заявку. Условия не являются публичной офертой.</p>'
       );
     }
@@ -292,7 +290,7 @@
         ? 'Продан'
         : LK.LAND_PRICE_PUBLIC && p.price
         ? LK.money(p.price) + ' · ' + LK.num(p.price_per_are) + ' ₽ за сотку'
-        : 'Стоимость сообщаем по телефону: <a href="tel:+73422000000" data-placement="plot_economics">+7 (342) 200-00-00</a>') +
+        : 'Стоимость сообщаем по телефону: <a href="tel:+79120611331" data-placement="plot_economics">+7 (912) 061-13-31</a>') +
       '</span></li>' +
       '<li class="incl-no"><b>Дом и строительство</b><span>Не входят в стоимость участка. Стоимость строительства по типовому проекту — по запросу.</span></li>' +
       '<li class="incl-no"><b>Подключение коммуникаций</b><span>Условия и стоимость подключения уточняются по техническим условиям.</span></li>' +

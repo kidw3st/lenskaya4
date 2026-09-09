@@ -38,7 +38,7 @@
     const priceHtml = LK.LAND_PRICE_PUBLIC && p.price
       ? LK.money(p.price) + '<small>' + LK.num(p.price_per_are) + ' ₽ за сотку · на ' + LK.dateRu(p.updated_at) + '</small>'
       : LK.landPriceLabel(p) +
-        (p.status === 'sold' ? '' : '<small>Уточните по телефону +7 (342) 200-00-00</small>');
+        (p.status === 'sold' ? '' : '<small>Уточните по телефону +7 (912) 061-13-31</small>');
 
     const utils = p.utilities
       .slice(0, 3)
