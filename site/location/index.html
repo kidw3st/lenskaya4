@@ -22,10 +22,10 @@
 <meta name="twitter:image" content="https://kidw3st.github.io/lenskaya4/assets/img/OG-01.svg">
 <!-- meta:end -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23232B27'/><text x='16' y='23' font-size='19' font-family='Georgia,serif' fill='%23A8814F' text-anchor='middle'>Л</text></svg>">
-<link rel="stylesheet" href="../assets/css/tokens.css?v=43">
-<link rel="stylesheet" href="../assets/css/base.css?v=43">
-<link rel="stylesheet" href="../assets/css/components.css?v=43">
-<link rel="stylesheet" href="../assets/css/motion.css?v=43">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=44">
+<link rel="stylesheet" href="../assets/css/base.css?v=44">
+<link rel="stylesheet" href="../assets/css/components.css?v=44">
+<link rel="stylesheet" href="../assets/css/motion.css?v=44">
 <script>/* тема применяется до первой отрисовки, чтобы не было вспышки */(function(){try{var d=document.documentElement,t=localStorage.getItem('lenskaya_theme');d.classList.add('theme-booting');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);requestAnimationFrame(function(){d.classList.remove('theme-booting');});}catch(e){}})();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Place","name":"ЖК «Ленская»","address":{"@type":"PostalAddress","addressLocality":"Пермь","streetAddress":"ул. Ленская","addressCountry":"RU"}}
@@ -100,7 +100,13 @@
   <!-- Карта с табами слоёв -->
   <section class="section">
     <div class="container">
-      <div class="section-head"><p class="eyebrow">На карте</p><h2>Что вокруг</h2></div>
+      <div class="section-head"><p class="eyebrow">Микрорайон</p><h2>Верхняя Курья</h2></div>
+      <div class="prose max-60">
+        <p>Участок расположен в Ленинском районе Перми, в микрорайоне Верхняя Курья — части Камской долины на правом берегу. Это городская территория, но с природным окружением: вода с одной стороны, Закамский Бор с другой.</p>
+        <p class="mt-4">Район застраивается: рядом «Причал», «Экопарк Сосновый», «Курья Park» и «Ленская усадьба». Сформировавшийся жилой кластер — это уже существующие соседи, дороги и бытовая инфраструктура, а не чистое поле.</p>
+      </div>
+
+      <div class="section-head mt-7"><p class="eyebrow">На карте</p><h2>Что вокруг</h2></div>
 
       <div class="tabs" role="tablist" aria-label="Слои карты">
         <button type="button" class="tab" role="tab" id="tab-nature" aria-controls="panel-nature" aria-selected="true">Природа</button>
@@ -110,7 +116,7 @@
 
       <div class="split" style="align-items:start">
         <div class="map-holder media media--16-9" data-map-activate="location">
-          <img src="../assets/img/CONCEPT-MAP.jpg" alt="Карта расположения: участок проектирования на правом берегу Камы, Ленинский район Перми" loading="lazy" width="2000" height="1414">
+          <img src="../assets/img/CONCEPT-MAP.jpg" alt="Карта расположения: участок проектирования на правом берегу Камы, Ленинский район Перми" loading="lazy" width="2400" height="1697">
           <button type="button" class="btn btn--secondary btn--sm">Показать карту</button>
         </div>
         <div>
@@ -125,7 +131,9 @@
           <div id="panel-transport" role="tabpanel" aria-labelledby="tab-transport" tabindex="0" hidden>
             <h3 class="h4">Транспорт</h3>
             <ul class="mt-4 stack-sm">
-              <li class="caption">— Выезд на магистраль по ул. Ленской</li>
+              <li class="caption">— Около 5 км до центра города</li>
+              <li class="caption">— Связь с центром через ул. Борцов Революции и Коммунальный мост</li>
+              <li class="caption">— Ул. Ленская обозначена в материалах Генерального плана как улица районного значения</li>
               <li class="caption">— Остановки общественного транспорта на периметре территории</li>
               <li class="caption">— Гостевые парковки и подземный паркинг</li>
             </ul>
@@ -154,7 +162,7 @@
         <tbody>
           <tr><th scope="row">Набережная Камы</th><td>Пешком</td><td>Уточняется</td></tr>
           <tr><th scope="row">Закамский Бор</th><td>Пешком</td><td>Уточняется</td></tr>
-          <tr><th scope="row">Центр города</th><td>Автомобиль</td><td>Уточняется</td></tr>
+          <tr><th scope="row">Центр города</th><td>Автомобиль</td><td>≈ 5 км, время уточняется</td></tr>
           <tr><th scope="row">Остановка транспорта</th><td>Пешком</td><td>Уточняется</td></tr>
         </tbody>
       </table>
@@ -231,8 +239,8 @@
   <div class="btn-row"><button type="button" class="btn btn--sm" data-cookie="all">Принять все</button><button type="button" class="btn btn--secondary btn--sm" data-cookie="necessary">Только необходимые</button></div>
 </div>
 
-<script src="../assets/js/site.js?v=43"></script>
-<script src="../assets/js/motion.js?v=43"></script>
+<script src="../assets/js/site.js?v=44"></script>
+<script src="../assets/js/motion.js?v=44"></script>
 <script>
 (function () {
   var tabs = window.LK.$$('[role="tab"]');
